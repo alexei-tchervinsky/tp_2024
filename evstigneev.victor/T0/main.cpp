@@ -1,6 +1,7 @@
 #include <iostream>
 
-int main(){
+int main()
+{
   std::cout << "evstigneev.victor" << "\n";
   return 0;
 }
