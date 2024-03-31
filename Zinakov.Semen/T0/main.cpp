@@ -2,6 +2,6 @@
 
 int main()
 {
-	std::cout << "Zinakov.Semen" << '\n';
+	std::cout << "zinakov.semen" << '\n';
 	return 0;
 }
