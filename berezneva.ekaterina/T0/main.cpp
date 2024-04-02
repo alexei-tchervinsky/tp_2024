@@ -2,7 +2,7 @@
 
 int main()
 {
-  std::cout << "berezneva.ekaterina" << '\n';
+  std::cout << "berezneva.ekaterina" << std::endl;
   return 0;
 }
 
