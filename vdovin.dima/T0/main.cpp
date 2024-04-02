@@ -2,6 +2,6 @@
 
 int main()
 {
-  std::cout << "vdovin.dima";
+  std::cout << "vdovin.dima" << "\n";
   return 0;
 }
