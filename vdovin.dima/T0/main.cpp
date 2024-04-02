@@ -2,6 +2,6 @@
 
 int main()
 {
-  std::cout << "vdovin.dima" << "\n";
-  return 0;
+	std::cout << "vdovin.dmitrii" << "\n";
+	return 0;
 }
