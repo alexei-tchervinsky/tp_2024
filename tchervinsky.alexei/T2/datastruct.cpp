@@ -1,7 +1,7 @@
 #include "datastruct.hpp"
 #include <iomanip>
 
-std::istream& tchervinsky::operator>>(std::istream& in, tchervinsky::Delimiter&& dest)
+std::istream& tchervinsky::operator>>(std::istream& in, tchervinsky::DelimiterIO&& dest)
 {
   std::istream::sentry sentry(in);
   if (!sentry)
@@ -17,15 +17,38 @@ std::istream& tchervinsky::operator>>(std::istream& in, tchervinsky::Delimiter&&
   return in;
 }
 
+std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::LongLongIO&& dest)
+{
+  std::istream::sentry sentry(in);
+  if (!sentry)
+  {
+    return in;
+  }
+  long long ll = 0.0;
+  in >> std::skipws >> ll >> std::noskipws 
+    >> tchervinsky::DelimiterIO{ 'l' }
+    >> tchervinsky::DelimiterIO{ 'l' }
+    >> tchervinsky::DelimiterIO{ ':' };
+  if (!in)
+  {
+    in.setstate(std::ios::failbit);
+  }
+  else
+  {
+    dest.ll = ll;
+  }  
+  return in;
+}
+
 std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::DataStruct& dest)
 {
   char c{ '\0' };
-  in >> std::skipws >> tchervinsky::Delimiter{ '(' } >> std::noskipws;
+  in >> std::skipws >> tchervinsky::DelimiterIO{ '(' } >> std::noskipws;
   if (!in)
   {
     return in;
   }
-  in >> std::noskipws >> tchervinsky::Delimiter{ ':' } >> std::noskipws;
+  in >> std::noskipws >> tchervinsky::DelimiterIO{ ':' } >> std::noskipws;
   if (!in)
   {
     return in;
@@ -50,9 +73,7 @@ std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::DataStruc
     {
       case '1':
       {
-        in >> std::skipws >> dest.key1 >> std::noskipws
-           >> tchervinsky::Delimiter{ 'l' } >> tchervinsky::Delimiter{ 'l' }
-           >> tchervinsky::Delimiter{ ':' };
+        in >> tchervinsky::LongLongIO{ dest.key1 };
         if (!in)
         {
           return in;
@@ -62,17 +83,17 @@ std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::DataStruc
       }
       case '2':
       {
-        in >> std::skipws >> tchervinsky::Delimiter{ '#' };
+        in >> std::skipws >> tchervinsky::DelimiterIO{ '#' };
         if (!in)
         {
           return in;
         }
-        in >> std::noskipws >> tchervinsky::Delimiter{ 'c' };
+        in >> std::noskipws >> tchervinsky::DelimiterIO{ 'c' };
         if (!in)
         {
           return in;
         }
-        in >> std::noskipws >> tchervinsky::Delimiter{ '(' };
+        in >> std::noskipws >> tchervinsky::DelimiterIO{ '(' };
         if (!in)
         {
           return in;
@@ -93,12 +114,12 @@ std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::DataStruc
           return in;
         }
         dest.key2.imag(imagvalue);
-        in >> std::noskipws >> tchervinsky::Delimiter{ ')' };
+        in >> std::noskipws >> tchervinsky::DelimiterIO{ ')' };
         if (!in)
         {
           return in;
         }
-        in >> std::noskipws >> tchervinsky::Delimiter{ ':' };
+        in >> std::noskipws >> tchervinsky::DelimiterIO{ ':' };
         if (!in)
         {
           return in;
@@ -130,7 +151,7 @@ std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::DataStruc
   }
   if (((keyfields[0] == keyfields[1]) == keyfields[2]) == true)
   {
-    in >> std::noskipws >> tchervinsky::Delimiter{ ')' } >> std::noskipws;
+    in >> std::noskipws >> tchervinsky::DelimiterIO{ ')' } >> std::noskipws;
     if (!in)
     {
       return in;
@@ -146,6 +167,7 @@ std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::DataStruc
 
 std::ostream& tchervinsky::operator << (std::ostream& out, const tchervinsky::DataStruct& src)
 {
+  iofmtguard fmtguard(out);
   out << "(";
   out << ":key1 " << src.key1 << 'l' << 'l';
   out << ":key2 " << "#c(" << std::fixed << std::setprecision(1) << src.key2.real() << " " << src.key2.imag() << ')';
@@ -170,4 +192,18 @@ bool tchervinsky::operator < (const tchervinsky::DataStruct& a, const tchervinsk
   {
     return a.key3.size() < b.key3.size();
   }
+}
+
+tchervinsky::iofmtguard::iofmtguard(std::basic_ios< char > &s) :
+    s_(s),
+    fill_(s.fill()),
+    precision_(s.precision()),
+    fmt_(s.flags())
+  {}
+
+tchervinsky::iofmtguard::~iofmtguard()
+{
+  s_.fill(fill_);
+  s_.precision(precision_);
+  s_.flags(fmt_);
 }
