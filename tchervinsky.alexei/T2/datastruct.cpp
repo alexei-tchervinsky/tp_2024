@@ -25,7 +25,7 @@ std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::LongLongI
     return in;
   }
   long long ll = 0.0;
-  in >> std::skipws >> ll >> std::noskipws 
+  in >> std::skipws >> ll >> std::noskipws
     >> tchervinsky::DelimiterIO{ 'l' }
     >> tchervinsky::DelimiterIO{ 'l' }
     >> tchervinsky::DelimiterIO{ ':' };
