@@ -36,7 +36,7 @@ std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::LongLongI
   else
   {
     dest.ll = ll;
-  }  
+  }
   return in;
 }
 
