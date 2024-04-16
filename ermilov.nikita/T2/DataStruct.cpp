@@ -1,5 +1,6 @@
 #include <string>
 #include <iostream>
+#include <iterator>
 #include "DataStruct.h"
 #include "iofmtguard.h"
 
@@ -108,15 +109,15 @@ namespace ermilov
   }
 
   bool operator<(const DataStruct& left, const DataStruct& right) {
-    if (left.key1 < left.key1)
+    if (left.key1 < right.key1)
     {
       return true;
     }
-    else if (left.key1 == left.key1 && left.key2 < left.key2)
+    else if (left.key1 == right.key1 && left.key2 < right.key2)
     {
       return true;
     }
-    else if (left.key3.size() < left.key3.size())
+    else if (left.key3.size() < right.key3.size())
     {
       return true;
     }
