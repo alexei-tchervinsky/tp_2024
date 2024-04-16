@@ -12,7 +12,7 @@ namespace evstigneev
 		std::string key3;
 	};
 
-	struct ULLOctIO 
+	struct ULLOctIO
 	{
 		unsigned long long& ull;
 	};
@@ -59,4 +59,3 @@ namespace evstigneev
 	};
 }
 #endif
-
