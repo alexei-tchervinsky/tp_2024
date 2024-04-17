@@ -4,7 +4,6 @@
 #include <sstream>
 #include <string>
 #include <cassert>
-#include <exception>
 #include <iterator>
 #include <vector>
 #include <iomanip>

@@ -3,6 +3,7 @@
 
 namespace lst
 {
+  constexpr auto max_buffer = std::numeric_limits<std::streamsize>::max();
   bool isOct(unsigned long long x) {
     while(x!=0)
     {
@@ -102,45 +103,67 @@ namespace lst
         {
           if (key1Inserted)
           {
-            std::cerr << "reinsertion of key1\n";
+            std::cerr << "double insertion of key1\n";
             in.clear();
+            return in;
           }
           in >> ull{ input.key1 };
           if (!in)
           {
-            std::cerr << "key1 is not an unsigned long long\n";
+            std::cerr << "failed insertion of key1\n";
             in.clear();
+            in.ignore(max_buffer,'\n');
+            return in;
           }
           if (!isOct(input.key1)) {
-            std::cerr << "key1 is not an octal number\n";
+            std::cerr << "key1 not oct\n";
             in.clear();
+            return in;
           }
           key1Inserted = true;
         }
         else if (current == "key2")
         {
-          if (!in || key2Inserted)
+          if (key2Inserted)
           {
-            std::cerr << "invalid key2\n";
+            std::cerr << "double insertion of key2\n";
             in.clear();
+            return in;
           }
           in >> chr{ input.key2 };
+          if (!in) 
+          {
+            std::cerr << "failed insertion of key2\n";
+            in.clear();
+            in.ignore(max_buffer,'\n');
+            return in;
+          }
           key2Inserted = true;
         }
         else if (current == "key3")
         {
-          if (!in || key3Inserted)
+          if (key3Inserted)
           {
-            std::cerr << "invalid key3\n";
+            std::cerr << "double insertion of key3\n";
             in.clear();
+            return in;
           }
           in >> str{ input.key3 };
+          if (!in)
+          {
+            std::cerr << "failed insertion of key3\n";
+            in.clear();
+            in.ignore(max_buffer,'\n');
+            return in;
+          }
           key3Inserted = true;
         }
         else
         {
-          std::cerr << "bad insert\n";
+          std::cerr << "failed to read the line\n";
           in.clear();
+          in.ignore(max_buffer,'\n');
+          return in;
         };
       }
       in >> sep{ ':' } >> sep{ ')' };

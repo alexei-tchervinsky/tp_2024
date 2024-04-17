@@ -1,5 +1,6 @@
 #include "datastruct.h"
 #include "comparator.h"
+#include <limits>
 int main()
 {
   std::vector<lst::Data> data;
