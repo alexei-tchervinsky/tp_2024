@@ -1,19 +1,8 @@
 #include "datastruct.h"
+#include <limits>
 
 namespace lst
 {
-  BadInput::BadInput()
-  {
-    reason_ = "bad input line";
-  }
-  BadInput::BadInput(const char* reason)
-  {
-    reason_ = reason;
-  }
-  const char* BadInput::what() const noexcept
-  {
-    return reason_;
-  }
   bool isOct(unsigned long long x) {
     while(x!=0)
     {
@@ -113,45 +102,45 @@ namespace lst
         {
           if (key1Inserted)
           {
-            throw BadInput("bad_input: double key1 insertion");
-            break;
+            std::cerr << "reinsertion of key1\n";
+            in.clear();
           }
           in >> ull{ input.key1 };
           if (!in)
           {
-            throw BadInput("bad_input: invalid unsigned long long type (!oct)");
-            break;
+            std::cerr << "key1 is not an unsigned long long\n";
+            in.clear();
           }
           if (!isOct(input.key1)) {
-            throw BadInput("bad_input: invalid unsigned long long type (!oct)");
-            break;
+            std::cerr << "key1 is not an octal number\n";
+            in.clear();
           }
           key1Inserted = true;
         }
         else if (current == "key2")
         {
-          if (key2Inserted)
+          if (!in || key2Inserted)
           {
-            throw BadInput("bad_input: double key2 insertion");
-            break;
+            std::cerr << "invalid key2\n";
+            in.clear();
           }
           in >> chr{ input.key2 };
           key2Inserted = true;
         }
         else if (current == "key3")
         {
-          if (key3Inserted)
+          if (!in || key3Inserted)
           {
-            throw BadInput("bad_input: double key3 insertion");
-            break;
+            std::cerr << "invalid key3\n";
+            in.clear();
           }
           in >> str{ input.key3 };
           key3Inserted = true;
         }
         else
         {
-          throw BadInput();
-          break;
+          std::cerr << "bad insert\n";
+          in.clear();
         };
       }
       in >> sep{ ':' } >> sep{ ')' };

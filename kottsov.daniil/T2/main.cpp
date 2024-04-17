@@ -3,18 +3,11 @@
 int main()
 {
   std::vector<lst::Data> data;
-  try
-  {
-    std::copy(
-      std::istream_iterator<lst::Data>(std::cin),
-      std::istream_iterator<lst::Data>(),
-      std::back_inserter(data)
-    );
-  }
-  catch (const lst::BadInput& err)
-  {
-    std::cerr << err.what() << "\n";
-  }
+  std::copy(
+    std::istream_iterator<lst::Data>(std::cin),
+    std::istream_iterator<lst::Data>(),
+    std::back_inserter(data)
+  );
   std::stable_sort(data.begin(), data.end(), lst::DataComparator());
   std::copy(
     std::begin(data),

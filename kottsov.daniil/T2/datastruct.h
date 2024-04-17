@@ -11,15 +11,6 @@
 
 namespace lst
 {
-  class BadInput : public std::exception
-  {
-    public:
-      BadInput();
-      BadInput(const char* reason);
-      const char* what() const noexcept;
-    private:
-      const char* reason_;
-  };
   bool isOct(unsigned long long x);
   struct Data
   {
