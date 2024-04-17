@@ -14,6 +14,16 @@ namespace lst
   {
     return reason_;
   }
+  bool isOct(unsigned long long x) {
+    while(x!=0)
+    {
+      if (x%10>7) {
+        return false;
+      }
+     x=x/10; 
+    }
+    return true;
+  }
   class iofmtguard                                                                                                                      
   {                
     public:          
@@ -105,10 +115,14 @@ namespace lst
           {
             throw BadInput("bad_input: double key1 insertion");
             break;
-          }
+          }          
           in >> ull{ input.key1 };
           if (!in)
           {
+            throw BadInput("bad_input: invalid unsigned long long type (!oct)");
+            break;
+          }
+          if (!isOct(input.key1)) {
             throw BadInput("bad_input: invalid unsigned long long type (!oct)");
             break;
           }

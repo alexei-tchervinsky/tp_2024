@@ -1,3 +1,5 @@
+#ifndef ITERATOR
+#define ITERATOR
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -18,6 +20,7 @@ namespace lst
     private:           
       const char* reason_;
   };
+  bool isOct(unsigned long long x);
   struct Data // definition here otherwise throws: use of an incomplete type (forward declaration) -fpermissive 
   {                
     unsigned long long key1;
@@ -55,3 +58,4 @@ namespace lst
   std::ostream &operator<<(std::ostream &out, const Data &dest);
   std::ostream &operator<<(std::ostream &out, const Data &src);
 }
+#endif

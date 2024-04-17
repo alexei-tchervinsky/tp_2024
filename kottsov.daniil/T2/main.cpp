@@ -1,5 +1,5 @@
 #include "datastruct.h"
-
+#include "comparator.h"
 int main() {
   std::vector<lst::Data> data;
   std::string inputLine;
@@ -20,6 +20,7 @@ int main() {
     }
     std::getline(std::cin,inputLine);
   }
+  std::stable_sort(data.begin(), data.end(), lst::DataComparator());
   std::cout << "Data:\n";
   std::copy(
     std::begin(data),
