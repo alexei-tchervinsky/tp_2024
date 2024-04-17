@@ -131,7 +131,7 @@ namespace lst
             return in;
           }
           in >> chr{ input.key2 };
-          if (!in) 
+          if (!in)
           {
             std::cerr << "failed insertion of key2\n";
             in.clear();
