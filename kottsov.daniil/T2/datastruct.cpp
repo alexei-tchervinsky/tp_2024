@@ -20,18 +20,18 @@ namespace lst
       if (x%10>7) {
         return false;
       }
-     x=x/10; 
+     x=x/10;
     }
     return true;
   }
-  class iofmtguard                                                                                                                      
-  {                
-    public:          
+  class iofmtguard
+  {
+    public:
       iofmtguard(std::basic_ios< char > &s);
-      ~iofmtguard(); 
-    private:         
+      ~iofmtguard();
+    private:
       std::basic_ios< char > &s_;
-      char fill_;     
+      char fill_;
       std::streamsize precision_;
       std::basic_ios< char >::fmtflags fmt_;
   };
@@ -66,7 +66,7 @@ namespace lst
     {
       return in;
     }
-    return in >> DelimiterIO{'\''} >> dest.ref >> DelimiterIO{'\''}; 
+    return in >> DelimiterIO{'\''} >> dest.ref >> DelimiterIO{'\''};
   }
   std::istream &operator>>(std::istream& in, StringIO &&dest)
   {
@@ -93,7 +93,7 @@ namespace lst
     {
       return in;
     }
-    bool key1Inserted = 0;// flags for each type of key to avoid repetition 
+    bool key1Inserted = 0;
     bool key2Inserted = 0;
     bool key3Inserted = 0;
     std::string current;
@@ -115,7 +115,7 @@ namespace lst
           {
             throw BadInput("bad_input: double key1 insertion");
             break;
-          }          
+          }
           in >> ull{ input.key1 };
           if (!in)
           {

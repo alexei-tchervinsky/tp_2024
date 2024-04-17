@@ -1,20 +1,23 @@
 #include "datastruct.h"
 #include "comparator.h"
-int main() {
+int main()
+{
   std::vector<lst::Data> data;
   std::string inputLine;
   std::getline(std::cin, inputLine);
   while (inputLine!="0" && inputLine!="stop")
   {
     std::istringstream iss(inputLine);
-    try {
+    try
+    {
       std::copy(
         std::istream_iterator<lst::Data>(iss),
         std::istream_iterator<lst::Data>(),
         std::back_inserter(data)
       );
-    } 
-    catch (const lst::BadInput& err) {
+    }
+    catch (const lst::BadInput& err)
+    {
       std::cerr << err.what() << "\n";
       return 1;
     }
