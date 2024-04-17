@@ -4,20 +4,25 @@ int main()
 {
   std::vector<lst::Data> data;
   std::string inputLine;
-  std::getline(std::cin, inputLine);
-  std::istringstream iss(inputLine);
-  try
+  bool flag = true;
+  while(flag)
   {
-    std::copy(
-      std::istream_iterator<lst::Data>(iss),
-      std::istream_iterator<lst::Data>(),
-      std::back_inserter(data)
-    );
-  }
-  catch (const lst::BadInput& err)
-  {
-    std::cerr << err.what() << "\n";
-    return 1;
+    flag = false;
+    std::getline(std::cin, inputLine);
+    std::istringstream iss(inputLine);
+    try
+    {
+      std::copy(
+        std::istream_iterator<lst::Data>(iss),
+        std::istream_iterator<lst::Data>(),
+        std::back_inserter(data)
+      );
+    }
+    catch (const lst::BadInput& err)
+    {
+      std::cerr << err.what() << "\n";
+      flag = true;
+    }
   }
   std::stable_sort(data.begin(), data.end(), lst::DataComparator());
   std::cout << "Data:\n";
