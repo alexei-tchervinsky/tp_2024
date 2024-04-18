@@ -7,9 +7,19 @@
 #include <iterator>
 #include <vector>
 #include <iomanip>
+#include <exception>
 
 namespace lst
 {
+  class BadInput : public std::exception
+  {
+    private:
+      const char* reason_;
+    public:
+      BadInput();
+      BadInput(const char* reason);
+      const char* what() const noexcept;
+  };
   bool isOct(unsigned long long x);
   struct Data
   {
