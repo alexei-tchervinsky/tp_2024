@@ -70,7 +70,7 @@ std::ostream& berezneva::operator<<(std::ostream& out, const berezneva::DataStru
     return out;
   }
   iofmtguard fmtguard(out);
-  out << "(:key1 0" << std::oct << ds.key1 << ":key2 0x" << std::hex << ds.key2 << ":key3 \"" << ds.key3 << "\":)";
+  out << "(:key1 0" << std::oct << ds.key1 << ":key2 0x" << std::uppercase << std::hex << ds.key2 << ":key3 \"" << ds.key3 << "\":)";
   return out;
 }
 
