@@ -1,14 +1,7 @@
 #include "datastruct.h"
 #include "comparator.h"
 #include <limits>
-void input(std::vector<lst::Data>& data)
-{
-  std::copy(
-    std::istream_iterator<lst::Data>(std::cin),
-    std::istream_iterator<lst::Data>(),
-    std::back_inserter(data)
-  );
-}
+
 int main()
 {
   std::vector<lst::Data> data;
@@ -16,7 +9,11 @@ int main()
   {
     try
     {
-      input(data);
+      std::copy(
+        std::istream_iterator<lst::Data>(std::cin),
+        std::istream_iterator<lst::Data>(),
+        std::back_inserter(data)
+      );
     }
     catch (const lst::BadInput& err)
     {
