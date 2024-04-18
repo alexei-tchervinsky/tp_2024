@@ -20,7 +20,6 @@ int main()
     }
     catch (const lst::BadInput& err)
     {
-      //std::cerr << err.what() << '\n';
       std::cin.clear();
       std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
     }
