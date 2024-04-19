@@ -147,7 +147,7 @@ namespace ermilov
     }
     iofmtguard fmtguard(out);
     out << '(';
-    out << ":key1 0b" << std::scientific() << ds.key1;
+    out << ":key1 0b" << std::scientific << ds.key1;
     out << ":key2 " << ds.key2;
     out << ":key3 \"" << ds.key3 << '\"';
     out << ')';
