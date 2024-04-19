@@ -1,6 +1,7 @@
 ﻿#include <iostream>
 #include <vector>
 #include <algorithm>
+#include <iterator>
 #include "DataStruct.h"
 #include "iofmtguard.h"
 
@@ -12,8 +13,8 @@ int main()
   while (!std::cin.eof())
   {
     std::copy(
-      std::istream_iterator< DataStruct >{std::cin},
-      std::istream_iterator< DataStruct >{},
+      std::istream_iterator<DataStruct>{std::cin},
+      std::istream_iterator<DataStruct>{},
       std::back_inserter(vector)
     );
     if (std::cin.fail())
