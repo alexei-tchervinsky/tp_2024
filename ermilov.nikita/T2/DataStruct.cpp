@@ -29,7 +29,45 @@ namespace ermilov
     {
       return in;
     }
-    return in >> dest.ref;
+
+    std::string buff;
+    std::getline(in, buff, ':');
+    if (buff.size() < 6)
+    {
+      in.setstate(std::ios::failbit);
+      return in;
+    }
+    bool findE = false;
+    for (int i = 0; i < buff.size())
+    {
+      if (!isdigit(buff[i]) || buff[i] != 'e' || buff[i] != 'E' || buff[i] == '+' || buff[i] == '-' || buff[i] == '.')
+      {
+        in.setstate(std::ios::failbit);
+        return in;
+
+      }
+      if (buff[i] == 'e' || buff[i] == 'E')
+      {
+        if (buff[i + 1] == '+' || buff[i + 1] == '-')
+        {
+          findE = true;
+        }
+        else
+        {
+          in.setstate(std::ios::failbit);
+          return in;
+        }
+      }
+    }
+
+    if (!findE || !isdigit(buff[0]) || buff[1] != '.')
+    {
+      in.setstate(std::ios::failbit);
+      return in;
+    }
+
+    dest.ref = std::stod(buff);
+    return in;
   }
 
   std::istream& operator>>(std::istream& in, UnsignedLongLongIO&& dest)
@@ -40,17 +78,20 @@ namespace ermilov
     {
       return in;
     }
-    return std::getline(in >> del{'0'} >> del{'b'}, dest.ref, ':');
+    std::getline(in >> del{ '0' } >> del{ 'b' }, dest.ref, ':');
+
+    return in;
   }
 
   std::istream& operator>>(std::istream& in, StringIO&& dest)
   {
+    using del = DelimiterIO;
     std::istream::sentry sentry(in);
     if (!sentry)
     {
       return in;
     }
-    return std::getline(in >> DelimiterIO{ '"' }, dest.ref, '"');
+    return std::getline(in >> del{ '"' }, dest.ref, '"');
   }
 
   std::istream& operator>>(std::istream& in, DataStruct& dest)
@@ -68,7 +109,7 @@ namespace ermilov
 
     in >> sep{ '(' };
     std::string string("");
-    while (in.eof())
+    for (int i = 0; i < 3; i++)
     {
       in >> sep{ ':' } >> string;
       if (string == "key1")
@@ -83,6 +124,11 @@ namespace ermilov
       else if (string == "key3")
       {
         in >> str{ input.key3 };
+      }
+      else
+      {
+        in.setstate(std::ios::failbit);
+        return in;
       }
     }
     if (in)
@@ -101,7 +147,7 @@ namespace ermilov
     }
     iofmtguard fmtguard(out);
     out << '(';
-    out << ":key1 " << std::scientific << ds.key1;
+    out << ":key1 0b" << std::scientific() << ds.key1;
     out << ":key2 " << ds.key2;
     out << ":key3 \"" << ds.key3 << '\"';
     out << ')';
