@@ -38,7 +38,7 @@ namespace ermilov
       return in;
     }
     bool findE = false;
-    for (int i = 0; i < buff.size())
+    for (int i = 0; i < buff.size(); i++)
     {
       if (!isdigit(buff[i]) || buff[i] != 'e' || buff[i] != 'E' || buff[i] == '+' || buff[i] == '-' || buff[i] == '.')
       {
