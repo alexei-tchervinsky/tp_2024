@@ -9,12 +9,12 @@
 int main()
 {
 	using namespace evstigneev;
-	std::vector<DataStruct> data;
+	std::vector< DataStruct > data;
 	while (!std::cin.eof())
 	{
 		std::copy(
-			std::istream_iterator<DataStruct>{std::cin},
-			std::istream_iterator<DataStruct>{},
+			std::istream_iterator< DataStruct >{std::cin},
+			std::istream_iterator< DataStruct >{},
 			std::back_inserter(data)
 		);
 	}
@@ -23,7 +23,7 @@ int main()
 	std::copy(
 		std::begin(data),
 		std::end(data),
-		std::ostream_iterator<DataStruct>(std::cout, "\n")
+		std::ostream_iterator< DataStruct >(std::cout, "\n")
 	);
 	return 0;
 }
