@@ -130,7 +130,7 @@ namespace evstigneev
     return (a.key1 < b.key1 || a.key2 < b.key2 || a.key3.size() < b.key3.size());
   }
 
-  iofmtguard::iofmtguard(std::basic_ios<char>& s) :
+  iofmtguard::iofmtguard(std::basic_ios<char>& s):
     s_(s),
     fill_(s.fill()),
     precision_(s.precision()),
