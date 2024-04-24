@@ -2,6 +2,6 @@
 
 int main()
 {
-  std::cout << "grudov.artem/T0" << '\n';
+  std::cout << "grudov.artem" << '\n';
   return 0;
 }
