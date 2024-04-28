@@ -22,11 +22,6 @@ namespace evstigneev
     char delimiter;
   };
 
-  struct LabelIO
-  {
-    std::string str;
-  };
-
   struct StringIO
   {
     std::string& str;
@@ -41,7 +36,6 @@ namespace evstigneev
   std::istream& operator>>(std::istream& in, ULLOctIO&& dest);
   std::istream& operator>>(std::istream& in, StringIO&& dest);
   std::istream& operator>>(std::istream& in, CharLitIO&& dest);
-  std::istream& operator>>(std::istream& in, LabelIO&& dest);
   std::istream& operator>>(std::istream& in, DataStruct& dest);
   std::ostream& operator<<(std::ostream& out, const DataStruct& dest);
   bool operator<(const DataStruct& a, const DataStruct& b);
@@ -49,7 +43,7 @@ namespace evstigneev
   class iofmtguard
   {
   public:
-    iofmtguard(std::basic_ios< char >& s);
+    explicit iofmtguard(std::basic_ios< char >& s);
     ~iofmtguard();
   private:
     std::basic_ios< char >& s_;

@@ -10,9 +10,9 @@ namespace evstigneev
     {
       return in;
     }
-    char c = '\0';
+    char c = 0;
     in >> c;
-    if (in && (c != dest.delimiter))
+    if (c != dest.delimiter)
     {
       in.setstate(std::ios::failbit);
     }
@@ -21,13 +21,13 @@ namespace evstigneev
 
   std::istream& operator>>(std::istream& in, ULLOctIO&& dest)
   {
-    using sep = evstigneev::DelimiterIO;
     std::istream::sentry sentry(in);
     if (!sentry)
     {
       return in;
     }
-    return in >> sep{ '0' } >> std::oct >> dest.ull;
+    return in >> dest.ull >> DelimiterIO{ 'u' } >> DelimiterIO{ 'l' } >>
+      DelimiterIO{ 'l' };
   }
 
   std::istream& operator>>(std::istream& in, StringIO&& dest)
@@ -47,30 +47,7 @@ namespace evstigneev
     {
       return in;
     }
-    char c;
-    in >> c;
-    if (c == '\n')
-    {
-      in >> dest.chr;
-      in.ignore(1);
-    }
-    return in;
-  }
-
-  std::istream& operator>>(std::istream& in, LabelIO&& dest)
-  {
-    std::istream::sentry sentry(in);
-    if (!sentry)
-    {
-      return in;
-    }
-    std::string d = "";
-    in >> d;
-    if ((in >> StringIO{ d }) && (d != dest.str))
-    {
-      in.setstate(std::ios::failbit);
-    }
-    return in;
+    return in >> DelimiterIO{ '\'' } >> dest.chr >> DelimiterIO{ '\'' };
   }
 
   std::istream& operator>>(std::istream& in, DataStruct& dest)
@@ -87,24 +64,28 @@ namespace evstigneev
     using ull = ULLOctIO;
     using chr = CharLitIO;
     std::string curr = "";
-    in >> sep{ '(' };
+    in >> sep{ '(' } >> sep{ ':' };
     for (size_t i = 0; i < 3; i++)
     {
-      in >> sep{ ':' } >> str{ curr };
+      in >> curr;
       if (curr == "key1")
       {
-        in >> ull{ input.key1 };
+        in >> ull{ input.key1 } >> sep{ ':' };
       }
       else if (curr == "key2")
       {
-        in >> chr{ input.key2 };
+        in >> chr{ input.key2 } >> sep{ ':' };
       }
       else if (curr == "key3")
       {
-        in >> str{ input.key3 };
+        in >> str{ input.key3 } >> sep{ ':' };
+      }
+      else
+      {
+        in.setstate(std::ios::failbit);
       }
     }
-    in >> sep{ ':' } >> sep{ ')' };
+    in >> sep{ ')' };
     if (in)
     {
       dest = input;
@@ -120,14 +101,22 @@ namespace evstigneev
       return out;
     }
     iofmtguard fmtguard(out);
-    out << "(:key1 0" << std::oct << dest.key1 << ":key2 '" << dest.key2 <<
-      "':key3 \"" << dest.key3 << "\":)";
+    out << "(:key1 0" << std::oct << dest.key1 << ":key2 " << '\'' << dest.key2 <<
+      '\'' << ":key3 " << "\"" << dest.key3 << "\":)";
     return out;
   }
 
   bool operator<(const DataStruct& a, const DataStruct& b)
   {
-    return (a.key1 < b.key1 || a.key2 < b.key2 || a.key3.size() < b.key3.size());
+    if (a.key1 != b.key1)
+    {
+      return a.key1 < b.key1;
+    }
+    else if (a.key2 != b.key2)
+    {
+      return a.key2 < b.key2;
+    }
+    return a.key3.size() < b.key3.size();
   }
 
   iofmtguard::iofmtguard(std::basic_ios< char >& s) :
