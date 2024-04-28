@@ -10,14 +10,11 @@ int main()
 {
   using namespace evstigneev;
   std::vector< DataStruct > data;
-  while (!std::cin.eof())
+  DataStruct temp;
+  while (std::cin >> temp)
   {
-    std::copy(
-      std::istream_iterator< DataStruct >{std::cin},
-      std::istream_iterator< DataStruct >{},
-      std::back_inserter(data)
-    );
-    if (std::cin.fail())
+    data.push_back(temp);
+    if (std::cin.fail() && !std::cin.eof())
     {
       std::cin.clear();
       std::cin.ignore(std::numeric_limits< std::streamsize >::max(), '\n');

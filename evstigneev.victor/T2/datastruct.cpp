@@ -101,8 +101,8 @@ namespace evstigneev
       return out;
     }
     iofmtguard fmtguard(out);
-    out << "(:key1 0" << std::oct << dest.key1 << ":key2 " << '\'' << dest.key2 <<
-      '\'' << ":key3 " << "\"" << dest.key3 << "\":)";
+    out << "(:key1 0" << std::oct << dest.key1 << ":key2 '" << dest.key2 <<
+      "':key3 " << dest.key3 << "\":)";
     return out;
   }
 
