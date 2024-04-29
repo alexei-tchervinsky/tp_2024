@@ -26,8 +26,7 @@ namespace evstigneev
     {
       return in;
     }
-    return in >> dest.ull >> DelimiterIO{ 'u' } >> DelimiterIO{ 'l' } >>
-      DelimiterIO{ 'l' };
+    return in >> DelimiterIO{ '0' } >> std::oct >> dest.ull;
   }
 
   std::istream& operator>>(std::istream& in, StringIO&& dest)
