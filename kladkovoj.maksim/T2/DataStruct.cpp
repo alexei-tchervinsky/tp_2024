@@ -121,7 +121,7 @@ namespace kladkovoj
   {
     if (val == 0)
     {
-      return "0";
+      return "";
     }
     std::string binary;
     while (val > 0)
