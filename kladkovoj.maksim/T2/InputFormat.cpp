@@ -39,7 +39,7 @@ namespace kladkovoj
     else
     {
       in >> DelimiterIO{ 'E' };
-    } 
+    }
     in >> power;
     dest.db = (mantissa * 1.0 + number * 0.01) * std::pow(10, power);
     return in;
