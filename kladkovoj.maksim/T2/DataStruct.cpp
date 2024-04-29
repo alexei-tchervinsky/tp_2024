@@ -78,7 +78,7 @@ namespace kladkovoj
   std::ostream& operator<<(std::ostream& out, const DataStruct& data)
   {
     out << "(:key1 " << fromDoubleToScientific(data.key1);
-    out << ":key2 0b" << fromULLtoBinary(data.key2);
+    out << ":key2 0b0" << fromULLtoBinary(data.key2);
     out << ":key3 \"" << data.key3 << "\":)";
     return out;
   }
@@ -104,9 +104,8 @@ namespace kladkovoj
         exp++;
       }
     }
-    val = std::ceil(val*100)/100;
     std::string res = std::to_string(val);
-    if(res.find('0') == 2)
+    if(res.find('0') == 2 && res[4] == '0')
     {
       res.erase(3);
     }
