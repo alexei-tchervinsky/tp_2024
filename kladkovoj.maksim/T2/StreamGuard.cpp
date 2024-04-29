@@ -1,7 +1,5 @@
 #include "StreamGuard.hpp"
 
-#include <iostream>
-
 kladkovoj::StreamGuard::StreamGuard(std::basic_ios<char>& s):
   s_(s),
   precision_(s.precision()),
