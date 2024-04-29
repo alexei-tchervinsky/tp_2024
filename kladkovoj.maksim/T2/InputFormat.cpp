@@ -90,5 +90,4 @@ namespace kladkovoj
     in >> dest.lab >> DelimiterIO{'"'};
     return in;
   }
-
 }

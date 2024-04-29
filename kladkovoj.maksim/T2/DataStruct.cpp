@@ -126,4 +126,3 @@ namespace kladkovoj
     return binary;
   }
 }
-
