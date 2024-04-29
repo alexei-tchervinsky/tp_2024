@@ -1,6 +1,6 @@
 #include <regex>
 #include <iomanip>
-
+#include <cmath>
 #include "InputFormat.hpp"
 #include "DataStruct.hpp"
 #include "StreamGuard.hpp"
@@ -104,8 +104,16 @@ namespace kladkovoj
         exp++;
       }
     }
+    val = std::ceil(val*100)/100;
     std::string res = std::to_string(val);
-    res.erase(res.size()-4);
+    if(res.find('0') == 2)
+    {
+      res.erase(3);
+    }
+    else
+    {
+      res.erase(4);
+    }
     std::string result = res + (exp < 0 ? "e-" : "e+") + std::to_string(std::abs(exp));
     return result;
   }
