@@ -24,7 +24,6 @@ int main()
     }
   }
   std::sort(vector.begin(), vector.end());
-  std::cout << "Data:\n";
   std::copy(
     std::begin(vector),
     std::end(vector),
