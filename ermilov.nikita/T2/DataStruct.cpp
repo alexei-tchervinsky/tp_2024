@@ -1,6 +1,7 @@
 #include <string>
 #include <iostream>
 #include <iterator>
+#include <climits>
 #include "DataStruct.h"
 #include "iofmtguard.h"
 
