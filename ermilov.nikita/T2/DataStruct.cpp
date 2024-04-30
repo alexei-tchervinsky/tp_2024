@@ -1,7 +1,6 @@
 #include <string>
 #include <iostream>
 #include <iterator>
-#include <climits>
 #include "DataStruct.h"
 #include "iofmtguard.h"
 
@@ -39,11 +38,11 @@ namespace ermilov
       return in;
     }
 
-    bool findE = false;
+    bool correctDouble = false;
     int buffSize = buff.size() & INT_MAX;
     for (int i = 0; i < buffSize; i++)
     {
-      if (!isdigit(buff[i]) || buff[i] != 'e' || buff[i] != 'E' || buff[i] == '+' || buff[i] == '-' || buff[i] == '.')
+      if (!(std::isdigit(buff[i])) && buff[i] != 'e' && buff[i] != 'E' && buff[i] == '+' && buff[i] == '-' && buff[i] == '.')
       {
         in.setstate(std::ios::failbit);
         return in;
@@ -51,9 +50,9 @@ namespace ermilov
       }
       if (buff[i] == 'e' || buff[i] == 'E')
       {
-        if (buff[i + 1] == '+' || buff[i + 1] == '-')
+        if ((buff[i + 1] == '+' || buff[i + 1] == '-') && std::isdigit(buff[i - 1]) && std::isdigit(buff[i + 2]))
         {
-          findE = true;
+          correctDouble = true;
         }
         else
         {
@@ -63,7 +62,7 @@ namespace ermilov
       }
     }
 
-    if (!findE || !isdigit(buff[0]) || buff[1] != '.')
+    if (!correctDouble)
     {
       in.setstate(std::ios::failbit);
       return in;
@@ -81,7 +80,9 @@ namespace ermilov
     {
       return in;
     }
-    std::getline(in >> del{ '0' } >> del{ 'b' }, dest.ref, ':');
+    std::string buffer;
+    std::getline(in >> del{ '0' } >> del{ 'b' }, buffer, ':');
+    dest.ref = std::stoull(buffer);
 
     return in;
   }
@@ -110,19 +111,19 @@ namespace ermilov
     using ull = UnsignedLongLongIO;
     using str = StringIO;
 
-    in >> sep{ '(' };
-    std::string string("");
+    in >> sep{ '(' } >> sep{ ':' };
+    std::string string;
     for (int i = 0; i < 3; i++)
     {
-      in >> sep{ ':' } >> string;
+      std::getline(in, string, ' ');
+
       if (string == "key1")
       {
         in >> dbl{ input.key1 };
       }
       else if (string == "key2")
       {
-        in >> ull{ input.stringfKey2 };
-        input.key2 = std::stoull(input.stringfKey2);
+        in >> ull{ input.key2 };
       }
       else if (string == "key3")
       {
@@ -134,6 +135,7 @@ namespace ermilov
         return in;
       }
     }
+    in >> sep{ ':' } >> sep{ ')' };
     if (in)
     {
       dest = input;
@@ -150,8 +152,8 @@ namespace ermilov
     }
     iofmtguard fmtguard(out);
     out << '(';
-    out << ":key1 0b" << std::scientific << ds.key1;
-    out << ":key2 " << ds.key2;
+    out << ":key1 " << std::scientific << ds.key1;
+    out << ":key2 0b" << ds.key2;
     out << ":key3 \"" << ds.key3 << '\"';
     out << ')';
     return out;

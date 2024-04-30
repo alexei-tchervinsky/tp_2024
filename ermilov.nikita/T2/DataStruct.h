@@ -6,7 +6,6 @@ namespace ermilov
   {
     double key1;
     unsigned long long key2;
-    std::string stringfKey2;
     std::string key3;
   };
 
@@ -22,7 +21,7 @@ namespace ermilov
 
   struct UnsignedLongLongIO
   {
-    std::string& ref;
+    unsigned long long& ref;
   };
 
   struct StringIO
