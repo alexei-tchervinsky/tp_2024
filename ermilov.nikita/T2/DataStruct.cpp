@@ -1,7 +1,7 @@
 #include <string>
 #include <iostream>
 #include <iterator>
-#include <climits>
+#include <exception>
 #include "DataStruct.h"
 #include "iofmtguard.h"
 
@@ -83,7 +83,16 @@ namespace ermilov
     }
     std::string buffer;
     std::getline(in >> del{ '0' } >> del{ 'b' }, buffer, ':');
-    dest.ref = std::stoull(buffer);
+    try 
+    {
+      dest.ref = std::stoull(buffer);
+    }
+    catch (std::exception& e) 
+    {
+      in.setstate(std::ios::failbit);
+      return in;
+    }
+    
 
     return in;
   }
