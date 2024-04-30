@@ -3,6 +3,7 @@
 #include <iterator>
 #include <exception>
 #include <climits>
+#include <sstream>
 #include "DataStruct.h"
 #include "iofmtguard.h"
 
@@ -161,10 +162,24 @@ namespace ermilov
       return out;
     }
     iofmtguard fmtguard(out);
+
+    std::stringstream bufferStream;
+    bufferStream << std::scientific << ds.key1;
+    std::string stringKey1 = bufferStream.str();
+    size_t posE = stringKey1.find('e');
+    for (size_t i = posE + 2; stringKey1[i] == '0'; i++)
+    {
+      stringKey1.erase(i, 1);
+    }
+    for (size_t i = posE - 1; stringKey1[i] == '0' && stringKey1[i - 1] != '.'; i--)
+    {
+      stringKey1.erase(i, 1);
+    }
+
     out << '(';
-    out << ":key1 " << std::scientific << ds.key1;
+    out << ":key1 " << stringKey1;
     out << ":key2 0b" << ds.key2;
-    out << ":key3 \"" << ds.key3 << '\"';
+    out << ":key3 \"" << ds.key3 << "\":";
     out << ')';
     return out;
   }
