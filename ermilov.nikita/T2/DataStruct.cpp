@@ -93,7 +93,6 @@ namespace ermilov
       return in;
     }
     
-
     return in;
   }
 
