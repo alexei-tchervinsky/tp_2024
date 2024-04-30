@@ -86,7 +86,7 @@ namespace ermilov
     std::getline(in >> del{ '0' } >> del{ 'b' }, dest.ref, ':');
     try
     {
-      unsigned long long test = std::stoull(dest.ref);
+      std::stoull(dest.ref);
     }
     catch (std::exception& e)
     {
