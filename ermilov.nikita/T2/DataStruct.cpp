@@ -37,8 +37,10 @@ namespace ermilov
       in.setstate(std::ios::failbit);
       return in;
     }
+
     bool findE = false;
-    for (int i = 0; i < buff.size(); i++)
+    int buffSize = buff.size() & INT_MAX;
+    for (int i = 0; i < buffSize; i++)
     {
       if (!isdigit(buff[i]) || buff[i] != 'e' || buff[i] != 'E' || buff[i] == '+' || buff[i] == '-' || buff[i] == '.')
       {
