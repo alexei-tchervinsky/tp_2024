@@ -5,7 +5,7 @@ namespace ermilov
   struct DataStruct
   {
     double key1;
-    unsigned long long key2;
+    std::string key2;
     std::string key3;
   };
 
@@ -21,7 +21,7 @@ namespace ermilov
 
   struct UnsignedLongLongIO
   {
-    unsigned long long& ref;
+    std::string& ref;
   };
 
   struct StringIO

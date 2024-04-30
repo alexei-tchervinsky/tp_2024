@@ -83,11 +83,10 @@ namespace ermilov
     {
       return in;
     }
-    std::string buffer;
-    std::getline(in >> del{ '0' } >> del{ 'b' }, buffer, ':');
+    std::getline(in >> del{ '0' } >> del{ 'b' }, dest.ref, ':');
     try
     {
-      dest.ref = std::stoull(buffer);
+      unsigned long long test = std::stoull(dest.ref);
     }
     catch (std::exception& e)
     {
@@ -139,6 +138,7 @@ namespace ermilov
       else if (string == "key3")
       {
         in >> str{ input.key3 };
+        in >> sep{ ':' };
       }
       else
       {
@@ -146,7 +146,7 @@ namespace ermilov
         return in;
       }
     }
-    in >> sep{ ':' } >> sep{ ')' };
+    in  >> sep{ ')' };
     if (in)
     {
       dest = input;
@@ -189,7 +189,7 @@ namespace ermilov
     {
       return true;
     }
-    else if (left.key1 == right.key1 && left.key2 < right.key2)
+    else if (left.key1 == right.key1 && std::stoull(left.key2) < std::stoull(right.key2))
     {
       return true;
     }
