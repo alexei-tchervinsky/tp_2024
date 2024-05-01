@@ -86,14 +86,6 @@ namespace ermilov
     }
 
     in >> del{ '0' } >> del{ 'b' } >> dest.ref >> del{ ':' };
-    try
-    {
-    }
-    catch (std::exception& e)
-    {
-      in.setstate(std::ios::failbit);
-      return in;
-    }
 
     return in;
   }
