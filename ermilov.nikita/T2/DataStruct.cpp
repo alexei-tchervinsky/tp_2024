@@ -3,6 +3,7 @@
 #include <iterator>
 #include <exception>
 #include <climits>
+#include <bitset>
 #include <sstream>
 #include "DataStruct.h"
 #include "iofmtguard.h"
@@ -83,10 +84,10 @@ namespace ermilov
     {
       return in;
     }
-    std::getline(in >> del{ '0' } >> del{ 'b' }, dest.ref, ':');
+
+    in >> del{ '0' } >> del{ 'b' } >> dest.ref >> del{ ':' };
     try
     {
-      std::stoull(dest.ref);
     }
     catch (std::exception& e)
     {
@@ -176,9 +177,44 @@ namespace ermilov
       stringKey1.erase(i, 1);
     }
 
+    std::string stringKey2 = std::to_string(ds.key2);
+    if (stringKey2.size() <= 2)
+    {
+      stringKey2 = std::bitset<2>{ ds.key2 }.to_string();
+    }
+    else if (stringKey2.size() <= 4)
+    {
+      stringKey2 = std::bitset<4>{ ds.key2 }.to_string();
+    }
+    else if (stringKey2.size() <= 8)
+    {
+      stringKey2 = std::bitset<8>{ ds.key2 }.to_string();
+    }
+    else if (stringKey2.size() <= 16)
+    {
+      stringKey2 = std::bitset<16>{ ds.key2 }.to_string();
+    }
+    else if (stringKey2.size() <= 32)
+    {
+      stringKey2 = std::bitset<32>{ ds.key2 }.to_string();
+    }
+
+    int stringSize = stringKey2.size() & INT_MAX;
+    bool notZero = false;
+    for (int i = 1; i <= stringSize; i++)
+    {
+      if (stringKey2[i] == '1') {
+        notZero = true;
+        break;
+      }
+    }
+    if (!notZero)
+    {
+      stringKey2.erase(1, stringSize - 1);
+    }
     out << '(';
     out << ":key1 " << stringKey1;
-    out << ":key2 0b" << ds.key2;
+    out << ":key2 0b" << stringKey2;
     out << ":key3 \"" << ds.key3 << "\":";
     out << ')';
     return out;
@@ -189,7 +225,7 @@ namespace ermilov
     {
       return true;
     }
-    else if (left.key1 == right.key1 && std::stoull(left.key2) < std::stoull(right.key2))
+    else if (left.key1 == right.key1 && left.key2 < right.key2)
     {
       return true;
     }
