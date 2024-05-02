@@ -3,6 +3,18 @@
 
 namespace ananev
 {
+  bool isHex(unsigned long long hex)
+  {
+    while(hex != 0)
+    {
+      if ((hex%10 < '0' || hex%10 > '9') && (hex%10 < 'A' || hex%10 > 'F'))
+      {
+        return false;
+      }
+    }
+    return true;
+  }
+
   std::istream &operator>>(std::istream &in, DelimiterIO &&dest)
   {
     std::istream::sentry sentry(in);
@@ -26,7 +38,15 @@ namespace ananev
     {
       return in;
     }
-    return in >> dest.lit >> DelimiterIO{ 'u' } >> DelimiterIO{ 'l' } >> DelimiterIO{ 'l' };
+    in >> dest.lit;
+    if (in.peek() == 'U')
+    {
+      return in >> DelimiterIO{ 'U' } >> DelimiterIO{ 'l' } >> DelimiterIO{ 'l' };
+    }
+    else
+    {
+      return in >> DelimiterIO{ 'u' } >> DelimiterIO{ 'l' } >> DelimiterIO{ 'l' };
+    }
   }
 
   std::istream &operator>>(std::istream &in, HEXIO &&dest)
@@ -36,7 +56,15 @@ namespace ananev
     {
       return in;
     }
-    return in >> DelimiterIO{ '0' } >> DelimiterIO{ 'x' } >> dest.hex;
+    in >> DelimiterIO{ '0' };
+    if (in.peek() == 'x')
+    {
+      return in >> DelimiterIO{ 'x' } >> dest.hex;
+    }
+    else
+    {
+      return in >> DelimiterIO{ 'X' } >> dest.hex;
+    }
   }
 
   std::istream &operator>>(std::istream &in, StringIO &&dest)
@@ -72,6 +100,7 @@ namespace ananev
       return in;
     }
     DataStruct input;
+    std::string characters;
     {
       using sep = DelimiterIO;
       using label = LabelIO;
@@ -79,9 +108,23 @@ namespace ananev
       using hex = HEXIO;
       using str = StringIO;
       in >> sep{ '(' };
-      in >> sep{ ':' } >> label{ "key1" } >> sep{ ' ' } >> lit{ input.key1 };
-      in >> sep{ ':' } >> label{ "key2" } >> sep{ ' ' } >> hex{ input.key2 };
-      in >> sep{ ':' } >> label{ "key3" } >> sep{ ' ' } >> str{ input.key3 };
+      for(std::size_t i = 1; i <= 3; i++)
+      {
+        in >> sep{ ':' };
+        in >> label{ characters };
+        if (characters == "key1")
+        {
+          in >> lit{ input.key1 };
+        }
+        else if (characters == "key2")
+        {
+          in >> hex{ input.key2 };
+        }
+        else
+        {
+          in >> str{ input.key3 };
+        }
+      }
       in >> sep{ ':' };
       in >> sep{ ')' };
     }

@@ -5,6 +5,8 @@
 
 namespace ananev
 {
+  bool isHex(unsigned long long hex);
+
   struct DataStruct
   {
     unsigned long long key1;

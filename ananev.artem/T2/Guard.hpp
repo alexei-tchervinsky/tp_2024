@@ -7,7 +7,7 @@ namespace ananev
   class Guard
   {
     public:
-      Guard(std::basic_ios<char> &s);
+      explicit Guard(std::basic_ios<char> &s);
       ~Guard();
     private:
       std::basic_ios<char> &s_;
