@@ -105,7 +105,6 @@ namespace ananev
     std::string characters;
     {
       using sep = DelimiterIO;
-      using label = LabelIO;
       using lit = LITIO;
       using hex = HEXIO;
       using str = StringIO;
