@@ -1,6 +1,6 @@
 #include "Compare.hpp"
 
-namespace ananev 
+namespace ananev
 {
   bool Compare::operator()(DataStruct first, DataStruct second) const
   {

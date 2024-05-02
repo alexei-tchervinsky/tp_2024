@@ -1,5 +1,5 @@
  #include "Guard.hpp"
- 
+
  namespace ananev
  {
   Guard::Guard(std::basic_ios< char > &s) :

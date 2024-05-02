@@ -21,7 +21,7 @@ namespace ananev
   {
     unsigned long long &lit;
   };
-  
+
   struct HEXIO
   {
     unsigned long long &hex;
