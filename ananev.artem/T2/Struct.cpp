@@ -22,7 +22,7 @@ namespace ananev
     {
       return in;
     }
-    char c = '0';
+    char c = '\0';
     in >> c;
     if (in && (c != dest.del))
     {
@@ -41,7 +41,7 @@ namespace ananev
     in >> dest.lit;
     if (in.peek() == 'U')
     {
-      return in >> DelimiterIO{ 'U' } >> DelimiterIO{ 'l' } >> DelimiterIO{ 'l' };
+      return in >> DelimiterIO{ 'U' } >> DelimiterIO{ 'L' } >> DelimiterIO{ 'L' };
     }
     else
     {
@@ -57,14 +57,16 @@ namespace ananev
       return in;
     }
     in >> DelimiterIO{ '0' };
-    if (in.peek() == 'x')
+    if (in.peek() == 'X')
     {
-      return in >> DelimiterIO{ 'x' } >> dest.hex;
+      in >> DelimiterIO{ 'X' };
     }
     else
     {
-      return in >> DelimiterIO{ 'X' } >> dest.hex;
+      in >> DelimiterIO{ 'x' };
     }
+    in >> std::hex >> dest.hex;
+    return in;
   }
 
   std::istream &operator>>(std::istream &in, StringIO &&dest)
@@ -108,10 +110,10 @@ namespace ananev
       using hex = HEXIO;
       using str = StringIO;
       in >> sep{ '(' };
-      for(std::size_t i = 1; i <= 3; i++)
+      for(std::size_t i = 0; i < 3; i++)
       {
         in >> sep{ ':' };
-        in >> label{ characters };
+        in >> characters;
         if (characters == "key1")
         {
           in >> lit{ input.key1 };
@@ -144,7 +146,7 @@ namespace ananev
     }
     Guard fmtguard(out);
     out << "(:key1 " << src.key1 << "ull";
-    out << ":key2 0x" << src.key2;
+    out << ":key2 0x" << std::hex << src.key2;
     out << ":key3 \"" << src.key3 << "\":)";
     return out;
   }
