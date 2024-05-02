@@ -37,7 +37,6 @@ std::istream& ananjeva::operator>>(std::istream& in, StringIO&& dest) {
 }
 
 std::ostream& ananjeva::outputDoubleScience(std::ostream& out, double number) {
-  int mantissa = 0;
   int degree = 0;
   char sign = '0';
   if (number >= 1.0) {
