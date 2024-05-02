@@ -22,5 +22,4 @@ namespace ananjeva {
   std::istream& operator>>(std::istream& in, StringIO&& dest);
   std::ostream& outputDoubleScience(std::ostream& out, double number);
 }
-
 #endif
