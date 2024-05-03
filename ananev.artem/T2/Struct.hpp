@@ -37,6 +37,7 @@ namespace ananev
     std::string lab;
   };
 
+  std::string toHex(unsigned long long key);
   std::istream &operator>>(std::istream &in, DelimiterIO &&dest);
   std::istream &operator>>(std::istream &in, LITIO &&dest);
   std::istream &operator>>(std::istream &in, HEXIO &&dest);
