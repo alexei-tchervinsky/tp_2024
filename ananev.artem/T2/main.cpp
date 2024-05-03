@@ -20,6 +20,6 @@ int main()
     }
   }
   std::stable_sort(data_struct.begin(), data_struct.end(), ananev::Compare());
-  std::copy(data_struct.begin(), data_struct.end(), std::ostream_iterator<ananev::DataStruct>{std::cout, "\n"});
+  std::copy(data_struct.cbegin(), data_struct.cend(), std::ostream_iterator<ananev::DataStruct>{std::cout, "\n"});
   return 0;
 }

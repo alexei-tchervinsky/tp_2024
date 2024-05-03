@@ -3,18 +3,6 @@
 
 namespace ananev
 {
-  bool isHex(unsigned long long hex)
-  {
-    while(hex != 0)
-    {
-      if ((hex%10 < '0' || hex%10 > '9') && (hex%10 < 'A' || hex%10 > 'F'))
-      {
-        return false;
-      }
-    }
-    return true;
-  }
-
   std::istream &operator>>(std::istream &in, DelimiterIO &&dest)
   {
     std::istream::sentry sentry(in);
@@ -38,7 +26,7 @@ namespace ananev
     {
       return in;
     }
-    in >> dest.lit;
+    in >> std::dec >> dest.lit;
     if (in.peek() == 'U')
     {
       return in >> DelimiterIO{ 'U' } >> DelimiterIO{ 'L' } >> DelimiterIO{ 'L' };
