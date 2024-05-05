@@ -1,7 +1,7 @@
 #ifndef DATA_STRUCT_HPP
 #define DATA_STRUCT_HPP
 
-#include<iostream>
+#include <iostream>
 
 namespace ananjeva {
   struct DataStruct {

@@ -1,8 +1,8 @@
 #ifndef STRUCTURES_HPP
 #define STRUCTURES_HPP
 
-#include<string>
-#include<iostream>
+#include <string>
+#include <iostream>
 
 namespace ananjeva {
   struct DoubleIO {

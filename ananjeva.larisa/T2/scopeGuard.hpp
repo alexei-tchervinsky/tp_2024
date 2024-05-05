@@ -1,7 +1,7 @@
 #ifndef SCOPE_GUARD_HPP
 #define SCOPE_GUARD_HPP
 
-#include<iostream>
+#include <iostream>
 
 namespace ananjeva {
   class iofmtguard {

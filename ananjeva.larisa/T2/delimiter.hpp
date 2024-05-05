@@ -1,8 +1,8 @@
 #ifndef DELIMITER_HPP
 #define DELIMITER_HPP
 
-#include<string>
-#include<iostream>
+#include <string>
+#include <iostream>
 
 namespace ananjeva {
   struct DelimiterIO {

@@ -1,5 +1,5 @@
-#include"delimiter.hpp"
-#include"structures.hpp"
+#include "delimiter.hpp"
+#include "structures.hpp"
 
 std::istream& ananjeva::operator>>(std::istream& in, DelimiterIO&& dest) {
   std::istream::sentry sentry(in);
