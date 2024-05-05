@@ -78,6 +78,6 @@ std::ostream& ananjeva::outputDoubleScience(std::ostream& out, double number) {
     }
     sign = '-';
   }
-  out << std::fixed << std::setprecision(2) << number << 'e' << sign << degree;
+  out << std::fixed << std::setprecision(1) << number << 'e' << sign << degree;
   return out;
 }
