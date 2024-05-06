@@ -61,7 +61,7 @@ std::ostream & gredasov::operator<<(std::ostream & out, const DataStruct & dest)
 
 bool gredasov::operator<(const DataStruct& toCompare, const DataStruct& otherToCompare)
 {
-  if (toCompare.key1 != otherToCompare.key2)
+  if (toCompare.key1 != otherToCompare.key1)
   {
     return toCompare.key1 < otherToCompare.key1;
   }
