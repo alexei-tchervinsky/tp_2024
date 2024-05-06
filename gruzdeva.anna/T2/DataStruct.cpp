@@ -1,5 +1,6 @@
 #include "DataStruct.hpp"
 
+#include <iomanip>
 
 namespace ds {
     bool operator<(const DataStruct& rhs, const DataStruct& lhs) {
@@ -11,7 +12,6 @@ namespace ds {
     }
 
     std::istream& operator>>(std::istream& is, DataStruct& ds) {
-        std::cout << "DataStruct  \n";
         std::istream::sentry s(is);
         if (!s)
             return is;
@@ -30,6 +30,9 @@ namespace ds {
             else if (key == "key3") {
                 is >> StringIO{ds.key3};
             }
+            if(!s) {
+                return is;
+            }
         }
         is >> DelimiterIO{ ')' };
         if (!is)
@@ -38,9 +41,9 @@ namespace ds {
     }
 
     std::ostream& operator<<(std::ostream& os, const DataStruct& ds) {
-        os << "(:key1 " << ds.key1;
-        os << ":key2 " << ds.key2;
-        os << ":key3 " << ds.key3 << ")";
+        os << "(:key1 " << std::fixed << std::setprecision(2) << ds.key1 << "d";
+        os << ":key2 " << ds.key2 << "ull";
+        os << ":key3 \"" << ds.key3 << "\")";
         return os;
     }
 
@@ -51,8 +54,9 @@ namespace ds {
             return is;
         char c = '0';
         is >> c;
-        if (is && (c != d.exp))
+        if (is && (c != d.exp)) {
             is.setstate(std::ios_base::failbit);
+        }
         return is;
     }
 
@@ -67,7 +71,13 @@ namespace ds {
             is >> DelimiterIO{ 'd' };
         else
             is >> DelimiterIO{'D'};
-        dl.value = whole + decimal / 100.0;
+        int temp = decimal;
+        double length = 1.0;
+        while (temp > 0) {
+            temp /= 10;
+            length*=10.0;
+        }
+        dl.value = whole + (decimal / length);
         return is;
     }
 
@@ -95,8 +105,6 @@ namespace ds {
         std::istream::sentry s(is);
         if (!s)
             return is;
-        is >> DelimiterIO{'"'};
-        is >> str.value >> DelimiterIO{'"'};
-        return is;
+        return std::getline(is >> DelimiterIO{'"'}, str.value, '"');
     }
 }

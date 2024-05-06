@@ -3,6 +3,7 @@
 #include <vector>
 #include <algorithm>
 #include <iterator>
+#include <limits>
 
 int main() {
     std::vector<ds::DataStruct> data;
@@ -10,7 +11,7 @@ int main() {
         std::copy(std::istream_iterator<ds::DataStruct>{std::cin}, std::istream_iterator<ds::DataStruct>{}, std::back_inserter(data));
         if (std::cin.fail()){
             std::cin.clear();
-            std::cin.ignore(1, '\n');
+            std::cin.ignore(std::numeric_limits<int>::max(), '\n');
         }
     }
     std::sort(data.begin(), data.end());
