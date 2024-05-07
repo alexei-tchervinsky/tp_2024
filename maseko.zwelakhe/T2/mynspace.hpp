@@ -1,5 +1,5 @@
 #ifndef MYNSPACE_HPP
-#defind MYNSPACE_HPP
+#define MYNSPACE_HPP
 #include <iostream>
 #include <sstream>
 #include <string>
