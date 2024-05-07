@@ -1,5 +1,11 @@
 #ifndef MYNSPACE_HPP
 #define MYNSPACE_HPP
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <cassert>
+#include <iterator>
+
 namespace nspace
 {
   // формат ввода:
