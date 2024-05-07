@@ -1,9 +1,10 @@
 #ifndef MYNSPACE_HPP
 #defind MYNSPACE_HPP
 #include <iostream>
-#include <isstream>
+#include <sstream>
 #include <string>
-#include <fstream>
+#include <cassert>
+#include <iterator>
 
 namespace nspace
 {
