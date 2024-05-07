@@ -1,5 +1,9 @@
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <cassert>
+#include <iterator>
 #include "mynspace.hpp"
-
 namespace nspace
 {
   std::istream &operator>>(std::istream &in, DelimiterIO &&dest)
