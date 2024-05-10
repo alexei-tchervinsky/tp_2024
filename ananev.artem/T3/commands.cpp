@@ -36,7 +36,10 @@ namespace ananev
 
   double get_area(std::size_t param, const std::vector< ananev::Polygon > polygons)
   {
-    std::function< double(double, const Polygon&) > BinaryOperation = std::bind(get_sum, std::placeholders::_1, std::placeholders::_2, param);
+    std::function< double(double, const Polygon&) > BinaryOperation = std::bind(get_sum,
+    std::placeholders::_1,
+    std::placeholders::_2,
+    param);
     if (param == 0)
     {
         return std::accumulate(polygons.cbegin(), polygons.cend(), 0.0, BinaryOperation) / polygons.size();
@@ -90,7 +93,12 @@ namespace ananev
         return a.points.size() % 2 == 0;
       });
     }
-    std::function< std::size_t(const Polygon&) > UnarOperation = std::bind([](const Polygon& a, std::size_t param) {return a.points.size() == param;}, std::placeholders::_1, param);
+    std::function< std::size_t(const Polygon&) > UnarOperation = std::bind([](const Polygon& a, std::size_t param)
+    {
+      return a.points.size() == param;
+    },
+    std::placeholders::_1,
+    param);
     return std::count_if(polygons.cbegin(), polygons.cend(), UnarOperation);
   }
 

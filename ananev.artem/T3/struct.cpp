@@ -72,11 +72,13 @@ namespace ananev
     {
       if (point == count_points -1)
       {
-        area += (polygon.points[point].x * polygon.points[0].y - polygon.points[point].y * polygon.points[0].x);
+        area += (polygon.points[point].x * polygon.points[0].y - polygon.points[point].y *
+        polygon.points[0].x);
       }
       else
       {
-        area += (polygon.points[point].x * polygon.points[point+1].y - polygon.points[point].y * polygon.points[point+1].x);
+        area += (polygon.points[point].x * polygon.points[point+1].y - polygon.points[point].y *
+        polygon.points[point+1].x);
       }
     }
     return 0.5*abs(area);
