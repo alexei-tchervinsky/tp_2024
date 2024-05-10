@@ -102,16 +102,6 @@ namespace ananev
     return std::count_if(polygons.cbegin(), polygons.cend(), UnarOperation);
   }
 
-  std::size_t get_rects(const std::vector< ananev::Polygon > polygons)
-  {
-    return 0;
-  }
-
-  std::size_t get_maxseq(const Polygon polygon, const std::vector< ananev::Polygon > polygons)
-  {
-    return 0;
-  }
-
   void area_param(const std::vector< ananev::Polygon > polygons, std::istream &in, std::ostream &out)
   {
     std::string param;
@@ -208,13 +198,5 @@ namespace ananev
     {
       error(in);
     }
-  }
-
-  void rects_param(const std::vector< ananev::Polygon > polygons, std::istream &in, std::ostream &out)
-  {
-  }
-
-  void maxseq_param(const std::vector< ananev::Polygon > polygons, std::istream &in, std::ostream &out)
-  {
   }
 }
