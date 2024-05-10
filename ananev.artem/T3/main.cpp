@@ -44,6 +44,8 @@ int main(int argc, char* argv[])
     {"COUNT", ananev::count_param}
   };
 
+  std::cout << std::fixed;
+  std::cout.precision(1);
   while (!std::cin.eof())
   {
     std::string key;
