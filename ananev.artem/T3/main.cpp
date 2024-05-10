@@ -41,7 +41,7 @@ int main(int argc, char* argv[])
     {"AREA", ananev::area_param},
     {"MAX", ananev::max_param},
     {"MIN", ananev::min_param},
-    {"COUNT", ananev::count_param},
+    {"COUNT", ananev::count_param}
   };
 
   while (!std::cin.eof())
