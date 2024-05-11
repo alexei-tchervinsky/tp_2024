@@ -211,7 +211,7 @@ namespace ananev
     }
   }
 
-  void rects_param(const std::vector< ananev::Polygon > polygons, std::istream &in, std::ostream &out)
+  void rects_param(const std::vector< ananev::Polygon > polygons, std::ostream &out)
   {
     out << std::setprecision(0) << std::count_if(polygons.cbegin(), polygons.cend(), [](const Polygon& polygon)
     {
