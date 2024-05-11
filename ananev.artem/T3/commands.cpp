@@ -113,7 +113,8 @@ namespace ananev
     (sqrt(std::pow(vectors[2].x, 2)+std::pow(vectors[2].y, 2))*sqrt(std::pow(vectors[1].x, 2)+std::pow(vectors[1].y, 2))) == 0);
     return angle01 || angle02 || angle12;
   }
-  std::size_t get_seq(std::vector< ananev::Polygon >::const_iterator begin, std::vector< ananev::Polygon >::const_iterator end, const Polygon& param)
+  std::size_t get_seq(std::vector< ananev::Polygon >::const_iterator begin,
+  std::vector< ananev::Polygon >::const_iterator end, const Polygon& param)
   {
     bool repeat = true;
     std::function<bool(const Polygon&)> FindIfUO = std::bind([](const Polygon& polygon, const Polygon& param)
