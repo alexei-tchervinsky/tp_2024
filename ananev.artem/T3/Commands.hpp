@@ -6,10 +6,10 @@
 #include "Struct.hpp"
 #include <limits>
 #include <iomanip>
+#include "exception.hpp"
 
 namespace ananev
 {
-  void error(std::istream &in);
   double get_sum(double result, const Polygon& polygon, std::size_t param);
   double get_area(std::size_t param, const std::vector< ananev::Polygon > polygons);
   double get_max(std::size_t param, const std::vector< ananev::Polygon > polygons);

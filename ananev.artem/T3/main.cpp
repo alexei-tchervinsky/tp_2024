@@ -45,22 +45,25 @@ int main(int argc, char* argv[])
   };
 
   std::cout << std::fixed;
-  std::cout.precision(1);
   while (!std::cin.eof())
   {
-    std::string key;
-    std::cin >> key;
-    if (commands.find(key) != commands.end())
+    try
     {
-      auto command = std::bind(commands[key], std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
-      command(polygons, std::cin, std::cout);
+      std::string key;
+      std::cin >> key;
+      if (commands.find(key) != commands.end())
+      {
+        auto command = std::bind(commands[key], std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+        command(polygons, std::cin, std::cout);
+      }
+      else if (!std::cin.eof())
+      {
+        throw InvalidCommand();
+      }
     }
-    else if (!std::cin.eof())
+    catch (const std::exception& ex)
     {
-      std::cerr << "<INVALID COMMAND>\n";
-    }
-    if (std::cin.fail())
-    {
+      std::cout << ex.what() << '\n';
       std::cin.clear();
       std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }

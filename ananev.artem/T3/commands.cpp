@@ -6,13 +6,6 @@
 
 namespace ananev
 {
-  void error(std::istream &in)
-  {
-    std::cerr << "<INVALID COMMAND>\n";
-    in.clear();
-    in.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-  }
-
   double get_sum(double result, const Polygon& polygon, std::size_t param)
   {
     if (param == 0)
@@ -110,28 +103,28 @@ namespace ananev
     {
       if (param == "MEAN" && polygons.size() >= 1)
       {
-        out << get_area(0, polygons) << '\n';
+        out << std::setprecision(1) << get_area(0, polygons) << '\n';
       }
       else if (param == "ODD")
       {
-        out << get_area(1, polygons) << '\n';
+        out << std::setprecision(1) << get_area(1, polygons) << '\n';
       }
       else if (param == "EVEN")
       {
-        out << get_area(2, polygons) << '\n';
+        out << std::setprecision(1) << get_area(2, polygons) << '\n';
       }
       else if (stoll(param) >= 3)
       {
-        out << get_area(stoll(param), polygons)<< '\n';
+        out << std::setprecision(1) << get_area(stoll(param), polygons)<< '\n';
       }
       else
       {
-        error(in);
+        throw InvalidCommand();
       }
     }
     catch(std::exception& ex)
     {
-      error(in);
+      throw InvalidCommand();
     }
   }
 
@@ -141,15 +134,15 @@ namespace ananev
     in >> param;
     if (param == "AREA" && polygons.size() >= 1)
     {
-      out << get_max(0, polygons) << '\n';
+      out << std::setprecision(1) << get_max(0, polygons) << '\n';
     }
     else if (param == "VERTEXES" && polygons.size() >= 1)
     {
-      out << round(get_max(1, polygons)) << '\n';
+      out << std::setprecision(0) << get_max(1, polygons) << '\n';
     }
     else
     {
-      error(in);
+      throw InvalidCommand();
     }
   }
 
@@ -159,15 +152,15 @@ namespace ananev
     in >> param;
     if (param == "AREA" && polygons.size() >= 1)
     {
-      out << get_min(0, polygons) << '\n';
+      out << std::setprecision(1) << get_min(0, polygons) << '\n';
     }
     else if (param == "VERTEXES" && polygons.size() >= 1)
     {
-      out << round(get_min(1, polygons)) << '\n';
+      out << std::setprecision(0) << get_min(1, polygons) << '\n';
     }
     else
     {
-      error(in);
+      throw InvalidCommand();
     }
   }
 
@@ -179,24 +172,24 @@ namespace ananev
     {
       if (param == "ODD")
       {
-        out << get_count(1, polygons) << '\n';
+        out << std::setprecision(0) << get_count(1, polygons) << '\n';
       }
       else if (param == "EVEN")
       {
-        out << get_count(2, polygons) << '\n';
+        out << std::setprecision(0) << get_count(2, polygons) << '\n';
       }
       else if (stoll(param) >= 3)
       {
-        out << get_count(stoll(param), polygons) << '\n';
+        out << std::setprecision(0) << get_count(stoll(param), polygons) << '\n';
       }
       else
       {
-        error(in);
+        throw InvalidCommand();
       }
     }
     catch (std::exception& ex)
     {
-      error(in);
+      throw InvalidCommand();
     }
   }
 }
