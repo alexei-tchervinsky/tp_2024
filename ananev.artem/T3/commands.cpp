@@ -267,6 +267,10 @@ namespace ananev
   {
     Polygon param;
     in >> param;
+    if (!in)
+    {
+      throw std::invalid_argument("<INVALID COMMAND>");
+    }
     out << std::setprecision(0) << get_seq(polygons.cbegin(), polygons.cend(), param) << '\n';
   }
 }
