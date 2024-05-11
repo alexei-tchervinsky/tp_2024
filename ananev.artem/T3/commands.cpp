@@ -3,6 +3,7 @@
 #include <functional>
 #include <algorithm>
 #include <cmath>
+#include <iterator>
 
 namespace ananev
 {
@@ -111,6 +112,38 @@ namespace ananev
     bool angle12 = ((vectors[2].x*vectors[1].x+vectors[2].y*vectors[1].y)/
     (sqrt(std::pow(vectors[2].x, 2)+std::pow(vectors[2].y, 2))*sqrt(std::pow(vectors[1].x, 2)+std::pow(vectors[1].y, 2))) == 0);
     return angle01 || angle02 || angle12;
+  }
+  std::size_t get_seq(std::vector< ananev::Polygon >::const_iterator begin, std::vector< ananev::Polygon >::const_iterator end, const Polygon& param)
+  {
+    bool repeat = true;
+    std::function<bool(const Polygon&)> FindIfUO = std::bind([](const Polygon& polygon, const Polygon& param)
+    {
+      return (polygon == param);
+    }, std::placeholders::_1, param);
+    std::function<bool(const Polygon&)> CountIfUO = std::bind([](const Polygon& polygon, const Polygon& param, bool& repeat)
+    {
+      if (polygon == param && repeat == true)
+      {
+        return true;
+      }
+      repeat = false;
+      return false;
+    }, std::placeholders::_1, param, repeat);
+    std::vector< ananev::Polygon >::const_iterator begin_new = std::find_if(begin, end, FindIfUO);
+    if (begin_new != end)
+    {
+      std::size_t count_current = std::count_if(begin_new, end, CountIfUO);
+      std::size_t count_next = get_seq(begin_new + count_current, end, param);
+      if (count_current > count_next)
+      {
+        return count_current;
+      }
+      return count_next;
+    }
+    else
+    {
+      return 0;
+    }
   }
 
   void area_param(const std::vector< ananev::Polygon > polygons, std::istream &in, std::ostream &out)
@@ -227,5 +260,12 @@ namespace ananev
       }
       return false;
     }) << '\n';
+  }
+
+  void maxseq_param(const std::vector< ananev::Polygon > polygons, std::istream &in, std::ostream &out)
+  {
+    Polygon param;
+    in >> param;
+    out << std::setprecision(0) << get_seq(polygons.cbegin(), polygons.cend(), param) << '\n';
   }
 }

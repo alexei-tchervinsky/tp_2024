@@ -1,6 +1,5 @@
 #include "Struct.hpp"
 #include "Commands.hpp"
-#include <iterator>
 #include <algorithm>
 #include <limits>
 #include <exception>
@@ -42,7 +41,8 @@ int main(int argc, char* argv[])
     {"MAX", ananev::max_param},
     {"MIN", ananev::min_param},
     {"COUNT", ananev::count_param},
-    {"RECTS", ananev::rects_param}
+    {"RECTS", ananev::rects_param},
+    {"MAXSEQ", ananev::maxseq_param}
   };
 
   std::cout << std::fixed;
