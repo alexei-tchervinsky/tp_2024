@@ -21,7 +21,7 @@ namespace ananev
   void max_param(const std::vector< ananev::Polygon > polygons, std::istream &in, std::ostream &out);
   void min_param(const std::vector< ananev::Polygon > polygons, std::istream &in, std::ostream &out);
   void count_param(const std::vector< ananev::Polygon > polygons, std::istream &in, std::ostream &out);
-  void rects_param(const std::vector< ananev::Polygon > polygons, std::ostream &out);
+  void rects_param(const std::vector< ananev::Polygon > polygons, std::istream &in, std::ostream &out);
 }
 
 #endif

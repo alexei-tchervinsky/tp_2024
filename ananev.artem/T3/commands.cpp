@@ -211,8 +211,12 @@ namespace ananev
     }
   }
 
-  void rects_param(const std::vector< ananev::Polygon > polygons, std::ostream &out)
+  void rects_param(const std::vector< ananev::Polygon > polygons, std::istream &in, std::ostream &out)
   {
+    if (!in)
+    {
+      throw std::invalid_argument("<INVALID COMMAND>");
+    }
     out << std::setprecision(0) << std::count_if(polygons.cbegin(), polygons.cend(), [](const Polygon& polygon)
     {
       if (polygon.points.size()==4)
