@@ -40,7 +40,7 @@ namespace ananev
     {
       return in;
     }
-    std::size_t count_points = 0;
+    std::size_t count_points;
     in >> count_points;
     if (count_points < 3)
     {
@@ -56,7 +56,10 @@ namespace ananev
       in >> DelimiterIO{')'};
       temp_polygon.points.push_back(temp_point);
     }
-    dest = temp_polygon;
+    if (in && count_points == temp_polygon.points.size())
+    {
+      dest = temp_polygon;
+    }
     return in;
   }
 
