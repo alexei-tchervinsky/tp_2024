@@ -58,7 +58,7 @@ int main(int argc, char* argv[])
       }
       else if (!std::cin.eof())
       {
-        throw InvalidCommand();
+        throw std::invalid_argument("<INVALID COMMAND>");
       }
     }
     catch (const std::exception& ex)

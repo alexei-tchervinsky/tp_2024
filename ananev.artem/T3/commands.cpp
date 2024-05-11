@@ -119,12 +119,12 @@ namespace ananev
       }
       else
       {
-        throw InvalidCommand();
+        throw std::invalid_argument("<INVALID COMMAND>");
       }
     }
     catch(std::exception& ex)
     {
-      throw InvalidCommand();
+      throw std::invalid_argument("<INVALID COMMAND>");
     }
   }
 
@@ -142,7 +142,7 @@ namespace ananev
     }
     else
     {
-      throw InvalidCommand();
+      throw std::invalid_argument("<INVALID COMMAND>");
     }
   }
 
@@ -160,7 +160,7 @@ namespace ananev
     }
     else
     {
-      throw InvalidCommand();
+      throw std::invalid_argument("<INVALID COMMAND>");
     }
   }
 
@@ -184,12 +184,12 @@ namespace ananev
       }
       else
       {
-        throw InvalidCommand();
+        throw std::invalid_argument("<INVALID COMMAND>");
       }
     }
     catch (std::exception& ex)
     {
-      throw InvalidCommand();
+      throw std::invalid_argument("<INVALID COMMAND>");
     }
   }
 }
