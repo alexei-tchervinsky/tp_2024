@@ -46,19 +46,28 @@ int main(int argc, char* argv[])
   };
 
   std::cout << std::fixed;
-  std::string key;
-  while (std::cin >> key)
+  while (!std::cin.eof())
   {
     try
     {
-      commands.at(key)(polygons, std::cin, std::cout);
+      std::string key;
+      std::cin >> key;
+      if (commands.find(key) != commands.end())
+      {
+        auto command = std::bind(commands[key], std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+        command(polygons, std::cin, std::cout);
+      }
+      else if (!std::cin.eof())
+      {
+        throw std::invalid_argument("<INVALID COMMAND>");
+      }
     }
     catch (const std::exception& ex)
     {
       std::cout << ex.what() << '\n';
+      std::cin.clear();
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
-    std::cin.clear();
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
   }
   return 0;
 }
