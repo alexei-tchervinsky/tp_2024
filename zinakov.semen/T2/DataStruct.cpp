@@ -7,20 +7,26 @@ namespace semzin
   {
     unsigned long long key_ = key;
     std::string bin = "";
-    while (key_ > 0)
+    if (key_ == 0)
     {
-      switch (key_ % 2)
-      {
-      case 0:
-        bin = '0' + bin;
-        break;
-      case 1:
-        bin = '1' + bin;
-        break;
-      }
+      bin = "0";
+    }
+    while (key_ != 0)
+    {
+      bin = std::to_string(key_ % 2) + bin;
       key_ = key_ / 2;
     }
     return bin;
+  }
+
+  unsigned long long BinToDec(unsigned long long bin)
+  {
+    unsigned long long result = 0;
+    for (unsigned long long i = 1; bin; bin /= 10, i *= 2)
+    {
+      result += i * (bin % 10);
+    }
+    return result;
   }
 
   std::istream &operator>>(std::istream &in, DelimiterIO &&dest)
@@ -73,8 +79,9 @@ namespace semzin
     {
       in >> DelimiterIO{'b'};
     }
-    int bin = atoi(toBin(dest.bin).c_str());
+    unsigned long long bin = 0;
     in >> bin;
+    dest.bin = BinToDec(bin);
     return in;
   }
 

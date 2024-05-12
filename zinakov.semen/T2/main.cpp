@@ -5,11 +5,11 @@
 #include <iterator>
 #include <limits>
 #include <vector>
+#include <bitset>
 
 int main()
 {
   using semzin::Data;
-
   std::vector<Data> data;
   while (!std::cin.eof())
   {
