@@ -2,7 +2,7 @@
 
 namespace semzin
 {
-  bool Comparator::operator()(const Data first, const Data second)
+  bool Comparator::operator()(const Data first, const Data second) const
   {
     if (first.key1 != second.key1)
     {

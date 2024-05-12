@@ -11,7 +11,7 @@ int main()
   using semzin::Data;
 
   std::vector<Data> data;
-  while (std::cin)
+  while (!std::cin.eof())
   {
     std::copy(std::istream_iterator<Data>{std::cin}, std::istream_iterator<Data>{}, std::back_inserter(data));
     if (std::cin.fail())

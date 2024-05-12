@@ -7,7 +7,7 @@ namespace semzin
 {
   struct Comparator
   {
-    bool operator()(const Data first, const Data second);
+    bool operator()(const Data first, const Data second) const;
   };
 }
 
