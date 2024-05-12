@@ -106,13 +106,13 @@ std::istream & leontiev::operator>>(std::istream & in, StringIO && dest)
 std::istream& leontiev::operator>>(std::istream& in, DelimiterIO&& dest)
  {
   std::istream::sentry sentry(in);
-  if (!sentry) 
+  if (!sentry)
   {
     return in;
   }
   char c = '0';
   in >> c;
-  if (in && (c != dest.exp)) 
+  if (in && (c != dest.exp))
   {
     in.setstate(std::ios::failbit);
   }
