@@ -64,8 +64,7 @@ std::ostream & leontiev::operator<<(std::ostream & out, const DataStruct & dest)
   {
     return out;
   }
-  out << "(:";
-  out << "key1 " << std::fixed << std::setprecision(1) << dest.key1 << ":key2 '" << dest.key2 << "':key3 \"" << dest.key3 << "\":)";
+  out << "(:key1 " << std::fixed << std::setprecision(1) << dest.key1 << ":key2 '" << dest.key2 << "':key3 \"" << dest.key3 << "\":)";
   return out;
 }
 
@@ -86,7 +85,7 @@ std::istream & leontiev::operator>>(std::istream & in, CharIO && dest)
   {
     return in;
   }
-  return in >> DelimiterIO{ '"' } >> dest.ref  >> DelimiterIO{ '"' };
+  return in >> DelimiterIO{ '\''} >> dest.ref  >> DelimiterIO{ '\'' };
 }
 
 std::istream & leontiev::operator>>(std::istream & in, StringIO && dest)
