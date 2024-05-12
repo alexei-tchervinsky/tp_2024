@@ -17,8 +17,7 @@ std::istream & leontiev::operator>>(std::istream & in, DataStruct & dest)
     std::string key;
     for (std::size_t i = 0; i < 3; ++i)
     {
-      in >> sep{ ':' };
-      in >> key;
+      in >> sep{ ':' } >> key;
       if (key == "key1")
       {
         in >> dbl{ input.key1 };
@@ -36,8 +35,7 @@ std::istream & leontiev::operator>>(std::istream & in, DataStruct & dest)
         in.setstate(std::ios::failbit);
       }
     }
-    in >> sep{ ':' };
-    in >> sep{ ')' };
+    in >> sep{ ':' } >> sep{ ')' };
   }
   if (in)
   {
@@ -67,9 +65,7 @@ std::ostream & leontiev::operator<<(std::ostream & out, const DataStruct & dest)
     return out;
   }
   out << "(:";
-  out << "key1 " << std::fixed << std::setprecision(1) << dest.key1 << "d:";
-  out << "key2 " << dest.key2 << "chr:";
-  out << "key3 \"" << dest.key3 << "\":)";
+  out << "key1 " << std::fixed << std::setprecision(1) << dest.key1 << ":key2 '" << dest.key2 << "':key3 \"" << dest.key3 << "\":)";
   return out;
 }
 
