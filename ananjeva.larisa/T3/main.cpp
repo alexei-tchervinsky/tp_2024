@@ -40,6 +40,7 @@ int main(int argc, char* argv[]) {
     cmds["MAX"] = std::bind(ananjeva::getMax, _1, _2, _3);
     cmds["MIN"] = std::bind(ananjeva::getMin, _1, _2, _3);
     cmds["COUNT"] = std::bind(ananjeva::countShapes, _1, _2, _3);
+    cmds["INFRAME"] = std::bind(ananjeva::checkInFrame, _1, _2, _3);
   }
 
   std::string cmd = "";

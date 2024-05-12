@@ -15,6 +15,15 @@ namespace ananjeva {
   bool isVertsNumOdd(const Polygon& shape);
   bool isVertsNumRequired(const Polygon& shape, std::size_t vertsNum);
 
+  int getX(const Point& point);
+  int getY(const Point& point);
+  int getMaxX(const Polygon& shape);
+  int getMaxY(const Polygon& shape);
+  int getMinX(const Polygon& shape);
+  int getMinY(const Polygon& shape);
+  Polygon getFrame(const std::vector< Polygon >& shapes);
+  bool isPolygonInFrame(const Polygon& frame, const Polygon& testingPolygon);
+
 }
 
 #endif

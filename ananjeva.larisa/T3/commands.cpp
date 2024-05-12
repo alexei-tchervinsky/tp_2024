@@ -28,7 +28,7 @@ std::ostream& ananjeva::getAreas(const std::vector< Polygon >& shapes, std::istr
     //auto is_digit = std::bind(static_cast<int(*)(char)>(std::isdigit), std::placeholders::_1);
     //if (std::count_if(std::begin(areaType), std::end(areaType), static_cast<int(*)(int)>(std::isdigit)))
     if (std::count_if(std::begin(areaType), std::end(areaType), [](unsigned char value) { return std::isdigit(value); }) ==
-    areaType.size()) {
+      areaType.size()) {
       std::size_t vertsNum = std::stoi(areaType);
       if (vertsNum <= 2) {
         throw std::logic_error("Incorrect verts number ");
@@ -167,7 +167,7 @@ std::ostream& ananjeva::countShapes(const std::vector< Polygon >& shapes, std::i
   }
   else {
     if (std::count_if(std::begin(vertsType), std::end(vertsType), [](unsigned char value) { return std::isdigit(value); }) ==
-    vertsType.size()) {
+      vertsType.size()) {
       std::size_t vertsNum = std::stoi(vertsType);
       if (vertsNum <= 2) {
         throw std::logic_error("Incorrect verts number.");
@@ -198,7 +198,23 @@ std::ostream& ananjeva::countRmSimilarShapes(const std::vector< Polygon >& shape
 }
 
 std::ostream& ananjeva::checkInFrame(const std::vector< Polygon >& shapes, std::istream& in, std::ostream& out) {
+  if (shapes.empty()) {
+    throw std::logic_error("No one shape, cannot continue.");
+  }
+  Polygon testingPolygon{};
+  if (!(in >> testingPolygon)) {
+    throw std::logic_error("<INVALID COMMAND>");
+  }
 
+  Polygon frame = getFrame(shapes);
+
+  if (isPolygonInFrame(frame, testingPolygon)) {
+    out << "<TRUE>" << '\n';
+  }
+  else {
+    out << "<FALSE>" << '\n';
+  }
+  return out;
 }
 
 std::ostream& ananjeva::outError(std::ostream& out, const std::string& errorMessage) {
