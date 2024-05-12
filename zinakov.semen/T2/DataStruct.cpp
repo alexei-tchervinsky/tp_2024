@@ -11,6 +11,10 @@ namespace semzin
     {
       bin = "0";
     }
+    if (key_ == 1)
+    {
+      return "01";
+    }
     while (key_ != 0)
     {
       bin = std::to_string(key_ % 2) + bin;
