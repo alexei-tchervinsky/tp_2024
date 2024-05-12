@@ -12,7 +12,7 @@ double ananjeva::getShapeArea(const Polygon& shape) {
     ++shape.points.cbegin(),
     shape.points.cend(),
     shape.points.cbegin(),
-    diffOfCoords.cbegin(),
+    diffOfCoords.begin(),
     getDiffOfMultCoords //std::bind(getDiffOfMultCoords, _1, _2)
   );
   diffOfCoords.push_back(getDiffOfMultCoords(shape.points.front(), shape.points.back()));
@@ -21,7 +21,7 @@ double ananjeva::getShapeArea(const Polygon& shape) {
   return res;
 }
 
-double ananjeva::sumEvenAreas(const Polygon& shape, double sum) {
+double ananjeva::sumEvenAreas(double sum, const Polygon& shape) {
   if (shape.points.size() % 2 == 0) {
     return sum + getShapeArea(shape);
   }
@@ -30,7 +30,7 @@ double ananjeva::sumEvenAreas(const Polygon& shape, double sum) {
   }
 }
 
-double ananjeva::sumOddAreas(const Polygon& shape, double sum) {
+double ananjeva::sumOddAreas(double sum, const Polygon& shape) {
     if (shape.points.size() % 2 != 0) {
     return sum + getShapeArea(shape);
   }
@@ -39,11 +39,11 @@ double ananjeva::sumOddAreas(const Polygon& shape, double sum) {
   }
 }
 
-double ananjeva::sumAreas(const Polygon& shape, double sum) {
+double ananjeva::sumAreas(double sum, const Polygon& shape) {
     return sum + getShapeArea(shape);
 }
 
-double ananjeva::sumEqualAreas(const Polygon& shape, std::size_t vertsNum, double sum) {
+double ananjeva::sumEqualAreas(double sum, const Polygon& shape, std::size_t vertsNum) {
     if (shape.points.size() == vertsNum) {
     return sum + getShapeArea(shape);
   }

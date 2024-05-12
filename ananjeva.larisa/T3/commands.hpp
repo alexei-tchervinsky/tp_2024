@@ -1,11 +1,9 @@
 #ifndef COMANDS_HPP
 #define COMANDS_HPP
+#include "innerFunctions.hpp"
 #include <iostream>
 #include <vector>
 #include <string>
-#include "polygon.hpp"
-#include "innerFunctions.hpp"
-
 
 namespace ananjeva {
   std::ostream& getAreas(const std::vector< Polygon >& shapes, std::istream& in, std::ostream& out);
@@ -25,7 +23,7 @@ namespace ananjeva {
   std::ostream& countShapes(const std::vector< Polygon >& shapes, std::istream& in, std::ostream& out);
   std::size_t countWithEvenVerts(const std::vector< Polygon >& shapes);
   std::size_t countWithOddVerts(const std::vector< Polygon >& shapes);
-  std::size_t countWithNumOfVerts(const std::vector< Polygon >& shapes);
+  std::size_t countWithNumOfVerts(const std::vector< Polygon >& shapes, std::size_t vertsNum);
 
   std::ostream& countRmSimilarShapes(const std::vector< Polygon >& shapes, std::istream& in, std::ostream& out);
   std::ostream& checkInFrame(const std::vector< Polygon >& shapes, std::istream& in, std::ostream& out);

@@ -5,10 +5,10 @@
 namespace ananjeva {
   int getDiffOfMultCoords(const Point& point1, const Point& point2);
   double getShapeArea(const Polygon& shape);
-  double sumEvenAreas(const Polygon& shape, double sum);
-  double sumOddAreas(const Polygon& shape, double sum);
-  double sumAreas(const Polygon& shape, double sum);
-  double sumEqualAreas(const Polygon& shape, std::size_t vertsNum, double sum);
+  double sumEvenAreas(double sum, const Polygon& shape);
+  double sumOddAreas(double sum, const Polygon& shape);
+  double sumAreas(double sum, const Polygon& shape);
+  double sumEqualAreas(double sum, const Polygon& shape, std::size_t vertsNum);
 
   std::size_t getVertsNum(const Polygon& shape);
   bool isVertsNumEven(const Polygon& shape);

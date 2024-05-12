@@ -91,7 +91,7 @@ double ananjeva::getMaxArea(const std::vector< Polygon >& shapes) {
   std::transform(
     shapes.cbegin(),
     shapes.cend(),
-    vecOfAreas.cbegin(),
+    vecOfAreas.begin(),
     getShapeArea
   );
   double maxArea = *(std::max_element(vecOfAreas.cbegin(), vecOfAreas.cend()));
@@ -104,7 +104,7 @@ double ananjeva::getMaxVerts(const std::vector< Polygon >& shapes) {
   std::transform(
     shapes.cbegin(),
     shapes.cend(),
-    vecOfVertsNum.cbegin(),
+    vecOfVertsNum.begin(),
     getVertsNum
   );
   std::size_t maxVertsNum = *(std::max_element(vecOfVertsNum.cbegin(), vecOfVertsNum.cend()));
@@ -134,7 +134,7 @@ double ananjeva::getMinArea(const std::vector< Polygon >& shapes) {
   std::transform(
     shapes.cbegin(),
     shapes.cend(),
-    vecOfAreas.cbegin(),
+    vecOfAreas.begin(),
     getShapeArea
   );
   double minArea = *(std::min_element(vecOfAreas.cbegin(), vecOfAreas.cend()));
@@ -146,20 +146,62 @@ double ananjeva::getMinVerts(const std::vector< Polygon >& shapes) {
   std::transform(
     shapes.cbegin(),
     shapes.cend(),
-    vecOfVertsNum.cbegin(),
+    vecOfVertsNum.begin(),
     getVertsNum
   );
   std::size_t minVertsNum = *(std::min_element(vecOfVertsNum.cbegin(), vecOfVertsNum.cend()));
   return minVertsNum;
 }
 
-std::ostream& ananjeva::countShapes(const std::vector< Polygon >& shapes, std::istream& in, std::ostream& out);
+std::ostream& ananjeva::countShapes(const std::vector< Polygon >& shapes, std::istream& in, std::ostream& out) {
+  if (shapes.empty()) {
+    throw std::logic_error("No one shape, cannot continue.");
+  }
+  std::string vertsType = "";
+  in >> vertsType;
+  if (vertsType == "EVEN") {
+    out << countWithEvenVerts(shapes) << '\n';
+  }
+  else if (vertsType == "ODD") {
+    out << countWithOddVerts(shapes) << '\n';
+  }
+  else {
+    if (std::count_if(std::begin(vertsType), std::end(vertsType), [](unsigned char value) { return std::isdigit(value); }) ==
+    vertsType.size()) {
+      std::size_t vertsNum = std::stoi(vertsType);
+      if (vertsNum <= 2) {
+        throw std::logic_error("Incorrect verts number.");
+      }
+      out << countWithNumOfVerts(shapes, vertsNum) << '\n';
+    }
+    else {
+      throw std::logic_error("<INVALID COMMAND");
+    }
+  }
+  return out;
+}
 
-std::size_t ananjeva::countWithEvenVerts(const std::vector< Polygon >& shapes);
-std::size_t ananjeva::countWithOddVerts(const std::vector< Polygon >& shapes);
-std::size_t ananjeva::countWithNumOfVerts(const std::vector< Polygon >& shapes);
+std::size_t ananjeva::countWithEvenVerts(const std::vector< Polygon >& shapes) {
+  return std::count_if(shapes.cbegin(), shapes.cend(), isVertsNumEven);
+}
 
-std::ostream& ananjeva::countRmSimilarShapes(const std::vector< Polygon >& shapes, std::istream& in, std::ostream& out);
-std::ostream& ananjeva::checkInFrame(const std::vector< Polygon >& shapes, std::istream& in, std::ostream& out);
+std::size_t ananjeva::countWithOddVerts(const std::vector< Polygon >& shapes) {
+  return std::count_if(shapes.cbegin(), shapes.cend(), isVertsNumOdd);
+}
 
-std::ostream& ananjeva::outError(std::ostream& out, const std::string& errorMessage);
+std::size_t ananjeva::countWithNumOfVerts(const std::vector< Polygon >& shapes, std::size_t vertsNum) {
+  return std::count_if(shapes.cbegin(), shapes.cend(), std::bind(isVertsNumRequired, std::placeholders::_1, vertsNum));
+}
+
+std::ostream& ananjeva::countRmSimilarShapes(const std::vector< Polygon >& shapes, std::istream& in, std::ostream& out) {
+
+}
+
+std::ostream& ananjeva::checkInFrame(const std::vector< Polygon >& shapes, std::istream& in, std::ostream& out) {
+
+}
+
+std::ostream& ananjeva::outError(std::ostream& out, const std::string& errorMessage) {
+  out << errorMessage << '\n';
+  return out;
+}
