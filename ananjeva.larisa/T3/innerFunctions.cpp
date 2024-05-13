@@ -14,7 +14,7 @@ double ananjeva::getShapeArea(const Polygon& shape) {
     shape.points.cend(),
     shape.points.cbegin(),
     diffOfCoords.begin(),
-    getDiffOfMultCoords //std::bind(getDiffOfMultCoords, _1, _2)
+    getDiffOfMultCoords
   );
   diffOfCoords.push_back(getDiffOfMultCoords(shape.points.front(), shape.points.back()));
   int area = std::accumulate(diffOfCoords.cbegin(), diffOfCoords.cend(), 0.0);
@@ -72,7 +72,6 @@ bool ananjeva::isVertsNumRequired(const Polygon& shape, std::size_t vertsNum) {
 bool ananjeva::SamePolygonSeries::operator()(const Polygon& polygon, const Polygon& requiredPolygon) {
   if (polygon == requiredPolygon) {
     if (++series_ > 1) {
-      counterOfRmPolygons++;
       return true;
     }
   }
@@ -85,12 +84,6 @@ bool ananjeva::SamePolygonSeries::operator()(const Polygon& polygon, const Polyg
 std::size_t ananjeva::getCountOfRmShapes(std::vector< Polygon >& shapes, const Polygon& requiredPolygon) {
   std::vector< std::size_t > vecOfSamePolygons(shapes.size());
   SamePolygonSeries series;
-  /*std::transform(
-    shapes.begin(),
-    shapes.end(),
-    vecOfSamePolygons.begin(),
-    std::bind(series, std::placeholders::_1, requiredPolygon)
-  );*/
   std::size_t counterOfRmPolygons = std::count_if(
     shapes.begin(),
     shapes.end(),
@@ -101,8 +94,8 @@ std::size_t ananjeva::getCountOfRmShapes(std::vector< Polygon >& shapes, const P
     shapes.end(),
     std::bind(series, std::placeholders::_1, requiredPolygon)
   );
-  //return series.counterOfRmPolygons;
-    return counterOfRmPolygons;
+
+  return counterOfRmPolygons;
 }
 
 int ananjeva::getX(const Point& point) {
@@ -201,7 +194,6 @@ ananjeva::Polygon ananjeva::getFrame(const std::vector< Polygon >& shapes) {
   Polygon frame{};
   Point rightUp = { maxX, maxY };
   Point leftDown = { minX, minY };
-  //rightUp.x = maxX;
   frame.points.push_back(leftDown);
   frame.points.push_back(rightUp);
   return frame;

@@ -7,9 +7,6 @@
 #include <numeric>
 
 std::ostream& ananjeva::getAreas(const std::vector< Polygon >& shapes, std::istream& in, std::ostream& out) {
-  /*if (shapes.empty()) {
-    throw std::logic_error("No one shape, cannot continue.");
-  }*/
   std::string areaType = "";
   in >> areaType;
   out << std::fixed << std::setprecision(1);
@@ -23,9 +20,6 @@ std::ostream& ananjeva::getAreas(const std::vector< Polygon >& shapes, std::istr
     out << getMeanArea(shapes) << '\n';
   }
   else {
-    //auto is_digit = std::bind(std::isdigit, std::placeholders::_1);
-    //auto is_digit = std::bind(static_cast<int(*)(char)>(std::isdigit), std::placeholders::_1);
-    //if (std::count_if(std::begin(areaType), std::end(areaType), static_cast<int(*)(int)>(std::isdigit)))
     if (static_cast< unsigned int >(std::count_if(std::begin(areaType), std::end(areaType), [](int value) { return std::isdigit(value); })) ==
       static_cast< unsigned int >(areaType.size())) {
       std::size_t vertsNum = std::stoi(areaType);
@@ -153,9 +147,6 @@ double ananjeva::getMinVerts(const std::vector< Polygon >& shapes) {
 }
 
 std::ostream& ananjeva::countShapes(const std::vector< Polygon >& shapes, std::istream& in, std::ostream& out) {
-  /*if (shapes.empty()) {
-    throw std::logic_error("No one shape, cannot continue.");
-  }*/
   std::string vertsType = "";
   in >> vertsType;
   if (vertsType == "EVEN") {

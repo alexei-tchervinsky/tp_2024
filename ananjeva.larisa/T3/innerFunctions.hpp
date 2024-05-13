@@ -6,7 +6,6 @@ namespace ananjeva {
   struct SamePolygonSeries {
   public:
     bool operator()(const Polygon& polygon, const Polygon& requiredPolygon);
-    std::size_t counterOfRmPolygons = 0;
   private:
     std::size_t series_ = 0;
   };
