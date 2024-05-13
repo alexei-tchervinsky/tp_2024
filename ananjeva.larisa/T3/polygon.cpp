@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "polygon.hpp"
 #include "delimiter.hpp"
 
@@ -15,6 +16,10 @@ std::istream& ananjeva::operator>>(std::istream& in, Point& dest) {
   }
   return in;
 }
+
+  bool ananjeva::operator==(const Point& lhs, const Point& rhs) {
+    return lhs.x == rhs.x && lhs.y == rhs.y;
+  }
 
 std::istream& ananjeva::operator>>(std::istream& in, Polygon& dest) {
   std::istream::sentry guard(in);
@@ -44,4 +49,11 @@ std::istream& ananjeva::operator>>(std::istream& in, Polygon& dest) {
     in.setstate(std::ios::failbit);
   }
   return in;
+}
+
+bool ananjeva::operator==(const Polygon& lhs, const Polygon& rhs) {
+  return std::equal(
+    std::begin(rhs.points), std::end(rhs.points),
+    std::begin(lhs.points), std::end(lhs.points)
+  );
 }

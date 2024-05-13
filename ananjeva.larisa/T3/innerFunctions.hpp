@@ -3,6 +3,16 @@
 #include "polygon.hpp"
 
 namespace ananjeva {
+  struct SamePolygonSeries {
+  public:
+    bool operator()(const Polygon& polygon, const Polygon& requiredPolygon);
+    std::size_t counterOfRmPolygons = 0;
+  private:
+    std::size_t series_ = 0;
+  };
+
+  std::size_t getCountOfRmShapes(std::vector< Polygon >& shapes, const Polygon& requiredPolygon);
+
   int getDiffOfMultCoords(const Point& point1, const Point& point2);
   double getShapeArea(const Polygon& shape);
   double sumEvenAreas(double sum, const Polygon& shape);
@@ -23,7 +33,6 @@ namespace ananjeva {
   int getMinY(const Polygon& shape);
   Polygon getFrame(const std::vector< Polygon >& shapes);
   bool isPolygonInFrame(const Polygon& frame, const Polygon& testingPolygon);
-
 }
 
 #endif

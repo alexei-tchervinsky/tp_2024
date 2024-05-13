@@ -1,5 +1,6 @@
 #include "innerFunctions.hpp"
 #include <algorithm>
+#include <functional>
 #include <numeric>
 
 int ananjeva::getDiffOfMultCoords(const Point& point1, const Point& point2) {
@@ -16,7 +17,7 @@ double ananjeva::getShapeArea(const Polygon& shape) {
     getDiffOfMultCoords //std::bind(getDiffOfMultCoords, _1, _2)
   );
   diffOfCoords.push_back(getDiffOfMultCoords(shape.points.front(), shape.points.back()));
-  int area = std::accumulate(diffOfCoords.cbegin(), diffOfCoords.cend(), 0);
+  int area = std::accumulate(diffOfCoords.cbegin(), diffOfCoords.cend(), 0.0);
   double res = abs(area) / 2.0;
   return res;
 }
@@ -66,6 +67,42 @@ bool ananjeva::isVertsNumOdd(const Polygon& shape) {
 
 bool ananjeva::isVertsNumRequired(const Polygon& shape, std::size_t vertsNum) {
   return (shape.points.size() == vertsNum);
+}
+
+bool ananjeva::SamePolygonSeries::operator()(const Polygon& polygon, const Polygon& requiredPolygon) {
+  if (polygon == requiredPolygon) {
+    if (++series_ > 1) {
+      counterOfRmPolygons++;
+      return true;
+    }
+  }
+  else {
+    series_ = 0;
+  }
+  return false;
+}
+
+std::size_t ananjeva::getCountOfRmShapes(std::vector< Polygon >& shapes, const Polygon& requiredPolygon) {
+  std::vector< std::size_t > vecOfSamePolygons(shapes.size());
+  SamePolygonSeries series;
+  /*std::transform(
+    shapes.begin(),
+    shapes.end(),
+    vecOfSamePolygons.begin(),
+    std::bind(series, std::placeholders::_1, requiredPolygon)
+  );*/
+  std::size_t counterOfRmPolygons = std::count_if(
+    shapes.begin(),
+    shapes.end(),
+    std::bind(series, std::placeholders::_1, requiredPolygon)
+  );
+  std::remove_if(
+    shapes.begin(),
+    shapes.end(),
+    std::bind(series, std::placeholders::_1, requiredPolygon)
+  );
+  //return series.counterOfRmPolygons;
+    return counterOfRmPolygons;
 }
 
 int ananjeva::getX(const Point& point) {

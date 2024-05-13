@@ -25,7 +25,7 @@ namespace ananjeva {
   std::size_t countWithOddVerts(const std::vector< Polygon >& shapes);
   std::size_t countWithNumOfVerts(const std::vector< Polygon >& shapes, std::size_t vertsNum);
 
-  std::ostream& countRmSimilarShapes(const std::vector< Polygon >& shapes, std::istream& in, std::ostream& out);
+  std::ostream& countRmSimilarShapes(std::vector< Polygon >& shapes, std::istream& in, std::ostream& out);
   std::ostream& checkInFrame(const std::vector< Polygon >& shapes, std::istream& in, std::ostream& out);
 
   std::ostream& outError(std::ostream& out, const std::string& errorMessage);

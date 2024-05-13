@@ -13,6 +13,7 @@ int main(int argc, char* argv[]) {
     std::cerr << "Error: incorrect number of arguments.";
     return 2;
   }
+
   std::ifstream input(argv[1]);
   if (!input) {
     std::cerr << "Error: the file cannot be opened.";
@@ -41,6 +42,7 @@ int main(int argc, char* argv[]) {
     cmds["MIN"] = std::bind(ananjeva::getMin, _1, _2, _3);
     cmds["COUNT"] = std::bind(ananjeva::countShapes, _1, _2, _3);
     cmds["INFRAME"] = std::bind(ananjeva::checkInFrame, _1, _2, _3);
+    cmds["RMECHO"] = std::bind(ananjeva::countRmSimilarShapes, _1, _2, _3);
   }
 
   std::string cmd = "";

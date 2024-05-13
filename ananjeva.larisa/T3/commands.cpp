@@ -43,18 +43,18 @@ std::ostream& ananjeva::getAreas(const std::vector< Polygon >& shapes, std::istr
 }
 
 double ananjeva::getEvenAreas(const std::vector< Polygon >& shapes) {
-  return std::accumulate(shapes.cbegin(), shapes.cend(), 0, sumEvenAreas);
+  return std::accumulate(shapes.cbegin(), shapes.cend(), 0.0, sumEvenAreas);
 }
 
 double ananjeva::getOddAreas(const std::vector< Polygon >& shapes) {
-  return std::accumulate(shapes.cbegin(), shapes.cend(), 0, sumOddAreas);
+  return std::accumulate(shapes.cbegin(), shapes.cend(), 0.0, sumOddAreas);
 }
 
 double ananjeva::getMeanArea(const std::vector< Polygon >& shapes) {
   if (shapes.empty()) {
     throw std::logic_error("No one shape, cannot find mean area.");
   }
-  double areas = std::accumulate(shapes.cbegin(), shapes.cend(), 0, sumAreas);
+  double areas = std::accumulate(shapes.cbegin(), shapes.cend(), 0.0, sumAreas);
   double meanArea = areas / shapes.size();
   return meanArea;
 }
@@ -193,8 +193,17 @@ std::size_t ananjeva::countWithNumOfVerts(const std::vector< Polygon >& shapes, 
   return std::count_if(shapes.cbegin(), shapes.cend(), std::bind(isVertsNumRequired, std::placeholders::_1, vertsNum));
 }
 
-std::ostream& ananjeva::countRmSimilarShapes(const std::vector< Polygon >& shapes, std::istream& in, std::ostream& out) {
-
+std::ostream& ananjeva::countRmSimilarShapes(std::vector< Polygon >& shapes, std::istream& in, std::ostream& out) {
+  if (shapes.empty()) {
+    throw std::logic_error("No one shape, cannot continue.");
+  }
+  Polygon requiredPolygon{};
+  if (!(in >> requiredPolygon)) {
+    throw std::logic_error("<INVALID COMMAND>");
+  }
+  std::size_t countOfRmShapes = getCountOfRmShapes(shapes, requiredPolygon);
+  out << countOfRmShapes << '\n';
+  return out;
 }
 
 std::ostream& ananjeva::checkInFrame(const std::vector< Polygon >& shapes, std::istream& in, std::ostream& out) {
