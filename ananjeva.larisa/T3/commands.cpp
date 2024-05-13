@@ -7,9 +7,9 @@
 #include <numeric>
 
 std::ostream& ananjeva::getAreas(const std::vector< Polygon >& shapes, std::istream& in, std::ostream& out) {
-  if (shapes.empty()) {
+  /*if (shapes.empty()) {
     throw std::logic_error("No one shape, cannot continue.");
-  }
+  }*/
   std::string areaType = "";
   in >> areaType;
   out << std::fixed << std::setprecision(1);
@@ -77,7 +77,7 @@ std::ostream& ananjeva::getMax(const std::vector< Polygon >& shapes, std::istrea
     out << std::fixed << std::setprecision(1) << getMaxArea(shapes) << '\n';
   }
   else if (option == "VERTEXES") {
-    out << getMaxVerts(shapes) << '\n';
+    out << std::fixed << std::setprecision(0) << getMaxVerts(shapes) << '\n';
   }
   else {
     throw std::logic_error("<INVALID COMMAND>");
@@ -120,7 +120,7 @@ std::ostream& ananjeva::getMin(const std::vector< Polygon >& shapes, std::istrea
     out << std::fixed << std::setprecision(1) << getMinArea(shapes) << '\n';
   }
   else if (option == "VERTEXES") {
-    out << getMinVerts(shapes) << '\n';
+    out << std::fixed << std::setprecision(0) << getMinVerts(shapes) << '\n';
   }
   else {
     throw std::logic_error("<INVALID COMMAND>");
@@ -153,9 +153,9 @@ double ananjeva::getMinVerts(const std::vector< Polygon >& shapes) {
 }
 
 std::ostream& ananjeva::countShapes(const std::vector< Polygon >& shapes, std::istream& in, std::ostream& out) {
-  if (shapes.empty()) {
+  /*if (shapes.empty()) {
     throw std::logic_error("No one shape, cannot continue.");
-  }
+  }*/
   std::string vertsType = "";
   in >> vertsType;
   if (vertsType == "EVEN") {
@@ -174,7 +174,7 @@ std::ostream& ananjeva::countShapes(const std::vector< Polygon >& shapes, std::i
       out << countWithNumOfVerts(shapes, vertsNum) << '\n';
     }
     else {
-      throw std::logic_error("<INVALID COMMAND");
+      throw std::logic_error("<INVALID COMMAND>");
     }
   }
   return out;
