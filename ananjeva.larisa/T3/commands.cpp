@@ -27,7 +27,7 @@ std::ostream& ananjeva::getAreas(const std::vector< Polygon >& shapes, std::istr
     //auto is_digit = std::bind(std::isdigit, std::placeholders::_1);
     //auto is_digit = std::bind(static_cast<int(*)(char)>(std::isdigit), std::placeholders::_1);
     //if (std::count_if(std::begin(areaType), std::end(areaType), static_cast<int(*)(int)>(std::isdigit)))
-    if (std::count_if(std::begin(areaType), std::end(areaType), [](unsigned char value) { return std::isdigit(value); }) ==
+    if (std::count_if(std::begin(areaType), std::end(areaType), [](char value) { return std::isdigit(value); }) ==
       areaType.size()) {
       std::size_t vertsNum = std::stoi(areaType);
       if (vertsNum <= 2) {
@@ -166,7 +166,7 @@ std::ostream& ananjeva::countShapes(const std::vector< Polygon >& shapes, std::i
     out << countWithOddVerts(shapes) << '\n';
   }
   else {
-    if (std::count_if(std::begin(vertsType), std::end(vertsType), [](unsigned char value) { return std::isdigit(value); }) ==
+    if (std::count_if(std::begin(vertsType), std::end(vertsType), [](char value) { return std::isdigit(value); }) ==
       vertsType.size()) {
       std::size_t vertsNum = std::stoi(vertsType);
       if (vertsNum <= 2) {
