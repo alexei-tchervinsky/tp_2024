@@ -23,12 +23,11 @@ std::ostream& ananjeva::getAreas(const std::vector< Polygon >& shapes, std::istr
     out << getMeanArea(shapes) << '\n';
   }
   else {
-
     //auto is_digit = std::bind(std::isdigit, std::placeholders::_1);
     //auto is_digit = std::bind(static_cast<int(*)(char)>(std::isdigit), std::placeholders::_1);
     //if (std::count_if(std::begin(areaType), std::end(areaType), static_cast<int(*)(int)>(std::isdigit)))
-    if (std::count_if(std::begin(areaType), std::end(areaType), [](int value) { return std::isdigit(value); }) ==
-      areaType.size()) {
+    if (static_cast< unsigned int >(std::count_if(std::begin(areaType), std::end(areaType), [](int value) { return std::isdigit(value); })) ==
+      static_cast< unsigned int >(areaType.size())) {
       std::size_t vertsNum = std::stoi(areaType);
       if (vertsNum <= 2) {
         throw std::logic_error("Incorrect verts number ");
@@ -166,8 +165,8 @@ std::ostream& ananjeva::countShapes(const std::vector< Polygon >& shapes, std::i
     out << countWithOddVerts(shapes) << '\n';
   }
   else {
-    if (std::count_if(std::begin(vertsType), std::end(vertsType), [](int value) { return std::isdigit(value); }) ==
-      vertsType.size()) {
+    if (static_cast< unsigned int >(std::count_if(std::begin(vertsType), std::end(vertsType), [](int value) { return std::isdigit(value); })) ==
+      static_cast< unsigned int >(vertsType.size())) {
       std::size_t vertsNum = std::stoi(vertsType);
       if (vertsNum <= 2) {
         throw std::logic_error("Incorrect verts number.");
