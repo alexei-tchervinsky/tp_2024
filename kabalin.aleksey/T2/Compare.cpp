@@ -14,4 +14,4 @@ namespace kabalin
     }
     return first.key3.length() < second.key3.length();
   }
-} // namespace kabalin
+}

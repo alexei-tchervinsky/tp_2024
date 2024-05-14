@@ -115,4 +115,4 @@ namespace kabalin
     out << " }";
     return out;
   }
-} // namespace kabalin
+}
