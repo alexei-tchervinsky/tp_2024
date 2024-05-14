@@ -6,7 +6,8 @@
 #include <limits>
 #include <vector>
 
-int main() {
+int main()
+{
   std::vector<kabalin::DataStruct> data_struct;
   while (std::cin.eof() != true) {
     std::copy(std::istream_iterator<kabalin::DataStruct>(std::cin),
