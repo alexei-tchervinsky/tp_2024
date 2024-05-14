@@ -4,7 +4,8 @@
 
 namespace kabalin
 {
-  struct Compare {
+  struct Compare
+  {
     bool operator()(DataStruct first, DataStruct second) const;
   };
 } // namespace kabalin

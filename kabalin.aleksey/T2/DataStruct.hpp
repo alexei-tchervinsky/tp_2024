@@ -4,28 +4,34 @@
 
 namespace kabalin
 {
-  struct DataStruct {
+  struct DataStruct
+  {
     double key1;
     long long key2;
     std::string key3;
   };
 
-  struct DelimiterIO {
+  struct DelimiterIO
+  {
     char exp;
   };
 
-  struct DoubleIO {
+  struct DoubleIO
+  {
     double &ref;
   };
-  struct LITIO {
+  struct LITIO
+  {
     long long &ref;
   };
 
-  struct StringIO {
+  struct StringIO
+  {
     std::string &ref;
   };
 
-  struct LabelIO {
+  struct LabelIO
+  {
     std::string exp;
   };
   std::istream &operator>>(std::istream &in, DelimiterIO &&dest);
