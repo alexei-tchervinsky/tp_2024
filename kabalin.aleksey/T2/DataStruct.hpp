@@ -1,6 +1,5 @@
 #ifndef DATASTRUCT_HPP
 #define DATASTRUCT_HPP
-// DBL SCI SLL LIT
 #include <string>
 namespace kabalin {
 struct DataStruct {
@@ -32,6 +31,7 @@ std::istream &operator>>(std::istream &in, DoubleIO &&dest);
 std::istream &operator>>(std::istream &in, StringIO &&dest);
 std::istream &operator>>(std::istream &in, LabelIO &&dest);
 std::istream &operator>>(std::istream &in, DataStruct &dest);
+std::istream &operator>>(std::istream &in, LITIO &&dest);
 std::ostream &operator<<(std::ostream &out, const DataStruct &dest);
 } // namespace kabalin
 

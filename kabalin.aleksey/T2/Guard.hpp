@@ -14,5 +14,4 @@ private:
   std::basic_ios<char>::fmtflags fmt_;
 };
 } // namespace kabalin
-
 #endif
