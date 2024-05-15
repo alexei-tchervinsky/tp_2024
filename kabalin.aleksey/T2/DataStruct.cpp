@@ -60,15 +60,7 @@ namespace kabalin
     {
       return in;
     }
-    in >> std::dec >> dest.ref;
-    if (in.peek() == 'l')
-    {
-      return in >> dest.ref >> DelimiterIO{'l'} >> DelimiterIO{'l'};
-    }
-    else
-    {
-      return in >> dest.ref >> DelimiterIO{'L'} >> DelimiterIO{'L'};
-    }
+    return in >> dest.ref >> DelimiterIO{'l'} >> DelimiterIO{'l'};
   }
 
   std::istream &operator>>(std::istream &in, LabelIO &&dest)
@@ -170,7 +162,7 @@ namespace kabalin
     }
     iofmtguard fmtguard(out);
     out << "(:key1 " << fromDoubleToScientific(src.key1);
-    out << ", :key2 " << src.key2 << "LL";
+    out << ", :key2 " << src.key2 << "ll";
     out << ":key3 \"" << src.key3 << "\":)";
     return out;
   }
