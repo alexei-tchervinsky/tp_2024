@@ -1,15 +1,6 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <iterator>
+#include "data_struct.h"
 #include <sstream>
 #include <iomanip>
-
-struct DataStruct {
-    double key1;
-    long long key2;
-    std::string key3;
-};
 
 std::istream& operator>>(std::istream& is, DataStruct& ds) {
     std::string line;
@@ -43,28 +34,4 @@ bool operator<(const DataStruct& a, const DataStruct& b) {
     if (a.key1 != b.key1) return a.key1 < b.key1;
     if (a.key2 != b.key2) return a.key2 < b.key2;
     return a.key3 < b.key3;
-}
-
-int main() {
-    std::vector<DataStruct> data;
-
-    std::string testData = R"(
-    (:key1 45.0d:key2 123ll:key3 "Apple":)
-    (:key1 10.5d:key2 -45ll:key3 "Banana":)
-    (:key1 45.0d:key2 123ll:key3 "Cherry":)
-    (:key1 10.5d:key2 123ll:key3 "Date":)
-    (:key1 45.0d:key2 -123ll:key3 "Fig":)
-    )";
-
-    std::istringstream iss(testData);
-
-    std::copy(std::istream_iterator<DataStruct>(iss),
-        std::istream_iterator<DataStruct>(),
-        std::back_inserter(data));
-
-    std::sort(data.begin(), data.end());
-
-    std::copy(data.begin(), data.end(), std::ostream_iterator<DataStruct>(std::cout, "\n"));
-
-    return 0;
 }

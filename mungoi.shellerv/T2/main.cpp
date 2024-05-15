@@ -1,34 +1,31 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <iterator>
+#include <sstream>
+#include <iomanip>
 #include "data_struct.h"
 
 int main() {
-    std::vector<DataStruct> dataVector;
+    std::vector<DataStruct> data;
 
-    std::string line;
-    while (std::getline(std::cin, line)) {
-        try {
-            DataStruct data;
-            std::istringstream iss(line);
-            iss >> data;
-            dataVector.push_back(data);
-        }
-        catch (...) {
-            continue;
-        }
-    }
-    std::sort(dataVector.begin(), dataVector.end());
+    std::string testData = R"(
+    (:key1 45.0d:key2 123ll:key3 "Apple":)
+    (:key1 10.5d:key2 -45ll:key3 "Banana":)
+    (:key1 45.0d:key2 123ll:key3 "Cherry":)
+    (:key1 10.5d:key2 123ll:key3 "Date":)
+    (:key1 45.0d:key2 -123ll:key3 "Fig":)
+    )";
 
-    for (const auto& data : dataVector) {
-        std::cout << data << std::endl;
-    }
+    std::istringstream iss(testData);
+
+    std::copy(std::istream_iterator<DataStruct>(iss),
+        std::istream_iterator<DataStruct>(),
+        std::back_inserter(data));
+
+    std::sort(data.begin(), data.end());
+
+    std::copy(data.begin(), data.end(), std::ostream_iterator<DataStruct>(std::cout, "\n"));
 
     return 0;
 }
-
-
-//Doing the test
-//(:key1 10.5d : key2 20ll : key3 "Hello" : )
-//(:key1 5.0d : key2 15ll : key3 "World" : )
-//(:key1 8.75d : key2 10ll : key3 "This is a test" : )
