@@ -34,6 +34,7 @@ namespace kabalin
   {
     std::string exp;
   };
+  std::string fromDoubleToScientific(double val);
   std::istream &operator>>(std::istream &in, DelimiterIO &&dest);
   std::istream &operator>>(std::istream &in, DoubleIO &&dest);
   std::istream &operator>>(std::istream &in, StringIO &&dest);

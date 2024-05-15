@@ -1,5 +1,6 @@
 #include "DataStruct.hpp"
 #include "Guard.hpp"
+#include <cmath>
 #include <iomanip>
 
 namespace kabalin
@@ -11,7 +12,7 @@ namespace kabalin
     {
       return in;
     }
-    char c = '0';
+    char c = '\0';
     in >> c;
     if (in && (c != dest.exp))
     {
@@ -20,14 +21,28 @@ namespace kabalin
     return in;
   }
 
-  std::istream &operator>>(std::istream &in, DoubleIO &&dest)
+  std::istream& operator>>(std::istream& in, DoubleIO&& dest)
   {
     std::istream::sentry sentry(in);
-    if (!sentry)
+    if(!sentry)
     {
       return in;
     }
-    return in >> dest.ref >> DelimiterIO{','};
+    int mantissa = 0;
+    int number = 0;
+    int power = 0;
+    in >> mantissa >> DelimiterIO{'.'} >> number;
+    if (in.peek() == 'e')
+    {
+      in >> DelimiterIO{ 'e' };
+    }
+    else
+    {
+      in >> DelimiterIO{ 'E' };
+    }
+    in >> power;
+    dest.ref = (mantissa * 1.0 + number * 0.01) * std::pow(10, power);
+    return in;
   }
 
   std::istream &operator>>(std::istream &in, StringIO &&dest)
@@ -46,6 +61,7 @@ namespace kabalin
     {
       return in;
     }
+    in >> std::dec >> dest.ref;
     if (in.peek() == 'l')
     {
       return in >> dest.ref >> DelimiterIO{'l'} >> DelimiterIO{'l'};
@@ -69,6 +85,39 @@ namespace kabalin
       in.setstate(std::ios::failbit);
     }
     return in;
+  }
+  std::string fromDoubleToScientific(double val)
+  {
+    int exp = 0;
+    if (val == 0 || std::abs(val) == 1)
+      exp = 0;
+    else if (std::abs(val) < 1)
+    {
+      while (std::abs(val) * 10 < 10)
+      {
+        val *= 10;
+        exp--;
+      }
+    }
+    else
+    {
+      while (std::abs(val) / 10 >= 1)
+      {
+        val /= 10;
+        exp++;
+      }
+    }
+    std::string res = std::to_string(val);
+    if(res.find('0') == 2 && res[4] == '0')
+    {
+      res.erase(3);
+    }
+    else
+    {
+      res.erase(4);
+    }
+    std::string result = res + (exp < 0 ? "e-" : "e+") + std::to_string(std::abs(exp));
+    return result;
   }
 
   std::istream &operator>>(std::istream &in, DataStruct &dest)
@@ -109,10 +158,11 @@ namespace kabalin
     }
     iofmtguard fmtguard(out);
     out << "{ ";
-    out << "\"key1\": " << std::fixed << std::setprecision(1) << src.key1<< ", ";
-    out << "\"key2\": " << src.key2;
+    out << "\"key1\": " << std::fixed << std::setprecision(1) << fromDoubleToScientific(src.key1)<< ", ";
+    out << "\"key2\": " << src.key2<<"LL";
     out << "\"key3\": " << src.key3;
     out << " }";
     return out;
   }
 }
+
