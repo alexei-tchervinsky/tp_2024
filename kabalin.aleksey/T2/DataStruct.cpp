@@ -1,8 +1,7 @@
 #include "DataStruct.hpp"
 #include "Guard.hpp"
 #include <cmath>
-#include <iomanip>
-
+#include <iostream>
 namespace kabalin
 {
   std::istream &operator>>(std::istream &in, DelimiterIO &&dest)
@@ -128,19 +127,32 @@ namespace kabalin
       return in;
     }
     DataStruct input;
+    std::string characters;
     {
       using sep = DelimiterIO;
-      using label = LabelIO;
-      using dbl = DoubleIO;
+      using lit = LITIO;
       using str = StringIO;
-      using LL = LITIO;
-      in >> sep{'('};
-      in >> label{"key1"} >> sep{':'} >> dbl{input.key1};
-      in >> sep{','};
-      in >> label{"key2"} >> sep{':'} >> LL{input.key2};
-      in >> sep{','};
-      in >> label{"key3"} >> sep{':'} >> str{input.key3};
-      in >> sep{')'};
+      using dbl = DoubleIO;
+      in >> sep{ '(' };
+      for(std::size_t i = 0; i < 3; i++)
+      {
+        in >> sep{ ':' };
+        in >> characters;
+        if (characters == "key1")
+        {
+          in >> dbl{ input.key1 };
+        }
+        else if (characters == "key2")
+        {
+          in >> lit{ input.key2 };
+        }
+        else
+        {
+          in >> str{ input.key3 };
+        }
+      }
+      in >> sep{ ':' };
+      in >> sep{ ')' };
     }
     if (in)
     {
@@ -157,11 +169,9 @@ namespace kabalin
       return out;
     }
     iofmtguard fmtguard(out);
-    out << "{ ";
-    out << "\"key1\": " << std::fixed << std::setprecision(1) << fromDoubleToScientific(src.key1)<< ", ";
-    out << "\"key2\": " << src.key2<<"LL";
-    out << "\"key3\": " << src.key3;
-    out << " }";
+    out << "(:key1 " << fromDoubleToScientific(src.key1);
+    out << ", :key2 " << src.key2 << "LL";
+    out << ":key3 \"" << src.key3 << "\":)";
     return out;
   }
 }
