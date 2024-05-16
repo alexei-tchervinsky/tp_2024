@@ -448,8 +448,8 @@ bool gredasov::isPointInPolygon(const Polygon& polygon, const Point& point)
       const Point& p1 = edge.first;
       const Point& p2 = edge.second;
 
-      if ((p1.y < point.y && p2.y >= point.y || p2.y < point.y && p1.y >= point.y) &&
-          (p1.x + (point.y - p1.y) / (p2.y - p1.y) * (p2.x - p1.x) < point.x))
+      if (((p1.y < point.y && p2.y >= point.y) || (p2.y < point.y && p1.y >= point.y)) &&
+         ((p1.x + (point.y - p1.y) / (p2.y - p1.y) * (p2.x - p1.x) < point.x)))
       {
         return true;
       }
