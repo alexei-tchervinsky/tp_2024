@@ -102,7 +102,7 @@ double gredasov::sumOfNumAreas(const std::vector<Polygon>& polygons, std::size_t
 double gredasov::getArea(const Polygon& polygon)
 {
   std::vector< int > pairs(polygon.pts.size());
-  
+
   std::transform(
     polygon.pts.begin() + 1,
     polygon.pts.end(),
@@ -113,9 +113,9 @@ double gredasov::getArea(const Polygon& polygon)
       return p1.x * p2.y - p1.y * p2.x;
     }
   );
-  
+
   pairs.push_back(polygon.pts.front().x * polygon.pts.back().y - polygon.pts.front().y * polygon.pts.back().x);
-  
+
   return 0.5 * abs(std::accumulate(pairs.cbegin(), pairs.cend(), 0));
 }
 
@@ -148,11 +148,11 @@ double gredasov::getMinMaxArea(const std::vector< Polygon >& polygons, std::size
   polygons.end(),
   areas.begin(),
   getArea);
-  
+
   auto it = std::minmax_element(areas.begin(), areas.end());
   double max = *it.second;
   double min = *it.first;
-  
+
   if (parameter == 1)
   {
     return max;
@@ -172,11 +172,11 @@ std::size_t gredasov::getMinMaxVertexes(const std::vector< Polygon >& polygons, 
       return polygon.pts.size();
     }
   );
-  
+
   auto it = std::minmax_element(vertexes.begin(), vertexes.end());
   std::size_t max = *it.second;
   std::size_t min = *it.first;
-  
+
   if (parameter == 1)
   {
     return max;
@@ -305,7 +305,7 @@ int gredasov::getMinMaxX(const Polygon& polygon, std::size_t parameter)
   );
   int maxX = *max_element(ptsX.begin(), ptsX.end());
   int minX = *min_element(ptsX.begin(), ptsX.end());
-  
+
   if (parameter == 1)
   {
     return maxX;
@@ -327,7 +327,7 @@ int gredasov::getMinMaxY(const Polygon& polygon, std::size_t parameter)
   );
   int maxY = *max_element(ptsY.begin(), ptsY.end());
   int minY = *min_element(ptsY.begin(), ptsY.end());
-  
+
   if (parameter == 1)
   {
     return maxY;
@@ -346,7 +346,7 @@ gredasov::Polygon gredasov::getFrame(const std::vector< Polygon >& polygons)
     std::bind(getMinMaxX, std::placeholders::_1, parameter)
   );
   int rightTopX = *max_element(ptsMaxX.begin(), ptsMaxX.end());
-  
+
   std::vector<int> ptsMinX(polygons.size());
   parameter = 2;
   std::transform(
@@ -356,7 +356,7 @@ gredasov::Polygon gredasov::getFrame(const std::vector< Polygon >& polygons)
     std::bind(getMinMaxX, std::placeholders::_1, parameter)
   );
   int leftBottomX = *min_element(ptsMinX.begin(), ptsMinX.end());
-  
+
   std::vector<int> ptsMaxY(polygons.size());
   parameter = 1;
   std::transform(
@@ -366,7 +366,7 @@ gredasov::Polygon gredasov::getFrame(const std::vector< Polygon >& polygons)
     std::bind(getMinMaxY, std::placeholders::_1, parameter)
   );
   int rightTopY = *max_element(ptsMaxY.begin(), ptsMaxY.end());
-  
+
   std::vector<int> ptsMinY(polygons.size());
   parameter = 2;
   std::transform(
@@ -376,11 +376,11 @@ gredasov::Polygon gredasov::getFrame(const std::vector< Polygon >& polygons)
     std::bind(getMinMaxY, std::placeholders::_1, parameter)
   );
   int leftBottomY = *min_element(ptsMinY.begin(), ptsMinY.end());
-  
+
   Polygon frame;
   frame.pts.push_back({ leftBottomX, leftBottomY });
   frame.pts.push_back({ rightTopX, rightTopY });
-  
+
   return frame;
 }
 
@@ -391,12 +391,12 @@ bool gredasov::isInFrame(const std::vector< Polygon >& polygons, const Polygon& 
   int maxX = frame.pts.at(1).x;
   int minY = frame.pts.at(0).y;
   int maxY = frame.pts.at(1).y;
-  
+
   int pMaxX = getMinMaxX(polygon, 1);
   int pMinX = getMinMaxX(polygon, 2);
   int pMaxY = getMinMaxY(polygon, 1);
   int pMinY = getMinMaxY(polygon, 2);
-  
+
   if ((pMaxX <= maxX) && (pMaxY <= maxY) && (pMinX >= minX) && (pMinY >= minY))
   {
     return true;
@@ -438,16 +438,13 @@ bool gredasov::isPointInPolygon(const Polygon& polygon, const Point& point)
       return std::make_pair(a, b);
     }
   );
-  edges.push_back(std::make_pair(polygon.pts.back(), polygon.pts.front())); // последняя сторона
+  edges.push_back(std::make_pair(polygon.pts.back(), polygon.pts.front()));
 
-  // Используем std::any_of для проверки пересечения луча с любой из сторон
   return std::any_of(
     edges.begin(),
     edges.end(),
     [&point](const std::pair<Point, Point>& edge)
     {
-      // Проверка пересечения луча, исходящего из point, с отрезком edge
-      //  (используем тот же алгоритм, что и в исходном коде)
       const Point& p1 = edge.first;
       const Point& p2 = edge.second;
 
@@ -474,7 +471,7 @@ bool gredasov::areTwoPolygonsIntersected(const Polygon& p1, const Polygon& p2)
   {
     return true;
   }
-  
+
   if (std::any_of(
     p2.pts.begin(),
     p2.pts.end(),
@@ -486,7 +483,7 @@ bool gredasov::areTwoPolygonsIntersected(const Polygon& p1, const Polygon& p2)
   {
     return true;
   }
-  
+
   return false;
 }
 

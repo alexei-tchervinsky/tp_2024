@@ -16,14 +16,14 @@ int main(int argc, const char * argv[])
     std::cerr << "Wrong input" << '\n';
     return 9;
   }
-  
+
   std::ifstream in(argv[1]);
   if (!in)
   {
     std::cerr << "Wrong input" << '\n';
     return 9;
   }
-  
+
   using namespace gredasov;
   std::vector< Polygon > polygons;
   while (!in.eof())
@@ -35,7 +35,7 @@ int main(int argc, const char * argv[])
       in.ignore(std::numeric_limits< std::streamsize >::max(), '\n');
     }
   }
-  
+
   std::map< std::string, std::function< void(const std::vector< Polygon > & polygons, std::ostream & out, std::istream & is) > > commands;
   {
     using namespace std::placeholders;
@@ -61,7 +61,7 @@ int main(int argc, const char * argv[])
       std::cin.ignore(std::numeric_limits< std::streamsize >::max(), '\n');
     }
   }
-  
+
   return 0;
 }
 
