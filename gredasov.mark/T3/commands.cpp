@@ -146,6 +146,10 @@ void gredasov::getMaxCommand(const std::vector< Polygon >& polygons, std::ostrea
 
 double gredasov::getMinMaxArea(const std::vector< Polygon >& polygons, std::size_t& parameter)
 {
+  if (polygons.empty())
+  {
+    throw std::logic_error("Empty data");
+  }
   std::vector< double > areas(polygons.size());
   std::transform(
   polygons.begin(),
@@ -166,6 +170,10 @@ double gredasov::getMinMaxArea(const std::vector< Polygon >& polygons, std::size
 
 std::size_t gredasov::getMinMaxVertexes(const std::vector< Polygon >& polygons, std::size_t& parameter)
 {
+  if (polygons.empty())
+  {
+    throw std::logic_error("Empty data");
+  }
   std::vector< double > vertexes(polygons.size());
   std::transform(
     polygons.begin(),
