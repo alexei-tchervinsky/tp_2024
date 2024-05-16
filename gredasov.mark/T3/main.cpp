@@ -60,6 +60,12 @@ int main(int argc, const char * argv[])
       std::cin.clear();
       std::cin.ignore(std::numeric_limits< std::streamsize >::max(), '\n');
     }
+    catch (const std::logic_error & e)
+    {
+      gredasov::outputMessage(std::cout, "<INVALID COMMAND>");
+      std::cin.clear();
+      std::cin.ignore(std::numeric_limits< std::streamsize >::max(), '\n');
+    }
   }
 
   return 0;

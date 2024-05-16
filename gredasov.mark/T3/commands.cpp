@@ -79,6 +79,10 @@ double gredasov::sumOfOddAreas(const std::vector<Polygon>& polygons)
 
 double gredasov::sumOfMeanAreas(const std::vector<Polygon>& polygons)
 {
+  if (polygons.empty())
+  {
+    throw std::logic_error("Empty data");
+  }
   return std::accumulate(polygons.cbegin(), polygons.cend(), 0.0, addArea) / polygons.size();
 }
 
