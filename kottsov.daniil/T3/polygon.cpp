@@ -72,7 +72,7 @@ namespace poly
       Point ipoint;
       std::vector<Point> ivector;
       for (size_t i = 0; i<ofVert; i++)
-      { 
+      {
         if (in >> ipoint)
         {
           ivector.push_back(ipoint);
@@ -172,7 +172,7 @@ namespace poly
     }
     return in >> num.ref;
   }
-  iofmtguard::iofmtguard(std::basic_ios<char>& s) :
+  iofmtguard::iofmtguard(std::basic_ios<char>& s):
     s_(s),
     fill_(s.fill()),
     precision_(s.precision()),

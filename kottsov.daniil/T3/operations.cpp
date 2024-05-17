@@ -290,7 +290,7 @@ double poly::getMaxArea(const std::vector<Polygon>& vector)
       double area = getPolyArea(polygon);
       if (area > max)
       {
-        return area; 
+        return area;
       }
       else
       {
@@ -314,7 +314,7 @@ size_t poly::getMaxVert(const std::vector<Polygon>& vector)
     {
       if (polygon.polygon_.size() > max)
       {
-        return polygon.polygon_.size(); 
+        return polygon.polygon_.size();
       }
       else
       {
@@ -339,7 +339,7 @@ double poly::getMinArea(const std::vector<Polygon>& vector)
       double area = getPolyArea(polygon);
       if (area < min)
       {
-        return area; 
+        return area;
       }
       else
       {
@@ -363,7 +363,7 @@ size_t poly::getMinVert(const std::vector<Polygon>& vector)
     {
       if (polygon.polygon_.size() < min)
       {
-        return polygon.polygon_.size(); 
+        return polygon.polygon_.size();
       }
       else
       {
@@ -462,7 +462,8 @@ size_t poly::rmecho(std::vector<Polygon>& vector, const Polygon& plg)
           flag = false;
           return false;
         }
-        else {
+        else
+        {
           return false;
         }
       }
@@ -516,7 +517,7 @@ size_t poly::same(const std::vector<Polygon>& vector, const Polygon& plg)
         {
           return total;
         }
-      } 
+      }
     }
   );
   return counter;
