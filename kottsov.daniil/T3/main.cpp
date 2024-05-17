@@ -13,8 +13,7 @@ int main(int args, char* fileinput[])
     return 1;
   }
   std::ifstream input(fileinput[1]);
-  std::istream::sentry ward(input);
-  if (!ward)
+  if (!input)
   {
     std::cerr << "ifstream failure\n";
     return 1;
