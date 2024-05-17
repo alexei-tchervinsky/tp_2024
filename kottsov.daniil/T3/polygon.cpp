@@ -22,7 +22,7 @@ namespace poly
     if (!in)
     {
       in.setstate(std::ios::failbit);
-      throw std::logic_error("invalid input");
+      throw std::logic_error("invalid cmd");
       return in;
     }
     return in;
@@ -65,7 +65,7 @@ namespace poly
       if (!in || ofVert<=2)
       {
         in.setstate(std::ios::failbit);
-        throw std::logic_error("invalid input");
+        throw std::logic_error("invalid cmd");
         return in;
       }
       Point ipoint;
@@ -83,7 +83,7 @@ namespace poly
       }
       else
       {
-        throw std::logic_error("errored");
+        throw std::logic_error("how did you even do that");
         in.setstate(std::ios::failbit);
         return in;
       }
@@ -125,16 +125,16 @@ namespace poly
     {
       double operator()(const Point& point1, const Point& point2)
       {
-        return std::abs((point2.x_*point1.y_)-(point2.y_*point1.x_));
+        return std::fabs((point1.x_*point2.y_)-(point1.y_*point2.x_));
       }
     };
     std::vector<double> subAreas(polygon.polygon_.size());
     std::transform(
-      ++polygon.polygon_.begin(),
-      polygon.polygon_.end(),
-      polygon.polygon_.begin(),
+      ++polygon.polygon_.cbegin(),
+      polygon.polygon_.cend(),
+      polygon.polygon_.cbegin(),
       subAreas.begin(),
-      std::bind(determine(),std::placeholders::_1,std::placeholders::_2)
+      std::bind(determine(),std::placeholders::_2,std::placeholders::_1)
     );
     double area = std::accumulate(
       subAreas.begin(),
@@ -145,7 +145,7 @@ namespace poly
       polygon.polygon_[polygon.polygon_.size()-1],
       polygon.polygon_[0]
     );
-    return std::abs((area + wrapped)) / 2.0;
+    return std::fabs((area - wrapped)) / 2.0;
   }
   std::istream& operator>>(std::istream& in, DefInput&& def)
   {

@@ -49,7 +49,7 @@ int main(int args, char* fileinput[])
       }
       else if (std::string(ex.what())==std::string("invalid cmd"))
       {
-        std::cerr << "<INVALID COMMAND>" << '\n';
+        std::cout << "<INVALID COMMAND>" << '\n';
       }
       std::cin.clear();
       std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');

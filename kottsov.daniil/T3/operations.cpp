@@ -43,6 +43,11 @@ void poly::ioUI(std::vector<Polygon>& vector, std::istream& in, std::ostream& ou
     }
     if (operation == "AREA")
     {
+      if (vector.empty())
+      {
+        throw std::logic_error("invalid cmd");
+        return;
+      }
       std::string sub;
       in >> string{ sub };
       if (!in)
@@ -71,7 +76,14 @@ void poly::ioUI(std::vector<Polygon>& vector, std::istream& in, std::ostream& ou
         try
         {
           int num{ std::stoi(sub) };
-          out << std::setprecision(1) << std::fixed << getSpecArea(vector,num) << '\n';
+          if (num>2)
+          {
+            out << std::setprecision(1) << std::fixed << getSpecArea(vector,num) << '\n';
+          }
+          else
+          {
+            throw std::invalid_argument("smol");
+          }
         }
         catch (const std::invalid_argument& ex)
         {
@@ -82,6 +94,11 @@ void poly::ioUI(std::vector<Polygon>& vector, std::istream& in, std::ostream& ou
     }
     else if (operation == "MAX")
     {
+      if (vector.empty())
+      {
+        throw std::logic_error("invalid cmd");
+        return;
+      }
       std::string sub;
       in >> string{ sub };
       if (!in)
@@ -108,6 +125,11 @@ void poly::ioUI(std::vector<Polygon>& vector, std::istream& in, std::ostream& ou
     }
     else if (operation == "MIN")
     {
+      if (vector.empty())
+      {
+        throw std::logic_error("invalid cmd");
+        return;
+      }
       std::string sub;
       in >> string{ sub };
       if (!in)
@@ -157,7 +179,14 @@ void poly::ioUI(std::vector<Polygon>& vector, std::istream& in, std::ostream& ou
         try
         {
           int num{ std::stoi(sub) };
-          out << countSpec(vector, num) << '\n';
+          if (num>2)
+          {
+            out << countSpec(vector, num) << '\n';
+          }
+          else
+          {
+            throw std::invalid_argument("smol");
+          }
         }
         catch(const std::invalid_argument& ex)
         {
@@ -168,9 +197,14 @@ void poly::ioUI(std::vector<Polygon>& vector, std::istream& in, std::ostream& ou
     }
     else if (operation == "RMECHO")
     {
+      if (vector.empty())
+      {
+        throw std::logic_error("invalid cmd");
+        return;
+      }
       Polygon polygon;
       in >> polygon;
-      if (!in)
+      if (!in || polygon.polygon_.empty())
       {
         in.setstate(std::ios::failbit);
         throw std::logic_error("invalid cmd");
@@ -181,9 +215,14 @@ void poly::ioUI(std::vector<Polygon>& vector, std::istream& in, std::ostream& ou
     }
     else if (operation == "SAME")
     {
+      if (vector.empty())
+      {
+        throw std::logic_error("invalid cmd");
+        return;
+      }
       Polygon polygon;
       in >> polygon;
-      if (!in)
+      if (!in || polygon.polygon_.empty())
       {
         in.setstate(std::ios::failbit);
         throw std::logic_error("invalid cmd");
