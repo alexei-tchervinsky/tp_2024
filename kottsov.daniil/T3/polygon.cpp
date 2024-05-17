@@ -58,10 +58,9 @@ namespace poly
     {
       return in;
     }
-    int ofVert = 0;
+    size_t ofVert = 0;
     {
       using number = NumberInput;
-      using expr = DefInput;
       in >> number{ ofVert };
       if (!in || ofVert<=2)
       {

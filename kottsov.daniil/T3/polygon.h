@@ -52,7 +52,7 @@ namespace poly
   std::istream& operator>>(std::istream& in, DefInput&& def);
   struct NumberInput
   {
-    int& ref;
+    size_t& ref;
   };
   std::istream& operator>>(std::istream& in, NumberInput&& num);
 };

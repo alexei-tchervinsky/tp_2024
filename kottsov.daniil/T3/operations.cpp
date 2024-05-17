@@ -34,8 +34,6 @@ void poly::ioUI(std::vector<Polygon>& vector, std::istream& in, std::ostream& ou
   std::string operation;
   {
     using string = ExpressionIO;
-    using symbol = DefInput;
-    using number = NumberInput;
     in >> string{ operation };
     if (!in)
     {
