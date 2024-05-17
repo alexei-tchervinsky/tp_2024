@@ -43,11 +43,6 @@ void poly::ioUI(std::vector<Polygon>& vector, std::istream& in, std::ostream& ou
     }
     if (operation == "AREA")
     {
-      if (vector.empty())
-      {
-        throw std::logic_error("invalid cmd");
-        return;
-      }
       std::string sub;
       in >> string{ sub };
       if (!in)
@@ -68,6 +63,11 @@ void poly::ioUI(std::vector<Polygon>& vector, std::istream& in, std::ostream& ou
       }
       else if (sub == "MEAN")
       {
+        if (vector.empty())
+        {
+          throw std::logic_error("invalid cmd");
+          return;
+        }
         out << std::setprecision(1) << std::fixed << getMeanArea(vector) << '\n';
         return;
       }

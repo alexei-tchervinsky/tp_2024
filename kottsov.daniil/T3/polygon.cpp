@@ -17,24 +17,16 @@ namespace poly
     {
       return in;
     }
-    in >> DefInput{ '(' } >> point.x_;
-    in >> DefInput{ ';' } >> point.y_ >> DefInput{ ')' };
-    if (!in)
+    int x = 0;
+    int y = 0;
+    in >> DefInput{ '(' } >> x;
+    in >> DefInput{ ';' } >> y >> DefInput{ ')' };
+    if (in)
     {
-      in.setstate(std::ios::failbit);
-      throw std::logic_error("invalid cmd");
-      return in;
+      point.x_ = x;
+      point.y_ = y;
     }
     return in;
-  }
-  std::istream& operator>>(std::istream& in, PointIO&& ptr)
-  {
-    std::istream::sentry ward(in);
-    if (!ward)
-    {
-      return in;
-    }
-    return in >> ptr.ref;
   }
   bool operator==(const Point& first, const Point& second)
   {
@@ -65,16 +57,25 @@ namespace poly
       if (!in || ofVert<=2)
       {
         in.setstate(std::ios::failbit);
-        throw std::logic_error("invalid cmd");
         return in;
       }
       Point ipoint;
       std::vector<Point> ivector;
       for (size_t i = 0; i<ofVert; i++)
       {
+        if (in.peek()!=' ')
+        {
+          in.setstate(std::ios::failbit);
+          return in;
+        }
         if (in >> ipoint)
         {
           ivector.push_back(ipoint);
+        }
+        else
+        {
+          in.setstate(std::ios::failbit);
+          return in;
         }
       }
       if (in && ivector.size() == ofVert && (in.get() == '\n'))
@@ -83,7 +84,6 @@ namespace poly
       }
       else
       {
-        throw std::logic_error("how did you even do that");
         in.setstate(std::ios::failbit);
         return in;
       }

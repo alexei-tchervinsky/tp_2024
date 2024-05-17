@@ -29,12 +29,7 @@ namespace poly
     int x_;
     int y_;
   };
-  struct PointIO
-  {
-    Point& ref;
-  };
   std::istream& operator>>(std::istream& in, Point& point);
-  std::istream& operator>>(std::istream& in, PointIO&& ptr);
   std::ostream& operator<<(std::ostream& out, const Point& point);
   bool operator==(const Point& first, const Point& second);
   struct Polygon

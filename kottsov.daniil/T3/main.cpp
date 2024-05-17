@@ -21,15 +21,12 @@ int main(int args, char* fileinput[])
   std::vector<inputType> vector;
   while (!input.eof())
   {
-    try
-    {
-      std::copy(
-        std::istream_iterator<inputType>(input),
-        std::istream_iterator<inputType>(),
-        std::back_inserter(vector)
-      );
-    }
-    catch (const std::logic_error& ex)
+    std::copy(
+      std::istream_iterator<inputType>(input),
+      std::istream_iterator<inputType>(),
+      std::back_inserter(vector)
+    );
+    if (!input && !input.eof())
     {
       input.clear();
       input.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
