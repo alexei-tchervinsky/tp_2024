@@ -11,8 +11,7 @@ bool evstigneev::Point::operator==(Point& p)
 
 double evstigneev::Polygon::getArea()
 {
-  auto cArea = std::bind(CArea{ points[1] }, std::placeholders::_1, 
-    std::placeholders::_2, points[0]);
+  auto cArea = std::bind(CArea{ points[1] }, std::placeholders::_1, std::placeholders::_2, points[0]);
   return std::accumulate(points.begin(), points.end(), 0.0, cArea);
 }
 
@@ -25,8 +24,7 @@ int evstigneev::Polygon::countAngle()
 
 double evstigneev::CArea::operator()(double d, Point& p1, Point& p2)
 {
-  d += 0.5 * std::abs((p2.x - point_.x) * (p1.y - point_.y) - 
-    (p1.x - point_.x) * (p2.y - point_.y));
+  d += 0.5 * std::abs((p2.x - point_.x) * (p1.y - point_.y) - (p1.x - point_.x) * (p2.y - point_.y));
   point_ = p1;
   return d;
 }
