@@ -1,6 +1,6 @@
 #ifndef COMMANDS_HPP
 #define COMMANDS_HPP
-#include "DataStruct.hpp"
+#include "dataStruct.hpp"
 
 namespace evstigneev
 {
