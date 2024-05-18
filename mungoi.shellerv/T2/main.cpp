@@ -5,7 +5,6 @@
 #include <algorithm>
 #include "data_struct.h"
 
-
 int main()
 {
     std::vector<DataStruct> data;
@@ -32,7 +31,7 @@ int main()
 
     if (!foundValidRecord)
     {
-        std::cerr << "Looks like there is no supported record. Cannot determine input. Test skipped" << std::endl;
+        std::cerr << "Test skipped" << std::endl;
         return 1;
     }
 
