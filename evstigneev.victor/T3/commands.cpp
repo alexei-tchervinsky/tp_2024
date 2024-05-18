@@ -14,12 +14,12 @@ double countArea(evstigneev::Polygon& poly) {
   return std::abs(area) / 2.0;
 }
 
-double sumAreasIfEven(double res, evstigneev::Polygon& poly)
+double sumAreaEven(double res, evstigneev::Polygon& poly)
 {
   return (poly.points.size() % 2 == 0) ? res + countArea(poly) : res;
 }
 
-double sumAreasIfOdd(double res, evstigneev::Polygon& poly)
+double sumAreaOdd(double res, evstigneev::Polygon& poly)
 {
   return (poly.points.size() % 2 != 0) ? res + countArea(poly) : res;
 }
@@ -29,7 +29,7 @@ double sumAreas(double res, evstigneev::Polygon& poly)
   return res + countArea(poly);
 }
 
-double sumAreasIfEqual(double res, evstigneev::Polygon& poly, size_t numOfVexes)
+double sumAreaEqual(double res, evstigneev::Polygon& poly, size_t numOfVexes)
 {
   return (poly.points.size() == numOfVexes) ? res + countArea(poly) : res;
 }
@@ -61,12 +61,12 @@ std::ostream& evstigneev::area(std::istream& in, std::ostream& out, std::vector<
 
 double countAreasEven(std::vector <evstigneev::Polygon>& poly)
 {
-  return std::accumulate(poly.cbegin(), poly.cend(), 0, sumAreasIfEven);
+  return std::accumulate(poly.cbegin(), poly.cend(), 0, sumAreaEven);
 }
 
 double countAreasOdd(std::vector <evstigneev::Polygon>& poly)
 {
-  return std::accumulate(poly.cbegin(), poly.cend(), 0, sumAreasIfOdd);
+  return std::accumulate(poly.cbegin(), poly.cend(), 0, sumAreaOdd);
 }
 
 double countAreasMean(std::vector <evstigneev::Polygon>& poly)
@@ -78,7 +78,7 @@ double countAreasMean(std::vector <evstigneev::Polygon>& poly)
 double countAreasVexes(std::vector <evstigneev::Polygon>& poly, int numOfVexes)
 {
   return std::accumulate(poly.cbegin(), poly.cend(), 0,
-    std::bind(sumAreasIfEqual, std::placeholders::_1, std::placeholders::_2, numOfVexes));
+    std::bind(sumAreaEqual, std::placeholders::_1, std::placeholders::_2, numOfVexes));
 }
 
 std::ostream& evstigneev::max(std::istream& in, std::ostream& out, std::vector<Polygon>& poly)
