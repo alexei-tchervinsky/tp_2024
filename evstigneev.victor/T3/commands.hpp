@@ -29,6 +29,7 @@ namespace evstigneev
   bool vexesEven(const Polygon& poly);
   bool vexesOdd(const Polygon& poly);
   bool numOfVexesEqual(const Polygon poly, size_t numOfVexes);
+  int getNumVexes(const Polygon poly);
 }
 
 #endif

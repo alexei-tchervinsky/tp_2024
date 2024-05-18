@@ -107,7 +107,7 @@ double evstigneev::maxArea(const std::vector<Polygon>& poly)
 double evstigneev::maxVexes(const std::vector<Polygon>& poly)
 {
   std::vector<int> numOfVexes(poly.size());
-  std::transform(poly.begin(), poly.end(), numOfVexes.begin(), numOfVexes);
+  std::transform(poly.begin(), poly.end(), numOfVexes.begin(), getNumVexes);
   return *std::max_element(numOfVexes.begin(), numOfVexes.end());
 }
 
@@ -136,7 +136,7 @@ double evstigneev::minArea(const std::vector<Polygon>& poly)
 double evstigneev::minVexes(const std::vector<Polygon>& poly)
 {
   std::vector<int> numOfVexes(poly.size());
-  std::transform(poly.begin(), poly.end(), numOfVexes.begin(), numOfVexes);
+  std::transform(poly.cbegin(), poly.cend(), numOfVexes.begin(), getNumVexes);
   return *std::min_element(numOfVexes.begin(), numOfVexes.end());
 }
 
@@ -189,4 +189,9 @@ bool evstigneev::vexesOdd(const Polygon& poly)
 bool evstigneev::numOfVexesEqual(const Polygon poly, size_t numOfVexes)
 {
   return poly.points.size() == numOfVexes;
+}
+
+int evstigneev::getNumVexes(const Polygon poly)
+{
+  return poly.points.size();
 }
