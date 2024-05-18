@@ -112,7 +112,7 @@ int main() {
                 return a.key1 < b.key1;
             if (a.key2 != b.key2)
                 return a.key2 < b.key2;
-            return a.key3.length() < b.key3.length();
+            return a.key3 < b.key3;
         });
 
         std::copy(data.begin(), data.end(), std::ostream_iterator<DataStruct>(std::cout, "\n"));
