@@ -58,7 +58,8 @@ std::istream& operator>>(std::istream& in, DataStruct& data)
             }
             else if (key == "key2")
             {
-                if (!(iss >> data.key2) || !(iss >> c) || (c != 'l' && c != 'L' || !(iss >> c) || (c != 'l' && c != 'L')))
+                if (!(iss >> data.key2) || !(iss >> c) || (c != 'l' && 
+                    c != 'L' || !(iss >> c) || (c != 'l' && c != 'L')))
                 {
                     in.setstate(std::ios::failbit);
                     return in;
@@ -90,7 +91,8 @@ std::ostream& operator<<(std::ostream& out, const DataStruct& data)
         return out;
     }
 
-    out << "( :key1 " << std::fixed << std::setprecision(1) << data.key1 << "d :key2 " << data.key2 << "ll :key3 " << std::quoted(data.key3) << " )";
+    out << "( :key1 " << std::fixed << std::setprecision(1) << data.key1 << 
+        "d :key2 " << data.key2 << "ll :key3 " << std::quoted(data.key3) << " )";
     return out;
 }
 
