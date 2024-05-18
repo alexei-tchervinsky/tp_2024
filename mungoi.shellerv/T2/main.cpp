@@ -16,41 +16,19 @@ int main()
         "( :key1 45.0d :key2 -123ll :key3 \"Fig\" )\n"
     );
 
-    bool foundValidRecord = false;
-
-    std::copy_if(
+    std::copy(
         std::istream_iterator<DataStruct>(iss),
         std::istream_iterator<DataStruct>(),
-        std::back_inserter(data),
-        [&foundValidRecord](const DataStruct& ds)
-        {
-            foundValidRecord = true;
-            return true;
-        }
+        std::back_inserter(data)
     );
 
-    if (!foundValidRecord)
-    {
-        std::cerr << "Test skipped" << std::endl;
-        return 1;
-    }
-
-    std::sort(
-        data.begin(), 
-        data.end(), 
-        [](const DataStruct& a, const DataStruct& b)
-        {
-            if (a.key1 != b.key1)
-            {
-                return a.key1 < b.key1;
-            }
-            if (a.key2 != b.key2)
-            {
-                return a.key2 < b.key2;
-            }
-            return a.key3.length() < b.key3.length();
-        }
-    );
+    std::sort(data.begin(), data.end(), [](const DataStruct& a, const DataStruct& b) {
+        if (a.key1 != b.key1)
+            return a.key1 < b.key1;
+        if (a.key2 != b.key2)
+            return a.key2 < b.key2;
+        return a.key3.length() < b.key3.length();
+        });
 
     std::copy(
         data.begin(),
@@ -60,4 +38,3 @@ int main()
 
     return 0;
 }
-

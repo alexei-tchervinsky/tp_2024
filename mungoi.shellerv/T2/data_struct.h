@@ -4,7 +4,6 @@
 #include <iostream>
 #include <string>
 
-
 struct DataStruct
 {
     double key1;
@@ -12,10 +11,7 @@ struct DataStruct
     std::string key3;
 };
 
-
 std::istream& operator>>(std::istream& in, DataStruct& data);
 std::ostream& operator<<(std::ostream& out, const DataStruct& data);
 
-
-#endif // DATA_STRUCT_H
-
+#endif
