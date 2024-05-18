@@ -59,6 +59,11 @@ std::istream& operator>>(std::istream& in, DataStruct& data)
                     return in;
                 }
             }
+            else
+            {
+                in.setstate(std::ios::failbit);
+                return in;
+            }
         }
 
         if (iss.peek() == ')')
