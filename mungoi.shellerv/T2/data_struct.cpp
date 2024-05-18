@@ -1,6 +1,7 @@
 #include "data_struct.h"
 #include <sstream>
 #include <iomanip>
+#include <iostream>  // Include for debugging
 
 std::istream& operator>>(std::istream& in, DataStruct& data)
 {
@@ -11,6 +12,7 @@ std::istream& operator>>(std::istream& in, DataStruct& data)
     std::string input;
     if (!std::getline(in, input, ')'))
     {
+        std::cerr << "Error reading line" << std::endl;  // Debugging output
         in.setstate(std::ios::failbit);
         return in;
     }
@@ -19,6 +21,7 @@ std::istream& operator>>(std::istream& in, DataStruct& data)
     char c;
     if (!(iss >> c) || c != '(')
     {
+        std::cerr << "Expected '(', but got: " << c << std::endl;  // Debugging output
         in.setstate(std::ios::failbit);
         return in;
     }
@@ -30,6 +33,7 @@ std::istream& operator>>(std::istream& in, DataStruct& data)
             std::string key;
             if (!(iss >> key))
             {
+                std::cerr << "Error reading key" << std::endl;  // Debugging output
                 in.setstate(std::ios::failbit);
                 return in;
             }
@@ -38,6 +42,7 @@ std::istream& operator>>(std::istream& in, DataStruct& data)
             {
                 if (!(iss >> data.key1) || !(iss >> c) || (c != 'd' && c != 'D'))
                 {
+                    std::cerr << "Error reading key1" << std::endl;  // Debugging output
                     in.setstate(std::ios::failbit);
                     return in;
                 }
@@ -47,6 +52,7 @@ std::istream& operator>>(std::istream& in, DataStruct& data)
                 if (!(iss >> data.key2) || !(iss >> c) || (c != 'l' &&
                     c != 'L') || !(iss >> c) || (c != 'l' && c != 'L'))
                 {
+                    std::cerr << "Error reading key2" << std::endl;  // Debugging output
                     in.setstate(std::ios::failbit);
                     return in;
                 }
@@ -55,12 +61,14 @@ std::istream& operator>>(std::istream& in, DataStruct& data)
             {
                 if (!(iss >> std::quoted(data.key3)))
                 {
+                    std::cerr << "Error reading key3" << std::endl;  // Debugging output
                     in.setstate(std::ios::failbit);
                     return in;
                 }
             }
             else
             {
+                std::cerr << "Unknown key: " << key << std::endl;  // Debugging output
                 in.setstate(std::ios::failbit);
                 return in;
             }
