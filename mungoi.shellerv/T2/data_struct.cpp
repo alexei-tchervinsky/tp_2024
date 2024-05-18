@@ -2,6 +2,7 @@
 #include <sstream>
 #include <iomanip>
 
+
 std::istream& operator>>(std::istream& in, DataStruct& data)
 {
     std::istream::sentry sentry(in);
@@ -80,6 +81,7 @@ std::istream& operator>>(std::istream& in, DataStruct& data)
     return in;
 }
 
+
 std::ostream& operator<<(std::ostream& out, const DataStruct& data)
 {
     std::ostream::sentry sentry(out);
@@ -94,3 +96,4 @@ std::ostream& operator<<(std::ostream& out, const DataStruct& data)
     
     return out;
 }
+

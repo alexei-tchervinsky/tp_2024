@@ -5,6 +5,7 @@
 #include <algorithm>
 #include "data_struct.h"
 
+
 int main()
 {
     std::vector<DataStruct> data;
@@ -60,3 +61,4 @@ int main()
 
     return 0;
 }
+
