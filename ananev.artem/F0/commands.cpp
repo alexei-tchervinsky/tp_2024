@@ -2,24 +2,29 @@
 
 namespace commands
 {
-  std::istream &operator>>(std::istream &in, DelimiterIO &&dest)
+  std::map< std::string, std::set<std::string> > input(std::istream &in)
   {
-    std::istream::sentry sentry(in);
-    if (!sentry)
+    std::vector< DictIO > dict;
+    while (!in.eof())
     {
-      return in;
+      std::copy(std::istream_iterator< DictIO >(in),
+      std::istream_iterator< DictIO >(),
+      std::back_inserter(dict));
+      if (in.fail())
+      {
+        in.clear();
+        in.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+      }
     }
-    char c = '\0';
-    in >> c;
-    if (in && (c != dest.del))
+    std::map< std::string, std::set<std::string> > input_dict;
+    for (auto& el : dict)
     {
-      in.setstate(std::ios::failbit);
+      input_dict[el.dict_el.first] = el.dict_el.second;
     }
-    return in;
+    return input_dict;
   }
-
   void OPEN(
-  std::shared_ptr< std::pair<std::string, std::map< std::string, std::vector<std::string> > > > dict,
+  std::shared_ptr< std::pair<std::string, std::map< std::string, std::set<std::string> > > > dict,
   std::istream &in, std::ostream &out)
   {
     if (dict->first != "")
@@ -41,62 +46,13 @@ namespace commands
     {
       throw std::invalid_argument("<EXCESS ARGUMENT>");
     }
-    std::map< std::string, std::vector<std::string> > input_dict;
-    std::string key;
-    std::string temp = "";
-    std::vector <std::string> translation;
-    while (!input_file.eof())
-    {
-      input_file >> DelimiterIO{'{'};
-      input_file >> key;
-      input_file >> DelimiterIO{'-'};
-      while (true)
-      {
-        char c;
-        input_file >> c;
-        if (c != ';' && c != '}' && c != '\n' && c != '\0')
-        {
-          temp += c;
-        }
-        else if (c == ';')
-        {
-          translation.push_back(temp);
-          temp = "";
-        }
-        else if (c == '}')
-        {
-          translation.push_back(temp);
-          temp = "";
-          break;
-        }
-        else
-        {
-          input_file.setstate(std::ios::failbit);
-          break;
-        }
-      }
-      if (input_file.fail())
-      {
-        input_file.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-        key = "";
-        temp = "";
-        translation.clear();
-        continue;
-      }
-      if (key != "")
-      {
-        input_dict[key] = translation;
-      }
-      key = "";
-      temp = "";
-      translation.clear();
-    }
     dict->first = input_name;
-    dict->second = input_dict;
+    dict->second = input(input_file);
+    out << "#succeed#\n";
   }
 
   void CLOSE(
-  std::shared_ptr< std::pair<std::string, std::map< std::string, std::vector<std::string> > > > dict,
+  std::shared_ptr< std::pair<std::string, std::map< std::string, std::set<std::string> > > > dict,
   std::istream &in, std::ostream &out)
   {
     std::string save = "N";
@@ -110,7 +66,7 @@ namespace commands
     }
     if (dict->first == "")
     {
-      throw std::invalid_argument("<DICT IST OPENED>");
+      throw std::invalid_argument("<DICT ISNT OPEN>");
     }
     if (save == "SAVE")
     {
@@ -123,46 +79,87 @@ namespace commands
       for (auto pair = dict->second.begin(); pair != dict->second.end(); pair++)
       {
         output_file << "{" << pair->first << " -";
-        for (std::size_t i = 0; i < pair->second.size(); i++)
+        for (auto trans = pair->second.begin(); trans != pair->second.end(); trans++)
         {
-          if (i == pair->second.size()-1)
-          {
-            output_file << " " << pair->second[i] << "}\n";
-          }
-          else
-          {
-            output_file << " " << pair->second[i] << ";";
-          }
+          output_file << " " << trans->data();
         }
+        output_file << "}\n";
       }
+      out << "#close " << dict->first << " and save#\n";
     }
     else if (save != "N")
     {
       throw std::invalid_argument("<EXCESS ARGUMENT>");
     }
+    else
+    {
+      out << "#close " << dict->first << "#\n";
+    }
     dict->first = "";
     dict->second.clear();
   }
   void COMPARE(
-  std::shared_ptr< std::pair<std::string, std::map< std::string, std::vector<std::string> > > > dict,
+  std::shared_ptr< std::pair<std::string, std::map< std::string, std::set<std::string> > > > dict,
   std::istream &in, std::ostream &out){std::cout <<"";}
+  void MERGE(
+  std::shared_ptr< std::pair<std::string, std::map< std::string, std::set<std::string> > > > dicts,
+  std::istream &in, std::ostream &out){}
 
   void INSERT(
-  std::shared_ptr< std::pair<std::string, std::map< std::string, std::vector<std::string> > > > dict,
-  std::istream &in, std::ostream &out){std::cout <<"";}
+  std::shared_ptr< std::pair<std::string, std::map< std::string, std::set<std::string> > > > dict,
+  std::istream &in, std::ostream &out)
+  {
+    if (dict->first == "")
+    {
+      throw std::invalid_argument("<DICT ISNT OPEN>");
+    }
+    DictIO argument;
+    in >> argument;
+    if (in.fail())
+    {
+      throw std::invalid_argument("<INVALID COMMANDS ARGUMENT>");
+    }
+    std::set<std::string> temp = argument.dict_el.second;
+    if (dict->second.count(argument.dict_el.first) != 0)
+    {
+      temp = dict->second[argument.dict_el.first];
+    }
+    temp.merge(argument.dict_el.second);
+    dict->second.insert_or_assign(argument.dict_el.first,
+    temp);
+    out << "#succeed#\n";
+  }
   void DELETE(
-  std::shared_ptr< std::pair<std::string, std::map< std::string, std::vector<std::string> > > > dict,
+  std::shared_ptr< std::pair<std::string, std::map< std::string, std::set<std::string> > > > dict,
   std::istream &in, std::ostream &out){std::cout <<"";}
   void SEARCH(
-  std::shared_ptr< std::pair<std::string, std::map< std::string, std::vector<std::string> > > > dict,
+  std::shared_ptr< std::pair<std::string, std::map< std::string, std::set<std::string> > > > dict,
   std::istream &in, std::ostream &out){std::cout <<"";}
   void CHANGE(
-  std::shared_ptr< std::pair<std::string, std::map< std::string, std::vector<std::string> > > > dict,
-  std::istream &in, std::ostream &out){std::cout <<"";}
+  std::shared_ptr< std::pair<std::string, std::map< std::string, std::set<std::string> > > > dict,
+  std::istream &in, std::ostream &out)
+  {
+    if (dict->first == "")
+    {
+      throw std::invalid_argument("<DICT ISNT OPEN>");
+    }
+    DictIO argument;
+    in >> argument;
+    if (in.fail())
+    {
+      throw std::invalid_argument("<INVALID COMMANDS ARGUMENT>");
+    }
+    if (dict->second.count(argument.dict_el.first) != 1)
+    {
+      throw std::invalid_argument("<NO SUCH KEY>");
+    }
+    dict->second.insert_or_assign(argument.dict_el.first, argument.dict_el.second);
+    out << "#succeed#\n";
+  }
   void SHOW(
-  std::shared_ptr< std::pair<std::string, std::map< std::string, std::vector<std::string> > > > dict,
+  std::shared_ptr< std::pair<std::string, std::map< std::string, std::set<std::string> > > > dict,
   std::istream &in, std::ostream &out){std::cout <<"";}
   void SHOWALL(
-  std::shared_ptr< std::pair<std::string, std::map< std::string, std::vector<std::string> > > > dict,
+  std::shared_ptr< std::pair<std::string, std::map< std::string, std::set<std::string> > > > dict,
   std::istream &in, std::ostream &out){std::cout <<"";}
 }

@@ -1,21 +1,19 @@
 #include "Commands.hpp"
 
-using namespace commands;
-
-
 int main()
 {
-  std::shared_ptr< std::pair<std::string, std::map< std::string, std::vector<std::string> > > >
-  dict(new std::pair<std::string, std::map< std::string, std::vector<std::string> > >);
+  std::shared_ptr< std::pair<std::string, std::map< std::string, std::set<std::string> > > >
+  dict(new std::pair<std::string, std::map< std::string, std::set<std::string> > >);
   dict->first = "";
   std::map< std::string, std::function< void(
-  std::shared_ptr< std::pair<std::string, std::map< std::string, std::vector<std::string> > > >,
+  std::shared_ptr< std::pair<std::string, std::map< std::string, std::set<std::string> > > >,
   std::istream &,
   std::ostream &) > > commands
   {
     {"OPEN", commands::OPEN},
     {"CLOSE", commands::CLOSE},
     {"COMPARE", commands::COMPARE},
+    {"MERGE", commands::MERGE},
     {"INSERT", commands::INSERT},
     {"DELETE", commands::DELETE},
     {"SEARCH", commands::SEARCH},

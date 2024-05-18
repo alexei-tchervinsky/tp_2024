@@ -1,9 +1,6 @@
 #ifndef COMMANDS_HPP
 #define COMMANDS_HPP
 #include <iomanip>
-#include <vector>
-#include <map>
-#include <string>
 #include <memory>
 #include <exception>
 #include <fstream>
@@ -11,44 +8,44 @@
 #include <iterator>
 #include <algorithm>
 #include <functional>
+#include <map>
 #include <iomanip>
-#include <iostream>
+#include "Structs.hpp"
+
+using namespace structs;
 
 namespace commands
 {
-  struct DelimiterIO
-  {
-    char del;
-  };
-  std::istream &operator>>(std::istream &in, DelimiterIO &&dest);
-
   void OPEN(
-  std::shared_ptr< std::pair<std::string, std::map< std::string, std::vector<std::string> > > > dicts,
+  std::shared_ptr< std::pair<std::string, std::map< std::string, std::set<std::string> > > > dicts,
   std::istream &in, std::ostream &out);
   void CLOSE(
-  std::shared_ptr< std::pair<std::string, std::map< std::string, std::vector<std::string> > > > dicts,
+  std::shared_ptr< std::pair<std::string, std::map< std::string, std::set<std::string> > > > dicts,
   std::istream &in, std::ostream &out);
   void COMPARE(
-  std::shared_ptr< std::pair<std::string, std::map< std::string, std::vector<std::string> > > > dicts,
+  std::shared_ptr< std::pair<std::string, std::map< std::string, std::set<std::string> > > > dicts,
+  std::istream &in, std::ostream &out);
+  void MERGE(
+  std::shared_ptr< std::pair<std::string, std::map< std::string, std::set<std::string> > > > dicts,
   std::istream &in, std::ostream &out);
 
   void INSERT(
-  std::shared_ptr< std::pair<std::string, std::map< std::string, std::vector<std::string> > > > dicts,
+  std::shared_ptr< std::pair<std::string, std::map< std::string, std::set<std::string> > > > dicts,
   std::istream &in, std::ostream &out);
   void DELETE(
-  std::shared_ptr< std::pair<std::string, std::map< std::string, std::vector<std::string> > > > dicts,
+  std::shared_ptr< std::pair<std::string, std::map< std::string, std::set<std::string> > > > dicts,
   std::istream &in, std::ostream &out);
   void SEARCH(
-  std::shared_ptr< std::pair<std::string, std::map< std::string, std::vector<std::string> > > > dicts,
+  std::shared_ptr< std::pair<std::string, std::map< std::string, std::set<std::string> > > > dicts,
   std::istream &in, std::ostream &out);
   void CHANGE(
-  std::shared_ptr< std::pair<std::string, std::map< std::string, std::vector<std::string> > > > dicts,
+  std::shared_ptr< std::pair<std::string, std::map< std::string, std::set<std::string> > > > dicts,
   std::istream &in, std::ostream &out);
   void SHOW(
-  std::shared_ptr< std::pair<std::string, std::map< std::string, std::vector<std::string> > > > dicts,
+  std::shared_ptr< std::pair<std::string, std::map< std::string, std::set<std::string> > > > dicts,
   std::istream &in, std::ostream &out);
   void SHOWALL(
-  std::shared_ptr< std::pair<std::string, std::map< std::string, std::vector<std::string> > > > dicts,
+  std::shared_ptr< std::pair<std::string, std::map< std::string, std::set<std::string> > > > dicts,
   std::istream &in, std::ostream &out);
 }
 
