@@ -8,9 +8,9 @@
 #include <string>
 #include <cmath>
 
-void semzin::Area(std::vector<Polygon> &polygons, std::ostream &out, std::istream &in)
+void semzin::Area(const std::vector<Polygon> &polygons, std::ostream &out, std::istream &in)
 {
-  std::map<std::string, std::function<void(std::vector<Polygon> & polygon, std::ostream & out)>> areas;
+  std::map<std::string, std::function<void(const std::vector<Polygon> &polygon, std::ostream &out)>> areas;
   areas["EVEN"] = AreaEven;
   areas["ODD"] = AreaOdd;
   areas["MEAN"] = AreaMean;
@@ -34,14 +34,14 @@ void semzin::Area(std::vector<Polygon> &polygons, std::ostream &out, std::istrea
   }
 }
 
-void semzin::AreaEven(std::vector<Polygon> &polygons, std::ostream &out)
+void semzin::AreaEven(const std::vector<Polygon> &polygons, std::ostream &out)
 {
   std::vector<Polygon> EvenPolygons_vec;
   std::copy_if(
       polygons.begin(),
       polygons.end(),
       std::back_inserter(EvenPolygons_vec),
-      [](Polygon &polygon)
+      [](const Polygon &polygon)
       {
         return !(polygon.points.size() % 2);
       });
@@ -49,14 +49,14 @@ void semzin::AreaEven(std::vector<Polygon> &polygons, std::ostream &out)
   out << std::setprecision(1) << sum << '\n';
 }
 
-void semzin::AreaOdd(std::vector<Polygon> &polygons, std::ostream &out)
+void semzin::AreaOdd(const std::vector<Polygon> &polygons, std::ostream &out)
 {
   std::vector<Polygon> OddPolygons_vec;
   std::copy_if(
       polygons.begin(),
       polygons.end(),
       std::back_inserter(OddPolygons_vec),
-      [](Polygon &polygon)
+      [](const Polygon &polygon)
       {
         return (polygon.points.size() % 2);
       });
@@ -64,7 +64,7 @@ void semzin::AreaOdd(std::vector<Polygon> &polygons, std::ostream &out)
   out << std::setprecision(1) << sum << '\n';
 }
 
-void semzin::AreaMean(std::vector<Polygon> &polygons, std::ostream &out)
+void semzin::AreaMean(const std::vector<Polygon> &polygons, std::ostream &out)
 {
   if (polygons.empty())
   {
@@ -74,7 +74,7 @@ void semzin::AreaMean(std::vector<Polygon> &polygons, std::ostream &out)
   out << std::setprecision(1) << sum / polygons.size() << '\n';
 }
 
-void semzin::AreaVersNum(std::size_t vertexes, std::vector<Polygon> &polygons, std::ostream &out)
+void semzin::AreaVersNum(std::size_t vertexes, const std::vector<Polygon> &polygons, std::ostream &out)
 {
   auto NVertexes = std::bind(std::equal_to<size_t>{}, vertexes, std::placeholders::_1);
   std::vector<Polygon> polygonsWithNVertexes;
@@ -82,7 +82,7 @@ void semzin::AreaVersNum(std::size_t vertexes, std::vector<Polygon> &polygons, s
       polygons.begin(),
       polygons.end(),
       std::back_inserter(polygonsWithNVertexes),
-      [NVertexes](Polygon &polygon)
+      [NVertexes](const Polygon &polygon)
       {
         return NVertexes(polygon.points.size());
       });
@@ -91,14 +91,14 @@ void semzin::AreaVersNum(std::size_t vertexes, std::vector<Polygon> &polygons, s
   out << std::setprecision(1) << sum << '\n';
 }
 
-double semzin::sumAreas(std::vector<Polygon> &polygons)
+double semzin::sumAreas(const std::vector<Polygon> &polygons)
 {
   std::vector<Polygon> AreasOfPolygons_vec;
   std::transform(
       polygons.begin(),
       polygons.end(),
       std::back_inserter(AreasOfPolygons_vec),
-      [](Polygon &polygon)
+      [](const Polygon &polygon)
       {
         return getArea(polygon);
       });
@@ -150,9 +150,9 @@ double semzin::getArea(const Polygon &polygon)
   return 0.5 * std::abs(sum + polygon.points.back().x * polygon.points.front().y - diff - polygon.points.front().x * polygon.points.back().y);
 }
 
-void semzin::Max(std::vector<Polygon> &polygons, std::ostream &out, std::istream &in)
+void semzin::Max(const std::vector<Polygon> &polygons, std::ostream &out, std::istream &in)
 {
-  std::map<std::string, std::function<void(std::vector<Polygon> & polygons, std::ostream & out)>> maxes;
+  std::map<std::string, std::function<void(const std::vector<Polygon> &polygons, std::ostream &out)>> maxes;
   maxes["AREA"] = maxArea;
   maxes["VERTEXES"] = maxVertexes;
   auto outInvalid = std::bind(outMessage, std::placeholders::_1, "<INVALID COMMAND>\n");
@@ -168,14 +168,14 @@ void semzin::Max(std::vector<Polygon> &polygons, std::ostream &out, std::istream
   }
 }
 
-void semzin::maxArea(std::vector<Polygon> &polygons, std::ostream &out)
+void semzin::maxArea(const std::vector<Polygon> &polygons, std::ostream &out)
 {
   std::vector<double> areasOfPolygons_vec;
   std::transform(
       polygons.begin(),
       polygons.end(),
       std::back_inserter(areasOfPolygons_vec),
-      [](Polygon &polygon)
+      [](const Polygon &polygon)
       {
         return getArea(polygon);
       });
@@ -187,14 +187,14 @@ void semzin::maxArea(std::vector<Polygon> &polygons, std::ostream &out)
   out << std::setprecision(1) << areasOfPolygons_vec.back() << '\n';
 }
 
-void semzin::maxVertexes(std::vector<Polygon> &polygons, std::ostream &out)
+void semzin::maxVertexes(const std::vector<Polygon> &polygons, std::ostream &out)
 {
   std::vector<std::size_t> vertexesOfPolygons_vec;
   std::transform(
       polygons.begin(),
       polygons.end(),
       std::back_inserter(vertexesOfPolygons_vec),
-      [](Polygon &polygon)
+      [](const Polygon &polygon)
       {
         return polygon.points.size();
       });
@@ -206,9 +206,9 @@ void semzin::maxVertexes(std::vector<Polygon> &polygons, std::ostream &out)
   out << vertexesOfPolygons_vec.back() << '\n';
 }
 
-void semzin::Min(std::vector<Polygon> &polygons, std::ostream &out, std::istream &in)
+void semzin::Min(const std::vector<Polygon> &polygons, std::ostream &out, std::istream &in)
 {
-  std::map<std::string, std::function<void(std::vector<Polygon> & polygons, std::ostream & out)>> mines;
+  std::map<std::string, std::function<void(const std::vector<Polygon> &polygons, std::ostream &out)>> mines;
   mines["AREA"] = minArea;
   mines["VERTEXES"] = minVertexes;
   auto outInvalid = std::bind(outMessage, std::placeholders::_1, "<INVALID COMMAND>\n");
@@ -224,14 +224,14 @@ void semzin::Min(std::vector<Polygon> &polygons, std::ostream &out, std::istream
   }
 }
 
-void semzin::minArea(std::vector<Polygon> &polygons, std::ostream &out)
+void semzin::minArea(const std::vector<Polygon> &polygons, std::ostream &out)
 {
   std::vector<double> areasOfPolygons_vec;
   std::transform(
       polygons.begin(),
       polygons.end(),
       std::back_inserter(areasOfPolygons_vec),
-      [](Polygon &polygon)
+      [](const Polygon &polygon)
       {
         return getArea(polygon);
       });
@@ -243,14 +243,14 @@ void semzin::minArea(std::vector<Polygon> &polygons, std::ostream &out)
   out << std::setprecision(1) << areasOfPolygons_vec.front() << '\n';
 }
 
-void semzin::minVertexes(std::vector<Polygon> &polygons, std::ostream &out)
+void semzin::minVertexes(const std::vector<Polygon> &polygons, std::ostream &out)
 {
   std::vector<std::size_t> vertexesOfPolygons_vec;
   std::transform(
       polygons.begin(),
       polygons.end(),
       std::back_inserter(vertexesOfPolygons_vec),
-      [](Polygon &polygon)
+      [](const Polygon &polygon)
       {
         return polygon.points.size();
       });
@@ -262,9 +262,9 @@ void semzin::minVertexes(std::vector<Polygon> &polygons, std::ostream &out)
   out << vertexesOfPolygons_vec.front() << '\n';
 }
 
-void semzin::Count(std::vector<Polygon> &polygons, std::ostream &out, std::istream &in)
+void semzin::Count(const std::vector<Polygon> &polygons, std::ostream &out, std::istream &in)
 {
-  std::map<std::string, std::function<void(std::vector<Polygon> & polygons, std::ostream & out)>> counts;
+  std::map<std::string, std::function<void(const std::vector<Polygon> &polygons, std::ostream &out)>> counts;
   counts["EVEN"] = CountEven;
   counts["ODD"] = CountOdd;
   auto outInvalid = std::bind(outMessage, std::placeholders::_1, "<INVALID COMMAND>\n");
@@ -287,14 +287,14 @@ void semzin::Count(std::vector<Polygon> &polygons, std::ostream &out, std::istre
   }
 }
 
-void semzin::CountEven(std::vector<Polygon> &polygons, std::ostream &out)
+void semzin::CountEven(const std::vector<Polygon> &polygons, std::ostream &out)
 {
   std::vector<std::size_t> EvenPolygons_vec;
   std::transform(
       polygons.begin(),
       polygons.end(),
       std::back_inserter(EvenPolygons_vec),
-      [](Polygon &polygon)
+      [](const Polygon &polygon)
       {
         return !(polygon.points.size() % 2);
       });
@@ -306,14 +306,14 @@ void semzin::CountEven(std::vector<Polygon> &polygons, std::ostream &out)
   out << EvenNum << '\n';
 }
 
-void semzin::CountOdd(std::vector<Polygon> &polygons, std::ostream &out)
+void semzin::CountOdd(const std::vector<Polygon> &polygons, std::ostream &out)
 {
   std::vector<std::size_t> OddPolygons_vec;
   std::transform(
       polygons.begin(),
       polygons.end(),
       std::back_inserter(OddPolygons_vec),
-      [](Polygon &polygon)
+      [](const Polygon &polygon)
       {
         return (polygon.points.size() % 2);
       });
@@ -325,14 +325,14 @@ void semzin::CountOdd(std::vector<Polygon> &polygons, std::ostream &out)
   out << OddNum << '\n';
 }
 
-void semzin::CountVertexes(std::size_t vertexes, std::vector<Polygon> &polygons, std::ostream &out)
+void semzin::CountVertexes(std::size_t vertexes, const std::vector<Polygon> &polygons, std::ostream &out)
 {
   std::vector<std::size_t> NVertexesPolygons_vec;
   std::transform(
       polygons.begin(),
       polygons.end(),
       std::back_inserter(NVertexesPolygons_vec),
-      [vertexes](Polygon &polygon)
+      [vertexes](const Polygon &polygon)
       {
         return polygon.points.size() == vertexes;
       });

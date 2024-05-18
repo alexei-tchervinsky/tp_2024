@@ -45,7 +45,7 @@ namespace semzin
     }
     Polygon polygon;
     std::size_t vertexes;
-    if (vertexes < 3)
+    if (!(in >> vertexes))
     {
       in.setstate(std::ios::failbit);
     }
