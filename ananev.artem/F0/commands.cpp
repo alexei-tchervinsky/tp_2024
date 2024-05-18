@@ -216,7 +216,25 @@ namespace commands
     {
       throw std::invalid_argument("<EXCESS ARGUMENT>");
     }
-    dict->second.merge(input(input_file));
+    std::map< std::string, std::set<std::string> > other_dict = input(input_file);
+    std::map< std::string, std::set<std::string> > this_dict = dict->second;
+    bool is;
+    for (auto other_pair = other_dict.begin(); other_pair != other_dict.end(); other_pair++)
+    {
+      is = false;
+      for (auto this_pair = this_dict.begin(); this_pair != this_dict.end(); this_pair++)
+      {
+        if (this_pair->first == other_pair->first)
+        {
+          is = true;
+          break;
+        }
+      }
+      if (!is)
+      {
+        dict->second[other_pair->first] = other_pair->second;
+      }
+    }
     out << "#succeed#\n";
   }
 

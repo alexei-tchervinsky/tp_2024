@@ -10,6 +10,7 @@
 #include <functional>
 #include <map>
 #include <iomanip>
+#include <vector>
 #include "Structs.hpp"
 
 using namespace structs;
