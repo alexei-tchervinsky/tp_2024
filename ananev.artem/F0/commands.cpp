@@ -218,19 +218,9 @@ namespace commands
     }
     std::map< std::string, std::set<std::string> > other_dict = input(input_file);
     std::map< std::string, std::set<std::string> > this_dict = dict->second;
-    bool is;
     for (auto other_pair = other_dict.begin(); other_pair != other_dict.end(); other_pair++)
     {
-      is = false;
-      for (auto this_pair = this_dict.begin(); this_pair != this_dict.end(); this_pair++)
-      {
-        if (this_pair->first == other_pair->first)
-        {
-          is = true;
-          break;
-        }
-      }
-      if (!is)
+      if (this_dict.find(other_pair->first) == this_dict.cend())
       {
         dict->second[other_pair->first] = other_pair->second;
       }
@@ -258,6 +248,14 @@ namespace commands
       temp = dict->second[argument.dict_el.first];
     }
     temp.merge(argument.dict_el.second);
+    for (auto other_argument = argument.dict_el.second.begin();
+    other_argument != argument.dict_el.second.end(); other_argument++)
+    {
+      if (temp.find(*other_argument) == temp.cend())
+      {
+        temp.insert(*other_argument);
+      }
+    }
     dict->second.insert_or_assign(argument.dict_el.first,
     temp);
     out << "#succeed#\n";
