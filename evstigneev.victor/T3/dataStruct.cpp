@@ -1,8 +1,5 @@
 #include "dataStruct.hpp"
 #include "delimiter.hpp"
-#include <functional>
-#include <numeric>
-#include <algorithm>
 
 std::istream& evstigneev::operator>>(std::istream& in, evstigneev::Point& dest)
 {
