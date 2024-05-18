@@ -227,7 +227,20 @@ namespace commands
     }
     out << "#succeed#\n";
   }
-
+  void assign(
+  std::shared_ptr< std::pair<std::string, std::map< std::string, std::set<std::string> > > > dict,
+  std::string key, std::set<std::string> temp)
+  {
+    if (dict->second.find(key) == dict->second.cend())
+    {
+      dict->second[key] = temp;
+    }
+    else
+    {
+      dict->second.erase(key);
+      dict->second[key] = temp;
+    }
+  }
   void INSERT(
   std::shared_ptr< std::pair<std::string, std::map< std::string, std::set<std::string> > > > dict,
   std::istream &in, std::ostream &out)
@@ -255,8 +268,7 @@ namespace commands
         temp.insert(*other_argument);
       }
     }
-    dict->second.insert_or_assign(argument.dict_el.first,
-    temp);
+    assign(dict, argument.dict_el.first, temp);
     out << "#succeed#\n";
   }
   void DELETE(
@@ -324,7 +336,7 @@ namespace commands
     {
       throw std::invalid_argument("<NO SUCH KEY>");
     }
-    dict->second.insert_or_assign(argument.dict_el.first, argument.dict_el.second);
+    assign(dict, argument.dict_el.first, argument.dict_el.second);
     out << "#succeed#\n";
   }
   void SHOW(
