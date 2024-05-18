@@ -28,7 +28,7 @@ int main()
         if (a.key2 != b.key2)
             return a.key2 < b.key2;
         return a.key3.length() < b.key3.length();
-        });
+    });
 
     std::copy(
         data.begin(),
