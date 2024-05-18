@@ -247,7 +247,6 @@ namespace commands
     {
       temp = dict->second[argument.dict_el.first];
     }
-    temp.merge(argument.dict_el.second);
     for (auto other_argument = argument.dict_el.second.begin();
     other_argument != argument.dict_el.second.end(); other_argument++)
     {
