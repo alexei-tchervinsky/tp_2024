@@ -1,12 +1,13 @@
 #include <iostream>
-#include <fstream>
-#include <iterator>
-#include <algorithm>
-#include "Polygon.hpp"
-#include "Commands.hpp"
-#include <limits>
 #include <map>
+#include <vector>
+#include <fstream>
+#include <string>
+#include <utility>
+#include <limits>
 #include <functional>
+#include <iterator>
+#include "Commands.hpp"
 
 using namespace semzin;
 int main(int argc, char *argv[])

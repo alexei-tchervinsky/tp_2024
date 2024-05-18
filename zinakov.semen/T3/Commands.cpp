@@ -1,9 +1,12 @@
 #include "Commands.hpp"
 #include <map>
-#include <string>
+#include <algorithm>
+#include <iostream>
 #include <functional>
 #include <numeric>
 #include <iomanip>
+#include <string>
+#include <cmath>
 
 void semzin::Area(std::vector<Polygon> &polygons, std::ostream &out, std::istream &in)
 {

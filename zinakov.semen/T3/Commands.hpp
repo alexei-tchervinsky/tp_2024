@@ -2,6 +2,8 @@
 #define COMMANDS_HPP
 
 #include "Polygon.hpp"
+#include <string>
+#include <functional>
 
 namespace semzin
 {
