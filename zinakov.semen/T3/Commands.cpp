@@ -367,6 +367,7 @@ void semzin::Perms(const std::vector<Polygon> &polygons, std::ostream &out, std:
   {
     auto comparePolygons = std::bind(checkPerms, givenPolygon, std::placeholders::_1);
     std::size_t count = std::count_if(polygons.begin(), polygons.end(), comparePolygons);
+    out << count << '\n';
   }
 }
 
@@ -402,6 +403,18 @@ bool semzin::isRightAngle(const Polygon &polygon)
       polygon.points.end(),
       std::back_inserter(points_vec),
       makeVector);
+  points_vec.push_back(makeVector(polygon.points.back(), polygon.points.front()));
+  std::vector<double> cosOfVectors;
+  auto getCos = std::bind(cosFromVects, std::placeholders::_1, std::placeholders::_2);
+  std::transform(
+      points_vec.begin(),
+      std::prev(points_vec.end()),
+      std::next(points_vec.begin()),
+      std::back_inserter(cosOfVectors),
+      getCos);
+  cosOfVectors.push_back(getCos(points_vec.back(), points_vec.front()));
+  return std::find_if(cosOfVectors.begin(), cosOfVectors.end(), [](const double &cos)
+                      { return cos == 0; }) != cosOfVectors.end();
 }
 
 semzin::Point semzin::vectorOnCoords(const semzin::Point &firstPoint, const semzin::Point &secondPoint)
@@ -409,12 +422,12 @@ semzin::Point semzin::vectorOnCoords(const semzin::Point &firstPoint, const semz
   return semzin::Point{secondPoint.x - firstPoint.x, secondPoint.y - firstPoint.y};
 }
 
-double semzin::tangensFromVects(const semzin::Point &firstPoint, const semzin::Point &secondPoint)
+double semzin::cosFromVects(const semzin::Point &firstPoint, const semzin::Point &secondPoint)
 {
-  double deltaY = (secondPoint.y - firstPoint.y);
-  double deltaX = (secondPoint.x - firstPoint.x);
-  const double PI = acos(-1.0);
-  return atan2(deltaY, deltaX) * 180 / PI;
+  double topExpr = (firstPoint.x * secondPoint.x + firstPoint.y * secondPoint.y);
+  double botExprFirst = std::sqrt(std::pow(firstPoint.x, 2) + std::pow(firstPoint.y, 2));
+  double botExprSecond = std::sqrt(std::pow(secondPoint.x, 2) + std::pow(secondPoint.y, 2));
+  return topExpr / (botExprFirst * botExprSecond);
 }
 
 void semzin::outMessage(std::ostream &out, const std::string &message)

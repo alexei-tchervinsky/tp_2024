@@ -35,7 +35,7 @@ namespace semzin
   void Rightshapes(const std::vector<Polygon> &polygons, std::ostream &out);
   bool isRightAngle(const Polygon &polygon);
   Point vectorOnCoords(const Point &firstPoint, const Point &secondPoint);
-  double tangensFromVects(const Point &firstPoint, const Point &secondPoint);
+  double cosFromVects(const Point &firstPoint, const Point &secondPoint);
 
   void outMessage(std::ostream &out, const std::string &message);
 }
