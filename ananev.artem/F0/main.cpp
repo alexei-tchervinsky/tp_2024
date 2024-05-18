@@ -10,6 +10,7 @@ int main()
   std::istream &,
   std::ostream &) > > commands
   {
+    {"HELP", commands::HELP},
     {"OPEN", commands::OPEN},
     {"CLOSE", commands::CLOSE},
     {"COMPARE", commands::COMPARE},
@@ -22,6 +23,14 @@ int main()
     {"SHOWALL", commands::SHOWALL}
   };
   std::cout << std::fixed;
+  setlocale(LC_ALL, "Russian");
+  std::cout << "#####################################################################################\n\
+  Это Англо-русский словарь Ананьева Артема:\n\
+  Команда HELP:\n\
+  1.'HELP' выводит данный сценарий;\n\
+  2.'HELP COMMAND' выводит сценарий с описанием встроенных команд;\n\
+  3.'HELP INFO' выводит сценарий с описанием открытого словаря\n";
+  std::cout << "#####################################################################################\n";
   while (!std::cin.eof())
   {
     try
