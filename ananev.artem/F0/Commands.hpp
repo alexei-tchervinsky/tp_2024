@@ -48,8 +48,4 @@ namespace commands
   std::shared_ptr< std::pair<std::string, std::map< std::string, std::set<std::string> > > > dicts,
   std::istream &in, std::ostream &out);
 }
-
-
-
-
 #endif

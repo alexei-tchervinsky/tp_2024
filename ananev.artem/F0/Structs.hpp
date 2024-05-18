@@ -27,5 +27,4 @@ namespace structs
   std::istream &operator>>(std::istream &in, RussianIO &&dest);
   std::istream &operator>>(std::istream &in, DictIO &dest);
 }
-
 #endif
