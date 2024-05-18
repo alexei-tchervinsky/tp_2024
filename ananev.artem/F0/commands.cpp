@@ -60,9 +60,9 @@ namespace commands
     {
       in >> save;
       if (in.get() != '\n')
-    {
-      throw std::invalid_argument("<EXCESS ARGUMENT>");
-    }
+      {
+        throw std::invalid_argument("<EXCESS ARGUMENT>");
+      }
     }
     if (dict->first == "")
     {
@@ -131,10 +131,51 @@ namespace commands
   }
   void DELETE(
   std::shared_ptr< std::pair<std::string, std::map< std::string, std::set<std::string> > > > dict,
-  std::istream &in, std::ostream &out){std::cout <<"";}
+  std::istream &in, std::ostream &out)
+  {
+    if (dict->first == "")
+    {
+      throw std::invalid_argument("<DICT ISNT OPEN>");
+    }
+    if (in.get() == '\n')
+    {
+      throw std::invalid_argument("<INVALID COMMANDS ARGUMENT>");
+    }
+    std::string key;
+    in >> key;
+    if (dict->second.count(key) == 1)
+    {
+      dict->second.erase(key);
+      out << "#succed#\n";
+    }
+    else
+    {
+      out << "#not found#\n";
+    }
+  }
   void SEARCH(
   std::shared_ptr< std::pair<std::string, std::map< std::string, std::set<std::string> > > > dict,
-  std::istream &in, std::ostream &out){std::cout <<"";}
+  std::istream &in, std::ostream &out)
+  {
+    if (dict->first == "")
+    {
+      throw std::invalid_argument("<DICT ISNT OPEN>");
+    }
+    if (in.get() == '\n')
+    {
+      throw std::invalid_argument("<INVALID COMMANDS ARGUMENT>");
+    }
+    std::string key;
+    in >> key;
+    if (dict->second.count(key) == 1)
+    {
+      out << "#found#\n";
+    }
+    else
+    {
+      out << "#not found#\n";
+    }
+  }
   void CHANGE(
   std::shared_ptr< std::pair<std::string, std::map< std::string, std::set<std::string> > > > dict,
   std::istream &in, std::ostream &out)
@@ -158,7 +199,33 @@ namespace commands
   }
   void SHOW(
   std::shared_ptr< std::pair<std::string, std::map< std::string, std::set<std::string> > > > dict,
-  std::istream &in, std::ostream &out){std::cout <<"";}
+  std::istream &in, std::ostream &out)
+  {
+    if (dict->first == "")
+    {
+      throw std::invalid_argument("<DICT ISNT OPEN>");
+    }
+    if (in.get() == '\n')
+    {
+      throw std::invalid_argument("<INVALID COMMANDS ARGUMENT>");
+    }
+    std::string key;
+    in >> key;
+    if (dict->second.count(key) == 1)
+    {
+      auto pair = dict->second.find(key);
+      out << "{" << pair->first << " -";
+      for (auto trans = pair->second.begin(); trans != pair->second.end(); trans++)
+      {
+        out << " " << trans->data();
+      }
+      out << "}\n";
+    }
+    else
+    {
+      out << "#not found#\n";
+    }
+  }
   void SHOWALL(
   std::shared_ptr< std::pair<std::string, std::map< std::string, std::set<std::string> > > > dict,
   std::istream &in, std::ostream &out){std::cout <<"";}
