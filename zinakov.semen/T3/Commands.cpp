@@ -23,7 +23,7 @@ void semzin::Area(const std::vector<Polygon> &polygons, std::ostream &out, std::
   }
   catch (const std::out_of_range &ex)
   {
-    if (std::isdigit(parameter[0]))
+    if (std::isdigit(parameter[0]) && std::stoi(parameter) > 2)
     {
       AreaVersNum(std::stoi(parameter), polygons, out);
     }
@@ -46,7 +46,7 @@ void semzin::AreaEven(const std::vector<Polygon> &polygons, std::ostream &out)
         return !(polygon.points.size() % 2);
       });
   double sum = sumAreas(EvenPolygons_vec);
-  out << std::setprecision(1) << sum << '\n';
+  out << std::setprecision(1) << std::fixed << sum << '\n';
 }
 
 void semzin::AreaOdd(const std::vector<Polygon> &polygons, std::ostream &out)
@@ -61,7 +61,7 @@ void semzin::AreaOdd(const std::vector<Polygon> &polygons, std::ostream &out)
         return (polygon.points.size() % 2);
       });
   double sum = sumAreas(OddPolygons_vec);
-  out << std::setprecision(1) << sum << '\n';
+  out << std::setprecision(1) << std::fixed << sum << '\n';
 }
 
 void semzin::AreaMean(const std::vector<Polygon> &polygons, std::ostream &out)
@@ -71,7 +71,7 @@ void semzin::AreaMean(const std::vector<Polygon> &polygons, std::ostream &out)
     throw std::out_of_range("");
   }
   double sum = sumAreas(polygons);
-  out << std::setprecision(1) << sum / polygons.size() << '\n';
+  out << std::setprecision(1) << std::fixed << sum / polygons.size() << '\n';
 }
 
 void semzin::AreaVersNum(std::size_t vertexes, const std::vector<Polygon> &polygons, std::ostream &out)
@@ -88,7 +88,7 @@ void semzin::AreaVersNum(std::size_t vertexes, const std::vector<Polygon> &polyg
       });
 
   double sum = sumAreas(polygonsWithNVertexes);
-  out << std::setprecision(1) << sum << '\n';
+  out << std::setprecision(1) << std::fixed << sum << '\n';
 }
 
 double semzin::sumAreas(const std::vector<Polygon> &polygons)
@@ -184,7 +184,7 @@ void semzin::maxArea(const std::vector<Polygon> &polygons, std::ostream &out)
     throw std::out_of_range("");
   }
   std::sort(areasOfPolygons_vec.begin(), areasOfPolygons_vec.end());
-  out << std::setprecision(1) << areasOfPolygons_vec.back() << '\n';
+  out << std::setprecision(1) << std::fixed << areasOfPolygons_vec.back() << '\n';
 }
 
 void semzin::maxVertexes(const std::vector<Polygon> &polygons, std::ostream &out)
@@ -240,7 +240,7 @@ void semzin::minArea(const std::vector<Polygon> &polygons, std::ostream &out)
     throw std::out_of_range("");
   }
   std::sort(areasOfPolygons_vec.begin(), areasOfPolygons_vec.end());
-  out << std::setprecision(1) << areasOfPolygons_vec.front() << '\n';
+  out << std::setprecision(1) << std::fixed << areasOfPolygons_vec.front() << '\n';
 }
 
 void semzin::minVertexes(const std::vector<Polygon> &polygons, std::ostream &out)
@@ -276,7 +276,7 @@ void semzin::Count(const std::vector<Polygon> &polygons, std::ostream &out, std:
   }
   catch (const std::out_of_range &ex)
   {
-    if (std::isdigit(parameter[0]))
+    if (std::isdigit(parameter[0]) && std::stoi(parameter) > 2)
     {
       CountVertexes(std::stoi(parameter), polygons, out);
     }
