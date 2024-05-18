@@ -22,7 +22,7 @@ int main()
         std::istream_iterator<DataStruct>(iss),
         std::istream_iterator<DataStruct>(),
         std::back_inserter(data),
-        [&foundValidRecord](const DataStruct& ds) {
+        [&foundValidRecord](const DataStruct&) {
             foundValidRecord = true;
             return true;
         }
@@ -50,4 +50,3 @@ int main()
 
     return 0;
 }
-
