@@ -1,4 +1,4 @@
-#include "Delimiter.hpp"
+#include "delimiter.hpp"
 
 namespace evstigneev
 {

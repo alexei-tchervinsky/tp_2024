@@ -1,4 +1,4 @@
-#include "Commands.hpp"
+#include "commands.hpp"
 #include <iostream>
 #include <algorithm>
 #include <string>

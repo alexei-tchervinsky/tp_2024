@@ -1,5 +1,5 @@
-#include "DataStruct.hpp"
-#include "Delimiter.hpp"
+#include "dataStruct.hpp"
+#include "delimiter.hpp"
 #include <functional>
 #include <numeric>
 #include <algorithm>
