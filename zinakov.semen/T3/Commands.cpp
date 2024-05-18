@@ -344,6 +344,79 @@ void semzin::CountVertexes(std::size_t vertexes, const std::vector<Polygon> &pol
   out << NVertexesNum << '\n';
 }
 
+void semzin::Perms(const std::vector<Polygon> &polygons, std::ostream &out, std::istream &in)
+{
+  Polygon givenPolygon;
+  in >> givenPolygon;
+  std::size_t givenPolygonVertexes = givenPolygon.points.size();
+  auto outInvalid = std::bind(outMessage, std::placeholders::_1, "<INVALID COMMAND>\n");
+  std::vector<Polygon> nVertexes_vec;
+  std::copy_if(
+      polygons.begin(),
+      polygons.end(),
+      std::back_inserter(nVertexes_vec),
+      [givenPolygonVertexes](const Polygon &polygon)
+      {
+        return polygon.points.size() == givenPolygonVertexes;
+      });
+  if (nVertexes_vec.empty())
+  {
+    outInvalid(out);
+  }
+  else
+  {
+    auto comparePolygons = std::bind(checkPerms, givenPolygon, std::placeholders::_1);
+    std::size_t count = std::count_if(polygons.begin(), polygons.end(), comparePolygons);
+  }
+}
+
+bool semzin::checkPerms(const Polygon &left, const Polygon &right)
+{
+  if (left.points.size() != right.points.size())
+  {
+    return false;
+  }
+  auto isPointContains = std::bind(checkPoints, left, std::placeholders::_1);
+  std::size_t countPointsIn = std::count_if(right.points.begin(), right.points.end(), isPointContains);
+  return left.points.size() == countPointsIn;
+}
+
+bool semzin::checkPoints(const Polygon &polygon, const Point &point)
+{
+  return std::find_if(polygon.points.begin(), polygon.points.end(), [point](const Point &pointToCompare)
+                      { return (pointToCompare.x == point.x && pointToCompare.y == point.y); }) != polygon.points.end();
+}
+
+void semzin::Rightshapes(const std::vector<Polygon> &polygons, std::ostream &out)
+{
+  std::size_t count = std::count_if(polygons.begin(), polygons.end(), isRightAngle);
+  out << count << '\n';
+}
+
+bool semzin::isRightAngle(const Polygon &polygon)
+{
+  std::vector<Point> points_vec;
+  auto makeVector = std::bind(vectorOnCoords, std::placeholders::_1, std::placeholders::_2);
+  std::transform(
+      polygon.points.begin(),
+      polygon.points.end(),
+      std::back_inserter(points_vec),
+      makeVector);
+}
+
+semzin::Point semzin::vectorOnCoords(const semzin::Point &firstPoint, const semzin::Point &secondPoint)
+{
+  return semzin::Point{secondPoint.x - firstPoint.x, secondPoint.y - firstPoint.y};
+}
+
+double semzin::tangensFromVects(const semzin::Point &firstPoint, const semzin::Point &secondPoint)
+{
+  double deltaY = (secondPoint.y - firstPoint.y);
+  double deltaX = (secondPoint.x - firstPoint.x);
+  const double PI = acos(-1.0);
+  return atan2(deltaY, deltaX) * 180 / PI;
+}
+
 void semzin::outMessage(std::ostream &out, const std::string &message)
 {
   out << message;

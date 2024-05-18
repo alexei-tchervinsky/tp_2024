@@ -3,7 +3,6 @@
 #include <vector>
 #include <fstream>
 #include <string>
-#include <utility>
 #include <limits>
 #include <functional>
 #include <iterator>
@@ -40,6 +39,8 @@ int main(int argc, char *argv[])
     commands["MAX"] = std::bind(semzin::Max, _1, _2, _3);
     commands["MIN"] = std::bind(semzin::Min, _1, _2, _3);
     commands["COUNT"] = std::bind(semzin::Count, _1, _2, _3);
+    commands["PERMS"] = std::bind(semzin::Perms, _1, _2, _3);
+    commands["RIGHTSHAPES"] = std::bind(semzin::Rightshapes, _1, _2);
   }
 
   auto outInvalid = std::bind(outMessage, std::placeholders::_1, "<INVALID COMMAND>\n");
