@@ -1,7 +1,7 @@
 #include "data_struct.h"
 #include <sstream>
 #include <iomanip>
-#include <iostream>  // Include for debugging
+#include <iostream>
 
 std::istream& operator>>(std::istream& in, DataStruct& data)
 {
@@ -12,7 +12,7 @@ std::istream& operator>>(std::istream& in, DataStruct& data)
     std::string input;
     if (!std::getline(in, input, ')'))
     {
-        std::cerr << "Error reading line" << std::endl;  // Debugging output
+        std::cerr << "Error reading line" << std::endl;
         in.setstate(std::ios::failbit);
         return in;
     }
@@ -21,10 +21,12 @@ std::istream& operator>>(std::istream& in, DataStruct& data)
     char c;
     if (!(iss >> c) || c != '(')
     {
-        std::cerr << "Expected '(', but got: " << c << std::endl;  // Debugging output
+        std::cerr << "Expected '(', but got: " << c << std::endl;
         in.setstate(std::ios::failbit);
         return in;
     }
+
+    bool key1_set = false, key2_set = false, key3_set = false;
 
     while (iss >> c)
     {
@@ -33,42 +35,44 @@ std::istream& operator>>(std::istream& in, DataStruct& data)
             std::string key;
             if (!(iss >> key))
             {
-                std::cerr << "Error reading key" << std::endl;  // Debugging output
+                std::cerr << "Error reading key" << std::endl;
                 in.setstate(std::ios::failbit);
                 return in;
             }
 
             if (key == "key1")
             {
-                if (!(iss >> data.key1) || !(iss >> c) || (c != 'd' && c != 'D'))
+                if (!(iss >> data.key1) || !(iss >> c) || c != 'd')
                 {
-                    std::cerr << "Error reading key1" << std::endl;  // Debugging output
+                    std::cerr << "Error reading key1" << std::endl;
                     in.setstate(std::ios::failbit);
                     return in;
                 }
+                key1_set = true;
             }
             else if (key == "key2")
             {
-                if (!(iss >> data.key2) || !(iss >> c) || (c != 'l' &&
-                    c != 'L') || !(iss >> c) || (c != 'l' && c != 'L'))
+                if (!(iss >> data.key2) || !(iss >> c) || c != 'l' || !(iss >> c) || c != 'l')
                 {
-                    std::cerr << "Error reading key2" << std::endl;  // Debugging output
+                    std::cerr << "Error reading key2" << std::endl;
                     in.setstate(std::ios::failbit);
                     return in;
                 }
+                key2_set = true;
             }
             else if (key == "key3")
             {
                 if (!(iss >> std::quoted(data.key3)))
                 {
-                    std::cerr << "Error reading key3" << std::endl;  // Debugging output
+                    std::cerr << "Error reading key3" << std::endl;
                     in.setstate(std::ios::failbit);
                     return in;
                 }
+                key3_set = true;
             }
             else
             {
-                std::cerr << "Unknown key: " << key << std::endl;  // Debugging output
+                std::cerr << "Unknown key: " << key << std::endl;
                 in.setstate(std::ios::failbit);
                 return in;
             }
@@ -76,6 +80,12 @@ std::istream& operator>>(std::istream& in, DataStruct& data)
 
         if (iss.peek() == ')')
             break;
+    }
+
+    if (!(key1_set && key2_set && key3_set))
+    {
+        std::cerr << "Missing keys in input" << std::endl;
+        in.setstate(std::ios::failbit);
     }
 
     return in;
