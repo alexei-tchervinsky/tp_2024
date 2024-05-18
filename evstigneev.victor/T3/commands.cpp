@@ -29,8 +29,7 @@ double sumAreas(double res, evstigneev::Polygon& poly)
   return res + countArea(poly);
 }
 
-double sumAreasIfEqual(double res, evstigneev::Polygon& poly, 
-  size_t numOfVexes)
+double sumAreasIfEqual(double res, evstigneev::Polygon& poly, size_t numOfVexes)
 {
   return (poly.points.size() == numOfVexes) ? res + countArea(poly) : res;
 }
@@ -78,7 +77,7 @@ double countAreasMean(std::vector <evstigneev::Polygon>& poly)
 
 double countAreasVexes(std::vector <evstigneev::Polygon>& poly, int numOfVexes)
 {
-  return std::accumulate(poly.cbegin(), poly.cend(), 0, 
+  return std::accumulate(poly.cbegin(), poly.cend(), 0,
     std::bind(sumAreasIfEqual, std::placeholders::_1, std::placeholders::_2, numOfVexes));
 }
 
