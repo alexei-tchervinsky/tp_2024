@@ -400,7 +400,8 @@ bool semzin::isRightAngle(const Polygon &polygon)
   auto makeVector = std::bind(vectorOnCoords, std::placeholders::_1, std::placeholders::_2);
   std::transform(
       polygon.points.begin(),
-      polygon.points.end(),
+      std::prev(polygon.points.end()),
+      std::next(polygon.points.begin()),
       std::back_inserter(points_vec),
       makeVector);
   points_vec.push_back(makeVector(polygon.points.back(), polygon.points.front()));
