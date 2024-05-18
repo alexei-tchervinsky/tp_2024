@@ -93,7 +93,7 @@ void semzin::AreaVersNum(std::size_t vertexes, const std::vector<Polygon> &polyg
 
 double semzin::sumAreas(const std::vector<Polygon> &polygons)
 {
-  std::vector<Polygon> AreasOfPolygons_vec;
+  std::vector<double> AreasOfPolygons_vec;
   std::transform(
       polygons.begin(),
       polygons.end(),
