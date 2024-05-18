@@ -1,6 +1,7 @@
 ﻿#include <fstream>
 #include <iostream>
 #include <functional>
+#include <limits>
 #include <map>
 #include <iterator>
 #include "commands.hpp"
@@ -26,6 +27,11 @@ int main(int argc, char** argv)
       std::istream_iterator<evstigneev::Polygon>(),
       std::back_inserter(poly)
     );
+    if (in.fail() && !in.eof())
+    {
+      in.clear();
+      in.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
   }
   std::map<std::string, std::function<std::ostream& (std::istream&, std::ostream&,
     std::vector<evstigneev::Polygon>&)>> cmd;
@@ -42,7 +48,16 @@ int main(int argc, char** argv)
   std::string command = "";
   while (std::cin >> command)
   {
-    cmd.at(command)(std::cin, std::cout, poly);
+    try
+    {
+      cmd.at(command)(std::cin, std::cout, poly);
+    }
+    catch (const std::out_of_range&)
+    {
+      std::cerr << "INVALID INPUT";
+      std::cin.clear();
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
   }
   return 0;
 }
