@@ -7,30 +7,34 @@
 #include <functional>
 
 double evstigneev::countArea(const Polygon& poly) {
-  double area = 0.0;
+  /*double area = 0.0;
   for (size_t i = 0; i < poly.points.size() - 1; ++i) {
     area += poly.points[i].x * poly.points[i + 1].y - poly.points[i + 1].x * poly.points[i].y;
   }
-  area += poly.points.back().x * poly.points.front().y - poly.points.front().x * poly.points.back().y;
-  return std::abs(area) / 2.0;
+  area += poly.points.back().x * poly.points.front().y - poly.points.front().x * poly.points.back().y;*/
+  std::vector<int> p(poly.points.size());
+  std::transform(poly.points.cbegin()++, poly.points.cend(), poly.points.cbegin(),
+    p.begin(), pair);
+  p.push_back(pair(poly.points.front(), poly.points.back()));
+  return std::abs(std::accumulate(p.cbegin(), p.cend(), 0)) / 2.0;
 }
 
-double evstigneev::sumAreaEven(double res, const Polygon& poly)
+double evstigneev::sAreaEven(double res, const Polygon& poly)
 {
   return (poly.points.size() % 2 == 0) ? res + countArea(poly) : res;
 }
 
-double evstigneev::sumAreaOdd(double res, const Polygon& poly)
+double evstigneev::sAreaOdd(double res, const Polygon& poly)
 {
   return (poly.points.size() % 2 != 0) ? res + countArea(poly) : res;
 }
 
-double evstigneev::sumAreas(double res, const Polygon& poly)
+double evstigneev::sArea(double res, const Polygon& poly)
 {
   return res + countArea(poly);
 }
 
-double evstigneev::sumAreaEqual(double res, const Polygon& poly, size_t numOfVexes)
+double evstigneev::sAreaEqual(double res, const Polygon& poly, size_t numOfVexes)
 {
   return (poly.points.size() == numOfVexes) ? res + countArea(poly) : res;
 }
@@ -42,48 +46,59 @@ std::ostream& evstigneev::area(std::istream& in, std::ostream& out, const std::v
 
   if (cmd == "ODD")
   {
-    out << countAreasOdd(poly);
+    out << cAreaOdd(poly);
   }
   else if (cmd == "EVEN")
   {
-    out << countAreasEven(poly);
+    out << cAreaEven(poly);
   }
   else if (cmd == "MEAN")
   {
-    out << countAreasMean(poly);
+    out << cAreaMean(poly);
   }
   else
   {
     int numOfVexes = std::stoi(cmd);
-    out << countAreasVexes(poly, numOfVexes);
+    if (numOfVexes <= 2)
+    {
+      throw std::logic_error("incorrect command");
+    }
+    out << cAreaVexes(poly, numOfVexes) << "\n";
   }
   return out;
 }
 
-double evstigneev::countAreasEven(const std::vector <Polygon>& poly)
+double evstigneev::cAreaEven(const std::vector <Polygon>& poly)
 {
-  return std::accumulate(poly.cbegin(), poly.cend(), 0, sumAreaEven);
+  return std::accumulate(poly.cbegin(), poly.cend(), 0, sAreaEven);
 }
 
-double evstigneev::countAreasOdd(const std::vector <Polygon>& poly)
+double evstigneev::cAreaOdd(const std::vector <Polygon>& poly)
 {
-  return std::accumulate(poly.cbegin(), poly.cend(), 0, sumAreaOdd);
+  return std::accumulate(poly.cbegin(), poly.cend(), 0, sAreaOdd);
 }
 
-double evstigneev::countAreasMean(const std::vector <Polygon>& poly)
+double evstigneev::cAreaMean(const std::vector <Polygon>& poly)
 {
-  double areas = std::accumulate(poly.cbegin(), poly.cend(), 0, sumAreas);
-  return areas / poly.size();
+  if (poly.empty())
+  {
+    throw std::logic_error("data is empty");
+  }
+  return std::accumulate(poly.cbegin(), poly.cend(), 0, sArea) / poly.size();
 }
 
-double evstigneev::countAreasVexes(const std::vector <Polygon>& poly, int numOfVexes)
+double evstigneev::cAreaVexes(const std::vector <Polygon>& poly, int numOfVexes)
 {
-  return std::accumulate(poly.cbegin(), poly.cend(), 0,
-    std::bind(sumAreaEqual, std::placeholders::_1, std::placeholders::_2, numOfVexes));
+  return std::accumulate(poly.cbegin(), poly.cend(), 0, std::bind(sAreaEqual,
+    std::placeholders::_1, std::placeholders::_2, numOfVexes));
 }
 
 std::ostream& evstigneev::max(std::istream& in, std::ostream& out, const std::vector<Polygon>& poly)
 {
+  if (poly.empty())
+  {
+    throw std::logic_error("data is empty");
+  }
   std::string cmd = "";
   in >> cmd;
   if (cmd == "AREA")
@@ -93,6 +108,10 @@ std::ostream& evstigneev::max(std::istream& in, std::ostream& out, const std::ve
   else if (cmd == "VERTEXES")
   {
     out << maxVexes(poly);
+  }
+  else
+  {
+    throw std::logic_error("incorrect command");
   }
   return out;
 }
@@ -113,6 +132,10 @@ double evstigneev::maxVexes(const std::vector<Polygon>& poly)
 
 std::ostream& evstigneev::min(std::istream& in, std::ostream& out, const std::vector<Polygon>& poly)
 {
+  if (poly.empty())
+  {
+    throw std::logic_error("data is empty");
+  }
   std::string cmd = "";
   in >> cmd;
   if (cmd == "AREA")
@@ -122,6 +145,10 @@ std::ostream& evstigneev::min(std::istream& in, std::ostream& out, const std::ve
   else if (cmd == "VERTEXES")
   {
     out << minVexes(poly);
+  }
+  else
+  {
+    throw std::logic_error("incorrect command");
   }
   return out;
 }
@@ -156,6 +183,10 @@ std::ostream& evstigneev::count(std::istream& in, std::ostream& out,
   else
   {
     int numOfVexes = std::stoi(cmd);
+    if (numOfVexes <= 2)
+    {
+      throw std::logic_error("incorrect command");
+    }
     out << countPolys(poly, numOfVexes);
   }
   return out;
@@ -194,4 +225,9 @@ bool evstigneev::numOfVexesEqual(const Polygon poly, size_t numOfVexes)
 int evstigneev::getNumVexes(const Polygon poly)
 {
   return poly.points.size();
+}
+
+int evstigneev::pair(const Point& f, const Point& s)
+{
+  return f.x * s.y - f.y * s.x;
 }
