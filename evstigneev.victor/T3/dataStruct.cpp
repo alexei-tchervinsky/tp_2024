@@ -9,12 +9,12 @@ std::istream& evstigneev::operator>>(std::istream& in, evstigneev::Point& dest)
     return in;
   }
   using del = DelimiterIO;
-  Point point;
-  in >> del{ '(' } >> point.x >> del{ ';' } >> point.y >> del{ ')' };
+  int x = 0, y = 0;
+  in >> del{ '(' } >> x >> del{ ';' } >> y >> del{ ')' };
   if (in)
   {
-    dest.x = point.x;
-    dest.y = point.y;
+    dest.x = x;
+    dest.y = y;
   }
   return in;
 }
@@ -28,7 +28,7 @@ std::istream& evstigneev::operator>>(std::istream& in, evstigneev::Polygon& poly
   }
   Polygon polygon;
   size_t vexes = 0;
-  if (!(in >> vexes) || vexes <=2)
+  if (!(in >> vexes) || vexes <=2 )
   {
     in.setstate(std::ios::failbit);
     return in;
