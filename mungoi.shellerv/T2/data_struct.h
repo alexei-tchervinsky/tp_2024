@@ -8,9 +8,9 @@ struct DataStruct {
     double key1;
     long long key2;
     std::string key3;
-};
 
-std::istream& operator>>(std::istream& in, DataStruct& data);
-std::ostream& operator<<(std::ostream& out, const DataStruct& data);
+    friend std::istream& operator>>(std::istream& in, DataStruct& data);
+    friend std::ostream& operator<<(std::ostream& out, const DataStruct& data);
+};
 
 #endif // DATA_STRUCT_H
