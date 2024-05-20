@@ -30,7 +30,7 @@ int main()
 
     if (!foundValidRecord)
     {
-        std::cerr << "Looks like there is no supported record. Cannot determine input. Test skipped" << std::endl;
+        std::cerr << "Cannot determine input. Test skipped" << std::endl;
         return 1;
     }
 
