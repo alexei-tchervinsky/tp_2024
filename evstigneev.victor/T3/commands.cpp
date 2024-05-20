@@ -233,9 +233,10 @@ std::ostream& evstigneev::lessArea(std::istream& in, std::ostream& out,
   Polygon polygon;
   if (in >> polygon)
   {
-    return out << std::count_if(poly.cbegin(), poly.cend(), std::bind(isLessArea,
+    out << std::count_if(poly.cbegin(), poly.cend(), std::bind(isLessArea,
       std::placeholders::_1, polygon));
   }
+  return out;
 }
 
 std::ostream& evstigneev::maxSeq(std::istream& in, std::ostream& out,
