@@ -4,6 +4,8 @@
 #include <limits>
 #include <map>
 #include <iterator>
+#include <iomanip>
+#include <vector>
 #include "commands.hpp"
 
 int main(int argc, char** argv)
