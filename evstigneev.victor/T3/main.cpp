@@ -44,6 +44,10 @@ int main(int argc, char** argv)
       std::placeholders::_2, std::placeholders::_3);
     cmd["COUNT"] = std::bind(evstigneev::count, std::placeholders::_1,
       std::placeholders::_2, std::placeholders::_3);
+    cmd["LESSAREA"] = std::bind(evstigneev::lessArea, std::placeholders::_1,
+      std::placeholders::_2, std::placeholders::_3);
+    cmd["MAXSEQ"] = std::bind(evstigneev::maxSeq, std::placeholders::_1,
+      std::placeholders::_2, std::placeholders::_3);
   }
   std::string command = "";
   while (std::cin >> command)
