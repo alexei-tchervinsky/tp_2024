@@ -41,15 +41,15 @@ std::ostream& evstigneev::area(std::istream& in, std::ostream& out, const std::v
 
   if (cmd == "ODD")
   {
-    out << cAreaOdd(poly);
+    out << cAreaOdd(poly) << "\n";
   }
   else if (cmd == "EVEN")
   {
-    out << cAreaEven(poly);
+    out << cAreaEven(poly) << "\n";
   }
   else if (cmd == "MEAN")
   {
-    out << cAreaMean(poly);
+    out << cAreaMean(poly) << "\n";
   }
   else
   {
@@ -98,11 +98,11 @@ std::ostream& evstigneev::max(std::istream& in, std::ostream& out, const std::ve
   in >> cmd;
   if (cmd == "AREA")
   {
-    out << maxArea(poly);
+    out << std::fixed << std::setprecision(1) << maxArea(poly) << "\n";
   }
   else if (cmd == "VERTEXES")
   {
-    out << maxVexes(poly);
+    out << std::fixed << std::setprecision(0) << maxVexes(poly) << "\n";
   }
   else
   {
@@ -135,11 +135,11 @@ std::ostream& evstigneev::min(std::istream& in, std::ostream& out, const std::ve
   in >> cmd;
   if (cmd == "AREA")
   {
-    out << minArea(poly);
+    out << std::fixed << std::setprecision(1) << minArea(poly) << "\n";
   }
   else if (cmd == "VERTEXES")
   {
-    out << minVexes(poly);
+    out << std::fixed << std::setprecision(0) << minVexes(poly) << "\n";
   }
   else
   {
@@ -169,11 +169,11 @@ std::ostream& evstigneev::count(std::istream& in, std::ostream& out,
   in >> cmd;
   if (cmd == "EVEN")
   {
-    out << countEven(poly);
+    out << countEven(poly) << "\n";
   }
   else if (cmd == "ODD")
   {
-    out << countOdd(poly);
+    out << countOdd(poly) << "\n";
   }
   else
   {
@@ -182,7 +182,7 @@ std::ostream& evstigneev::count(std::istream& in, std::ostream& out,
     {
       throw std::logic_error("incorrect command");
     }
-    out << countPolys(poly, numOfVexes);
+    out << countPolys(poly, numOfVexes) << "\n";
   }
   return out;
 }
@@ -234,7 +234,7 @@ std::ostream& evstigneev::lessArea(std::istream& in, std::ostream& out,
   if (in >> polygon)
   {
     out << std::count_if(poly.cbegin(), poly.cend(), std::bind(isLessArea,
-      std::placeholders::_1, polygon));
+      std::placeholders::_1, polygon)) << "\n";
   }
   return out;
 }
