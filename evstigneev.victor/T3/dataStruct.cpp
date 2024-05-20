@@ -64,7 +64,7 @@ bool evstigneev::operator==(const Polygon& fp, const Polygon& sp)
   {
     return false;
   }
-  for (int i = 0; i < fp.points.size(); ++i)
+  for (size_t i = 0; i < fp.points.size(); ++i)
   {
     if (fp.points[i].x != sp.points[i].x || fp.points[i].y != sp.points[i].y)
     {
