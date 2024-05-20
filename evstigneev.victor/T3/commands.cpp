@@ -7,11 +7,6 @@
 #include <functional>
 
 double evstigneev::countArea(const Polygon& poly) {
-  /*double area = 0.0;
-  for (size_t i = 0; i < poly.points.size() - 1; ++i) {
-    area += poly.points[i].x * poly.points[i + 1].y - poly.points[i + 1].x * poly.points[i].y;
-  }
-  area += poly.points.back().x * poly.points.front().y - poly.points.front().x * poly.points.back().y;*/
   std::vector<int> p(poly.points.size());
   std::transform(poly.points.cbegin()++, poly.points.cend(), poly.points.cbegin(),
     p.begin(), pair);
@@ -230,4 +225,44 @@ int evstigneev::getNumVexes(const Polygon poly)
 int evstigneev::pair(const Point& f, const Point& s)
 {
   return f.x * s.y - f.y * s.x;
+}
+
+std::ostream& evstigneev::lessArea(std::istream& in, std::ostream& out,
+  const std::vector<Polygon>& poly)
+{
+  Polygon polygon;
+  if (in >> polygon)
+  {
+    return out << std::count_if(poly.cbegin(), poly.cend(), std::bind(isLessArea,
+      std::placeholders::_1, polygon));
+  }
+}
+
+std::ostream& evstigneev::maxSeq(std::istream& in, std::ostream& out,
+  const std::vector<Polygon>& poly)
+{
+  Polygon polygon;
+  in >> polygon;
+
+  int maxSeq = 0;
+  int curr = 0;
+
+  for (const auto& p : poly)
+  {
+    if (p == polygon)
+    {
+      curr++;
+      maxSeq = std::max(maxSeq, curr);
+    }
+    else
+    {
+      curr = 0;
+    }
+  }
+  return out << maxSeq << "\n";
+}
+
+bool evstigneev::isLessArea(const Polygon& poly1, const Polygon& poly2) 
+{
+  return countArea(poly1) < countArea(poly2);
 }

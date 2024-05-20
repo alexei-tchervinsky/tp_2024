@@ -57,3 +57,19 @@ std::istream& evstigneev::operator>>(std::istream& in, evstigneev::Polygon& poly
   }
   return in;
 }
+
+bool evstigneev::operator==(const Polygon& fp, const Polygon& sp)
+{
+  if (fp.points.size() != sp.points.size())
+  {
+    return false;
+  }
+  for (int i = 0; i < fp.points.size(); ++i)
+  {
+    if (fp.points[i].x != sp.points[i].x || fp.points[i].y != sp.points[i].y)
+    {
+      return false;
+    }
+  }
+  return true;
+}

@@ -31,6 +31,7 @@ namespace evstigneev
   bool numOfVexesEqual(const Polygon poly, size_t numOfVexes);
   int getNumVexes(const Polygon poly);
   int pair(const Point& f, const Point& s);
+  bool isLessArea(const Polygon& poly1, const Polygon& poly2);
 }
 
 #endif
