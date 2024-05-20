@@ -9,11 +9,11 @@ int main()
 {
     std::vector<DataStruct> data;
     std::istringstream iss(
-        "( :key1 45.0d :key2 123ll :key3 "Apple" )\n"
-        "( :key1 10.5d :key2 -45ll :key3 "Banana" )\n"
-        "( :key1 45.0d :key2 123ll :key3 "Cherry" )\n"
-        "( :key1 10.5d :key2 123ll :key3 "Date" )\n"
-        "( :key1 45.0d :key2 -123ll :key3 "Fig" )\n"
+        "( :key1 45.0d :key2 123ll :key3 \"Apple\" )\n"
+        "( :key1 10.5d :key2 -45ll :key3 \"Banana\" )\n"
+        "( :key1 45.0d :key2 123ll :key3 \"Cherry\" )\n"
+        "( :key1 10.5d :key2 123ll :key3 \"Date\" )\n"
+        "( :key1 45.0d :key2 -123ll :key3 \"Fig\" )\n"
     );
 
     bool foundValidRecord = false;
@@ -30,7 +30,7 @@ int main()
 
     if (!foundValidRecord)
     {
-        std::cerr << "Looks like there is no supported record. Cannot determine input. Test skipped" << std::endl;
+        std::cerr << "Test skipped" << std::endl;
         return 1;
     }
 
