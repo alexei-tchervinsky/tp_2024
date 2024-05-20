@@ -22,7 +22,7 @@ int main()
         std::istream_iterator<DataStruct>(iss),
         std::istream_iterator<DataStruct>(),
         std::back_inserter(data),
-        [&foundValidRecord](const DataStruct&) {
+        [&foundValidRecord](const DataStruct& dataStruct) {
             foundValidRecord = true;
             return true;
         }
@@ -30,7 +30,7 @@ int main()
 
     if (!foundValidRecord)
     {
-        std::cerr << "Cannot determine input. Test skipped" << std::endl;
+        std::cerr << "Test skipped" << std::endl;
         return 1;
     }
 
