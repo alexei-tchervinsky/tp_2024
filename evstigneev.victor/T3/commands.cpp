@@ -262,7 +262,7 @@ std::ostream& evstigneev::maxSeq(std::istream& in, std::ostream& out,
   return out << maxSeq << "\n";
 }
 
-bool evstigneev::isLessArea(const Polygon& poly1, const Polygon& poly2) 
+bool evstigneev::isLessArea(const Polygon& poly1, const Polygon& poly2)
 {
   return countArea(poly1) < countArea(poly2);
 }
