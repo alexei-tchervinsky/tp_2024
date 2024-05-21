@@ -1,193 +1,103 @@
 #include "data_struct.h"
-#include <cmath>
+#include <sstream>
+#include <iomanip>
 #include <iostream>
 
-namespace mungoi
+std::istream& operator>>(std::istream& in, DataStruct& data)
 {
-    iofmtguard::iofmtguard(std::basic_ios<char>& s) : s_(s), fill_(s.fill()), precision_(s.precision()), fmt_(s.flags()) {}
+    std::istream::sentry sentry(in);
+    if (!sentry)
+        return in;
 
-    iofmtguard::~iofmtguard()
+    std::string input;
+    if (!std::getline(in, input, ')'))
     {
-        s_.fill(fill_);
-        s_.precision(precision_);
-        s_.flags(fmt_);
-    }
-
-    std::istream& operator>>(std::istream& in, DelimiterIO&& dest)
-    {
-        std::istream::sentry sentry(in);
-        if (!sentry)
-        {
-            return in;
-        }
-        char c = '\0';
-        in >> c;
-        if (in && (c != dest.exp))
-        {
-            in.setstate(std::ios::failbit);
-        }
+        std::cerr << "Error reading line_Rellehs" << std::endl;
+        in.setstate(std::ios::failbit);
         return in;
     }
 
-    std::istream& operator>>(std::istream& in, DoubleIO&& dest)
+    std::istringstream iss(input + ')');
+    char c;
+    if (!(iss >> c) || c != '(')
     {
-        std::istream::sentry sentry(in);
-        if (!sentry)
-        {
-            return in;
-        }
-        int mantissa = 0;
-        int number = 0;
-        int power = 0;
-        in >> mantissa >> DelimiterIO{ '.' } >> number;
-        if (in.peek() == 'e')
-        {
-            in >> DelimiterIO{ 'e' };
-        }
-        else
-        {
-            in >> DelimiterIO{ 'E' };
-        }
-        in >> power;
-        dest.ref = (mantissa * 1.0 + number * 0.01) * std::pow(10, power);
+        std::cerr << "Expected '(', but got_Rellehs: " << c << std::endl;
+        in.setstate(std::ios::failbit);
         return in;
     }
 
-    std::istream& operator>>(std::istream& in, StringIO&& dest)
-    {
-        std::istream::sentry sentry(in);
-        if (!sentry)
-        {
-            return in;
-        }
-        return std::getline(in >> DelimiterIO{ '"' }, dest.ref, '"');
-    }
+    bool key1_set = false, key2_set = false, key3_set = false;
 
-    std::istream& operator>>(std::istream& in, LITIO&& dest)
+    while (iss >> c)
     {
-        std::istream::sentry sentry(in);
-        if (!sentry)
+        if (c == ':')
         {
-            return in;
-        }
-        return in >> dest.ref >> DelimiterIO{ 'l' } >> DelimiterIO{ 'l' };
-    }
-
-    std::istream& operator>>(std::istream& in, LabelIO&& dest)
-    {
-        std::istream::sentry sentry(in);
-        if (!sentry)
-        {
-            return in;
-        }
-        std::string data = "";
-        if ((in >> StringIO{ data }) && (data != dest.exp))
-        {
-            in.setstate(std::ios::failbit);
-        }
-        return in;
-    }
-
-    std::string fromDoubleToScientific(double val)
-    {
-        int exp = 0;
-        if (val == 0 || std::abs(val) == 1)
-            exp = 0;
-        else if (std::abs(val) < 1)
-        {
-            while (std::abs(val) * 10 < 10)
+            std::string key;
+            if (!(iss >> key))
             {
-                val *= 10;
-                exp--;
+                std::cerr << "Error reading key_Rellehs" << std::endl;
+                in.setstate(std::ios::failbit);
+                return in;
+            }
+
+            if (key == "key1")
+            {
+                if (!(iss >> data.key1) || !(iss >> c) || c != 'd')
+                {
+                    std::cerr << "Error reading key1_Rellehs" << std::endl;
+                    in.setstate(std::ios::failbit);
+                    return in;
+                }
+                key1_set = true;
+            }
+            else if (key == "key2")
+            {
+                if (!(iss >> data.key2) || !(iss >> c) || c != 'l' || !(iss >> c) || c != 'l')
+                {
+                    std::cerr << "Error reading key2_Rellehs" << std::endl;
+                    in.setstate(std::ios::failbit);
+                    return in;
+                }
+                key2_set = true;
+            }
+            else if (key == "key3")
+            {
+                if (!(iss >> std::quoted(data.key3)))
+                {
+                    std::cerr << "Error reading key3_Rellehs" << std::endl;
+                    in.setstate(std::ios::failbit);
+                    return in;
+                }
+                key3_set = true;
+            }
+            else
+            {
+                std::cerr << "Unknown key_Rellehs: " << key << std::endl;
+                in.setstate(std::ios::failbit);
+                return in;
             }
         }
-        else
-        {
-            while (std::abs(val) / 10 >= 1)
-            {
-                val /= 10;
-                exp++;
-            }
-        }
-        std::string res = std::to_string(val);
-        if (res.find('0') == 2 && res[4] == '0')
-        {
-            res.erase(3);
-        }
-        else
-        {
-            res.erase(4);
-        }
-        std::string result = res + (exp < 0 ? "e-" : "e+") + std::to_string(std::abs(exp));
-        return result;
+
+        if (iss.peek() == ')')
+            break;
     }
 
-    std::istream& operator>>(std::istream& in, DataStruct& dest)
+    if (!(key1_set && key2_set && key3_set))
     {
-        std::istream::sentry sentry(in);
-        if (!sentry)
-        {
-            return in;
-        }
-        DataStruct input;
-        std::string characters;
-        {
-            using sep = DelimiterIO;
-            using lit = LITIO;
-            using str = StringIO;
-            using dbl = DoubleIO;
-            in >> sep{ '(' };
-            for (std::size_t i = 0; i < 3; i++)
-            {
-                in >> sep{ ':' };
-                in >> characters;
-                if (characters == "key1")
-                {
-                    in >> dbl{ input.key1 };
-                }
-                else if (characters == "key2")
-                {
-                    in >> lit{ input.key2 };
-                }
-                else
-                {
-                    in >> str{ input.key3 };
-                }
-            }
-            in >> sep{ ':' };
-            in >> sep{ ')' };
-        }
-        if (in)
-        {
-            dest = input;
-        }
-        return in;
+        std::cerr << "Missing keys in input_Rellehs" << std::endl;
+        in.setstate(std::ios::failbit);
     }
 
-    std::ostream& operator<<(std::ostream& out, const DataStruct& src)
-    {
-        std::ostream::sentry sentry(out);
-        if (!sentry)
-        {
-            return out;
-        }
-        iofmtguard fmtguard(out);
-        out << "(:key1 " << fromDoubleToScientific(src.key1);
-        out << ":key2 " << src.key2 << "ll";
-        out << ":key3 \"" << src.key3 << "\":)";
+    return in;
+}
+
+std::ostream& operator<<(std::ostream& out, const DataStruct& data)
+{
+    std::ostream::sentry sentry(out);
+    if (!sentry)
         return out;
-    }
 
-    bool Compare::operator()(DataStruct first, DataStruct second) const
-    {
-        if (first.key1 != second.key1)
-        {
-            return first.key1 < second.key1;
-        }
-        if (first.key2 != second.key2)
-        {
-            return first.key2 < second.key2;
-        }
-        return first.key3.length() < second.key3.length();
-    }
+    out << "( :key1 " << std::fixed << std::setprecision(1) << data.key1 <<
+        "d :key2 " << data.key2 << "ll :key3 " << std::quoted(data.key3) << " )";
+    return out;
 }
