@@ -1,16 +1,66 @@
-#ifndef DATA_STRUCT_H
-#define DATA_STRUCT_H
-
-#include <iostream>
+#ifndef DATASTRUCT_H
+#define DATASTRUCT_H
 #include <string>
+#include <ios>
 
-struct DataStruct {
-    double key1;
-    long long key2;
-    std::string key3;
-};
+namespace mungoi
+{
+    struct DataStruct
+    {
+        double key1;
+        long long key2;
+        std::string key3;
+    };
 
-std::istream& operator>>(std::istream& in, DataStruct& data);
-std::ostream& operator<<(std::ostream& out, const DataStruct& data);
+    struct DelimiterIO
+    {
+        char exp;
+    };
 
-#endif // DATA_STRUCT_H
+    struct DoubleIO
+    {
+        double& ref;
+    };
+
+    struct LITIO
+    {
+        long long& ref;
+    };
+
+    struct StringIO
+    {
+        std::string& ref;
+    };
+
+    struct LabelIO
+    {
+        std::string exp;
+    };
+
+    struct Compare
+    {
+        bool operator()(DataStruct first, DataStruct second) const;
+    };
+
+    class iofmtguard
+    {
+    public:
+        explicit iofmtguard(std::basic_ios< char >& s);
+        ~iofmtguard();
+    private:
+        std::basic_ios< char >& s_;
+        char fill_;
+        std::streamsize precision_;
+        std::basic_ios< char >::fmtflags fmt_;
+    };
+
+    std::string fromDoubleToScientific(double val);
+    std::istream& operator>>(std::istream& in, DelimiterIO&& dest);
+    std::istream& operator>>(std::istream& in, DoubleIO&& dest);
+    std::istream& operator>>(std::istream& in, StringIO&& dest);
+    std::istream& operator>>(std::istream& in, LabelIO&& dest);
+    std::istream& operator>>(std::istream& in, DataStruct& dest);
+    std::istream& operator>>(std::istream& in, LITIO&& dest);
+    std::ostream& operator<<(std::ostream& out, const DataStruct& dest);
+}
+#endif
