@@ -1,10 +1,93 @@
 #include "data_struct.h"
 #include <cmath>
 #include <iostream>
-#include "guard.h"
 
 namespace mungoi
 {
+    iofmtguard::iofmtguard(std::basic_ios<char>& s) : s_(s), fill_(s.fill()), precision_(s.precision()), fmt_(s.flags()) {}
+
+    iofmtguard::~iofmtguard()
+    {
+        s_.fill(fill_);
+        s_.precision(precision_);
+        s_.flags(fmt_);
+    }
+
+    std::istream& operator>>(std::istream& in, DelimiterIO&& dest)
+    {
+        std::istream::sentry sentry(in);
+        if (!sentry)
+        {
+            return in;
+        }
+        char c = '\0';
+        in >> c;
+        if (in && (c != dest.exp))
+        {
+            in.setstate(std::ios::failbit);
+        }
+        return in;
+    }
+
+    std::istream& operator>>(std::istream& in, DoubleIO&& dest)
+    {
+        std::istream::sentry sentry(in);
+        if (!sentry)
+        {
+            return in;
+        }
+        int mantissa = 0;
+        int number = 0;
+        int power = 0;
+        in >> mantissa >> DelimiterIO{ '.' } >> number;
+        if (in.peek() == 'e')
+        {
+            in >> DelimiterIO{ 'e' };
+        }
+        else
+        {
+            in >> DelimiterIO{ 'E' };
+        }
+        in >> power;
+        dest.ref = (mantissa * 1.0 + number * 0.01) * std::pow(10, power);
+        return in;
+    }
+
+    std::istream& operator>>(std::istream& in, StringIO&& dest)
+    {
+        std::istream::sentry sentry(in);
+        if (!sentry)
+        {
+            return in;
+        }
+        return std::getline(in >> DelimiterIO{ '"' }, dest.ref, '"');
+    }
+
+    std::istream& operator>>(std::istream& in, LITIO&& dest)
+    {
+        std::istream::sentry sentry(in);
+        if (!sentry)
+        {
+            return in;
+        }
+        return in >> dest.ref >> DelimiterIO{ 'l' } >> DelimiterIO{ 'l' };
+    }
+
+    std::istream& operator>>(std::istream& in, LabelIO&& dest)
+    {
+        std::istream::sentry sentry(in);
+        if (!sentry)
+        {
+            return in;
+        }
+        std::string data = "";
+        if ((in >> StringIO{ data }) && (data != dest.exp))
+        {
+            in.setstate(std::ios::failbit);
+        }
+        return in;
+    }
+
     std::string fromDoubleToScientific(double val)
     {
         int exp = 0;
@@ -39,6 +122,48 @@ namespace mungoi
         return result;
     }
 
+    std::istream& operator>>(std::istream& in, DataStruct& dest)
+    {
+        std::istream::sentry sentry(in);
+        if (!sentry)
+        {
+            return in;
+        }
+        DataStruct input;
+        std::string characters;
+        {
+            using sep = DelimiterIO;
+            using lit = LITIO;
+            using str = StringIO;
+            using dbl = DoubleIO;
+            in >> sep{ '(' };
+            for (std::size_t i = 0; i < 3; i++)
+            {
+                in >> sep{ ':' };
+                in >> characters;
+                if (characters == "key1")
+                {
+                    in >> dbl{ input.key1 };
+                }
+                else if (characters == "key2")
+                {
+                    in >> lit{ input.key2 };
+                }
+                else
+                {
+                    in >> str{ input.key3 };
+                }
+            }
+            in >> sep{ ':' };
+            in >> sep{ ')' };
+        }
+        if (in)
+        {
+            dest = input;
+        }
+        return in;
+    }
+
     std::ostream& operator<<(std::ostream& out, const DataStruct& src)
     {
         std::ostream::sentry sentry(out);
@@ -51,5 +176,18 @@ namespace mungoi
         out << ":key2 " << src.key2 << "ll";
         out << ":key3 \"" << src.key3 << "\":)";
         return out;
+    }
+
+    bool Compare::operator()(DataStruct first, DataStruct second) const
+    {
+        if (first.key1 != second.key1)
+        {
+            return first.key1 < second.key1;
+        }
+        if (first.key2 != second.key2)
+        {
+            return first.key2 < second.key2;
+        }
+        return first.key3.length() < second.key3.length();
     }
 }
