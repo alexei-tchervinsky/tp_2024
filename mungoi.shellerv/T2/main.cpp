@@ -10,13 +10,13 @@ int main()
     std::vector<DataStruct> data;
 
     bool foundValidRecord = false;
-    
-    //Some examples to test the code
-    /*( :key1 45.0d :key2 123ll :key3 "Apple" )
-    ( :key1 10.5d :key2 -45ll :key3 "Banana" )
-    ( :key1 45.0d :key2 123ll :key3 "Cherry" )
-    ( :key1 10.5d :key2 123ll :key3 "Date" )
-    ( :key1 45.0d :key2 -123ll :key3 "Fig" )*/
+
+    // Some examples to test the code
+    /* ( :key1 45.0d :key2 123ll :key3 "Apple" )
+       ( :key1 10.5d :key2 -45ll :key3 "Banana" )
+       ( :key1 45.0d :key2 123ll :key3 "Cherry" )
+       ( :key1 10.5d :key2 123ll :key3 "Date" )
+       ( :key1 45.0d :key2 -123ll :key3 "Fig" ) */
 
     std::cout << "sheller_valmiro_mungoi" << std::endl;
     std::cout << "Enter data (terminate input with an empty line):" << std::endl;
