@@ -1,10 +1,12 @@
 #ifndef DATA_STRUCT_H
 #define DATA_STRUCT_H
+
 #include <iostream>
 #include <string>
 
 namespace mungoi 
 {
+    
     struct DataStruct 
     {
         double key1;
@@ -22,10 +24,12 @@ namespace mungoi
         long long& ll;
     };
 
-    struct StringIO {
+    struct StringIO 
+    {
         std::string& str;
     };
 
+    
     std::istream& operator>>(std::istream& in, DoubleIO&& dest);
     std::istream& operator>>(std::istream& in, LongLongIO&& dest);
     std::istream& operator>>(std::istream& in, StringIO&& dest);
@@ -33,6 +37,7 @@ namespace mungoi
     std::ostream& operator<<(std::ostream& out, const DataStruct& src);
     bool operator<(const DataStruct& a, const DataStruct& b);
 
+    
     class iofmtguard 
     {
     public:
@@ -44,6 +49,8 @@ namespace mungoi
         std::streamsize precision_;
         std::basic_ios<char>::fmtflags fmt_;
     };
+    
 }
 
 #endif // DATA_STRUCT_H
+

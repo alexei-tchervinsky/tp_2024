@@ -3,15 +3,18 @@
 
 namespace mungoi 
 {
+    
     std::istream& operator>>(std::istream& in, DoubleIO&& dest) 
     {
         std::istream::sentry sentry(in);
-        if (!sentry) {
+        if (!sentry) 
+        {
             return in;
         }
         return in >> dest.d;
     }
 
+    
     std::istream& operator>>(std::istream& in, LongLongIO&& dest) 
     {
         std::istream::sentry sentry(in);
@@ -22,15 +25,18 @@ namespace mungoi
         return in >> dest.ll;
     }
 
+    
     std::istream& operator>>(std::istream& in, StringIO&& dest) 
     {
         std::istream::sentry sentry(in);
-        if (!sentry) {
+        if (!sentry) 
+        {
             return in;
         }
         return std::getline(in >> std::ws, dest.str, '"');
     }
 
+    
     std::istream& operator>>(std::istream& in, DataStruct& dest) 
     {
         std::istream::sentry sentry(in);
@@ -78,6 +84,7 @@ namespace mungoi
         return in;
     }
 
+    
     std::ostream& operator<<(std::ostream& out, const DataStruct& src) 
     {
         std::ostream::sentry sentry(out);
@@ -90,6 +97,7 @@ namespace mungoi
         return out;
     }
 
+    
     bool operator<(const DataStruct& a, const DataStruct& b) 
     {
         if (a.key1 != b.key1) 
@@ -103,15 +111,19 @@ namespace mungoi
         return a.key3.size() < b.key3.size();
     }
 
+    
     iofmtguard::iofmtguard(std::basic_ios<char>& s) :
         s_(s),
         fill_(s.fill()),
         precision_(s.precision()),
         fmt_(s.flags()) {}
 
-    iofmtguard::~iofmtguard() {
+    iofmtguard::~iofmtguard() 
+    {
         s_.fill(fill_);
         s_.precision(precision_);
         s_.flags(fmt_);
     }
+    
 }
+
