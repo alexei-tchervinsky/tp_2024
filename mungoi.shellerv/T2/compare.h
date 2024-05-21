@@ -6,7 +6,7 @@ namespace mungoi
 {
     struct Compare
     {
-        bool operator()(const DataStruct& first, const DataStruct& second) const;
+        bool operator()(DataStruct first, DataStruct second) const;
     };
 }
 

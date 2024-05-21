@@ -7,13 +7,13 @@ namespace mungoi
     class iofmtguard
     {
     public:
-        explicit iofmtguard(std::basic_ios<char>& s);
+        explicit iofmtguard(std::basic_ios< char >& s);
         ~iofmtguard();
     private:
-        std::basic_ios<char>& s_;
+        std::basic_ios< char >& s_;
         char fill_;
         std::streamsize precision_;
-        std::basic_ios<char>::fmtflags fmt_;
+        std::basic_ios< char >::fmtflags fmt_;
     };
 }
 #endif

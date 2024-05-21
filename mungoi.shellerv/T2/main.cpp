@@ -2,6 +2,7 @@
 #include <iostream>
 #include <iterator>
 #include <vector>
+#include <limits>
 #include "data_struct.h"
 #include "compare.h"
 

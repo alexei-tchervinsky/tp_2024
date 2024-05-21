@@ -1,7 +1,6 @@
 #ifndef DATASTRUCT_H
 #define DATASTRUCT_H
 #include <string>
-#include <iostream>
 
 namespace mungoi
 {
@@ -15,5 +14,4 @@ namespace mungoi
     std::string fromDoubleToScientific(double val);
     std::ostream& operator<<(std::ostream& out, const DataStruct& dest);
 }
-
 #endif

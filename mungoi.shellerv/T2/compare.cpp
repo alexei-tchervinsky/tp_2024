@@ -2,7 +2,7 @@
 
 namespace mungoi
 {
-    bool Compare::operator()(const DataStruct& first, const DataStruct& second) const
+    bool Compare::operator()(DataStruct first, DataStruct second) const
     {
         if (first.key1 != second.key1)
         {
@@ -12,6 +12,6 @@ namespace mungoi
         {
             return first.key2 < second.key2;
         }
-        return first.key3 < second.key3;
+        return first.key3.length() < second.key3.length();
     }
 }

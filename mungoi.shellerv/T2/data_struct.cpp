@@ -1,7 +1,7 @@
 #include "data_struct.h"
-#include "guard.h"
 #include <cmath>
 #include <iostream>
+#include "guard.h"
 
 namespace mungoi
 {
