@@ -1,34 +1,26 @@
-#include "data_struct.h"
-#include <iostream>
-#include <vector>
-#include <iterator>
 #include <algorithm>
+#include <iostream>
+#include <iterator>
+#include <vector>
 #include <limits>
+#include "data_struct.h"
+#include "compare.h"
 
 int main()
 {
-    using namespace mungoi;
-    std::vector<DataStruct> data;
-
-    std::copy(
-        std::istream_iterator<DataStruct>(std::cin),
-        std::istream_iterator<DataStruct>(),
-        std::back_inserter(data)
-    );
-
-    if (std::cin.fail() && !std::cin.eof())
+    std::vector<mungoi::DataStruct> data_struct;
+    while (std::cin.eof() != true)
     {
-        std::cin.clear();
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        std::copy(std::istream_iterator<mungoi::DataStruct>(std::cin),
+            std::istream_iterator<mungoi::DataStruct>(),
+            std::back_inserter(data_struct));
+        if (std::cin.fail() == true)
+        {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
     }
-
-    std::sort(data.begin(), data.end());
-
-    std::copy(
-        data.begin(),
-        data.end(),
-        std::ostream_iterator<DataStruct>(std::cout, "\n")
-    );
-
+    std::stable_sort(data_struct.begin(), data_struct.end(), mungoi::Compare());
+    std::copy(data_struct.cbegin(), data_struct.cend(), std::ostream_iterator<mungoi::DataStruct>{std::cout, "\n"});
     return 0;
 }

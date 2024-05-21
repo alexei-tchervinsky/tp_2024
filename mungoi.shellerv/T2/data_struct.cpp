@@ -1,8 +1,26 @@
 #include "data_struct.h"
-#include <iomanip>
+#include "guard.h"
+#include <cmath>
+#include <iostream>
 
 namespace mungoi
 {
+    std::istream& operator>>(std::istream& in, DelimiterIO&& dest)
+    {
+        std::istream::sentry sentry(in);
+        if (!sentry)
+        {
+            return in;
+        }
+        char c = '\0';
+        in >> c;
+        if (in && (c != dest.exp))
+        {
+            in.setstate(std::ios::failbit);
+        }
+        return in;
+    }
+
     std::istream& operator>>(std::istream& in, DoubleIO&& dest)
     {
         std::istream::sentry sentry(in);
@@ -10,17 +28,21 @@ namespace mungoi
         {
             return in;
         }
-        return in >> dest.d;
-    }
-
-    std::istream& operator>>(std::istream& in, LongLongIO&& dest)
-    {
-        std::istream::sentry sentry(in);
-        if (!sentry)
+        int mantissa = 0;
+        int number = 0;
+        int power = 0;
+        in >> mantissa >> DelimiterIO{ '.' } >> number;
+        if (in.peek() == 'e')
         {
-            return in;
+            in >> DelimiterIO{ 'e' };
         }
-        return in >> dest.ll;
+        else
+        {
+            in >> DelimiterIO{ 'E' };
+        }
+        in >> power;
+        dest.ref = (mantissa * 1.0 + number * 0.01) * std::pow(10, power);
+        return in;
     }
 
     std::istream& operator>>(std::istream& in, StringIO&& dest)
@@ -30,7 +52,64 @@ namespace mungoi
         {
             return in;
         }
-        return std::getline(in >> std::ws, dest.str, '"');
+        return std::getline(in >> DelimiterIO{ '"' }, dest.ref, '"');
+    }
+    std::istream& operator>>(std::istream& in, LITIO&& dest)
+    {
+        std::istream::sentry sentry(in);
+        if (!sentry)
+        {
+            return in;
+        }
+        return in >> dest.ref >> DelimiterIO{ 'l' } >> DelimiterIO{ 'l' };
+    }
+
+    std::istream& operator>>(std::istream& in, LabelIO&& dest)
+    {
+        std::istream::sentry sentry(in);
+        if (!sentry)
+        {
+            return in;
+        }
+        std::string data = "";
+        if ((in >> StringIO{ data }) && (data != dest.exp))
+        {
+            in.setstate(std::ios::failbit);
+        }
+        return in;
+    }
+    std::string fromDoubleToScientific(double val)
+    {
+        int exp = 0;
+        if (val == 0 || std::abs(val) == 1)
+            exp = 0;
+        else if (std::abs(val) < 1)
+        {
+            while (std::abs(val) * 10 < 10)
+            {
+                val *= 10;
+                exp--;
+            }
+        }
+        else
+        {
+            while (std::abs(val) / 10 >= 1)
+            {
+                val /= 10;
+                exp++;
+            }
+        }
+        std::string res = std::to_string(val);
+        if (res.find('0') == 2 && res[4] == '0')
+        {
+            res.erase(3);
+        }
+        else
+        {
+            res.erase(4);
+        }
+        std::string result = res + (exp < 0 ? "e-" : "e+") + std::to_string(std::abs(exp));
+        return result;
     }
 
     std::istream& operator>>(std::istream& in, DataStruct& dest)
@@ -40,39 +119,34 @@ namespace mungoi
         {
             return in;
         }
-
-        iofmtguard fmtguard(in);
         DataStruct input;
-        std::string curr;
-        in >> std::ws >> curr;
-
-        if (curr != "(:key1")
+        std::string characters;
         {
-            in.setstate(std::ios::failbit);
-            return in;
+            using sep = DelimiterIO;
+            using lit = LITIO;
+            using str = StringIO;
+            using dbl = DoubleIO;
+            in >> sep{ '(' };
+            for (std::size_t i = 0; i < 3; i++)
+            {
+                in >> sep{ ':' };
+                in >> characters;
+                if (characters == "key1")
+                {
+                    in >> dbl{ input.key1 };
+                }
+                else if (characters == "key2")
+                {
+                    in >> lit{ input.key2 };
+                }
+                else
+                {
+                    in >> str{ input.key3 };
+                }
+            }
+            in >> sep{ ':' };
+            in >> sep{ ')' };
         }
-
-        in >> DoubleIO{ input.key1 } >> curr;
-        if (curr != ":key2")
-        {
-            in.setstate(std::ios::failbit);
-            return in;
-        }
-
-        in >> LongLongIO{ input.key2 } >> curr;
-        if (curr != ":key3")
-        {
-            in.setstate(std::ios::failbit);
-            return in;
-        }
-
-        in >> std::quoted(input.key3) >> curr;
-        if (curr != ":)")
-        {
-            in.setstate(std::ios::failbit);
-            return in;
-        }
-
         if (in)
         {
             dest = input;
@@ -88,35 +162,9 @@ namespace mungoi
             return out;
         }
         iofmtguard fmtguard(out);
-        out << "(:key1 " << src.key1 << ":key2 " << src.key2 << ":key3 \"" << src.key3 << "\":)";
+        out << "(:key1 " << fromDoubleToScientific(src.key1);
+        out << ":key2 " << src.key2 << "ll";
+        out << ":key3 \"" << src.key3 << "\":)";
         return out;
-    }
-
-    bool operator<(const DataStruct& a, const DataStruct& b)
-    {
-        if (a.key1 != b.key1)
-        {
-            return a.key1 < b.key1;
-        }
-        if (a.key2 != b.key2)
-        {
-            return a.key2 < b.key2;
-        }
-        return a.key3.size() < b.key3.size();
-    }
-
-    iofmtguard::iofmtguard(std::basic_ios<char>& s) :
-        s_(s),
-        fill_(s.fill()),
-        precision_(s.precision()),
-        fmt_(s.flags())
-    {
-    }
-
-    iofmtguard::~iofmtguard()
-    {
-        s_.fill(fill_);
-        s_.precision(precision_);
-        s_.flags(fmt_);
     }
 }
