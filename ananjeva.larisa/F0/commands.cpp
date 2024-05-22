@@ -165,3 +165,34 @@ void ananjeva::countWordsInDict(mapOfDictionaries& allDictionaries, std::istream
     throw std::logic_error("No such dictionary");
   }
 }
+
+void ananjeva::uniteDictionaries(mapOfDictionaries& allDictionaries, std::istream& in, std::ostream& out) {
+  std::string newDictName = "";
+  std::string firstDictName = "";
+  std::string secondDictName = "";
+  in >> newDictName >> firstDictName >> secondDictName;
+
+  if (newDictName == "" || firstDictName == "" || secondDictName == "") {
+    throw std::invalid_argument("One of the dictionaries wasn't chosen.");
+  }
+
+  dictTypeWithoutName newDict {};
+  allDictionaries.emplace(newDictName, newDict);
+
+  auto firstDictIt = allDictionaries.find(firstDictName);
+  auto secondDictIt = allDictionaries.find(secondDictName);
+  auto newDictIt = allDictionaries.find(newDictName);
+  if (firstDictIt != allDictionaries.end() && secondDictIt != allDictionaries.end()) {
+    for (auto it = firstDictIt->second.begin(); it != firstDictIt->second.end(); it++) {
+      (newDictIt->second).emplace(it->first, it->second);
+    }
+    for (auto it = secondDictIt->second.begin(); it != secondDictIt->second.end(); it++) {
+      (newDictIt->second).emplace(it->first, it->second);
+    }
+    out << "Dictionaries '" << firstDictName << "' and '" << secondDictName << "' were united to dictionary '"
+      << newDictName << "' successfully.\n";
+  }
+  else {
+    out << "One of the dictionaries doesn't exist.\n";
+  }
+}
