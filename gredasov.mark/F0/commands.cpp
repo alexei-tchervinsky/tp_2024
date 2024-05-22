@@ -19,7 +19,8 @@ void gredasov::getHelpCommand(std::ostream& out, std::istream& in)
   out << "  <WORD> <word>: delete the <word> in the frequency-dictionary of <filename>\n";
   out << "  <DICTIONARY> <dictionary>: delete the frequency-dictionary of <filename>\n";
   out << "7.INTERSECTIONS <dictionary_1> <dictionary_2>: view the intersections of <dictionary_1> and <dictionary_2>\n";
-  out << "8.MERGE <dictionary_1> <dictionary_2> <new_dictionary>: create <new_dictionary> from elements of <dictionary_1> and <dictionary_2>\n";
+  out << "8.MERGE <dictionary_1> <dictionary_2> <new_dictionary>: create <new_dictionary> from elements of ";
+  out << "<dictionary_1> and <dictionary_2>\n";
   out << "9.ALL <DICTIONARIES|WORDS>\n  <DICTIONARIES>: view all available dictionaries\n";
   out << "  <WORDS>: view all words from dictionaries\n";
   out << "10.SAVE <dictionary> <output> - save the <dictionary> to <output>\n";
