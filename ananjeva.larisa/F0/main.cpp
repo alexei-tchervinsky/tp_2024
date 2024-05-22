@@ -19,6 +19,9 @@ int main() {
     command["help"] = std::bind(ananjeva::printCommands, _3);
     command["create"] = std::bind(ananjeva::createDict, _1, _2, _3);
     command["rename"] = std::bind(ananjeva::renameDict, _1, _2, _3);
+    command["list"] = std::bind(ananjeva::listAllDict, _1, _3);
+    command["print"] = std::bind(ananjeva::printDict, _1, _2, _3);
+    command["count"] = std::bind(ananjeva::countWordsInDict, _1, _2, _3);
   }
 
   std::cout << "Enter 'help' to get the list of all available commands.\n";

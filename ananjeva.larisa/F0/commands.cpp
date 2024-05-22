@@ -104,3 +104,64 @@ void ananjeva::renameDict(mapOfDictionaries& allDictionaries, std::istream& in, 
     out << "Dictionary with name '" << oldName << "' wasn't found.\n";
   }
 }
+
+void ananjeva::listAllDict(mapOfDictionaries& allDictionaries, std::ostream& out) {
+  if (allDictionaries.empty()) {
+    out << "There is no one dictionary.\n";
+  }
+  else {
+    std::size_t dictNum = 1;
+    for (auto it = allDictionaries.begin(); it != allDictionaries.end(); ++it) {
+      out << dictNum << ". " << it->first << '\n';
+      ++dictNum;
+    }
+  }
+}
+
+void ananjeva::printDict(mapOfDictionaries& allDictionaries, std::istream& in, std::ostream& out) {
+  std::string dictName = "";
+  in >> dictName;
+  if (dictName == "") {
+    throw std::invalid_argument("No one dictionary was chosen.");
+  }
+  if (allDictionaries.count(dictName) == 1) {
+    dictTypeWithoutName nessDict = allDictionaries.find(dictName)->second;
+    out << "==============================\n";
+    out << "Dictionary <" << dictName << ">:\n";
+
+    if (nessDict.empty()) {
+      out << "is empty.\n";
+    }
+
+    for (auto dictStrIt = nessDict.begin(); dictStrIt != nessDict.end(); dictStrIt++) {
+      out << "{ " << dictStrIt->first << " - ";
+      for (auto translationsIt = dictStrIt->second.begin(); translationsIt != dictStrIt->second.end(); translationsIt++) {
+        out << *translationsIt << "; ";
+      }
+      out << "}" << '\n';
+    }
+    out << "==============================\n";
+  }
+  else {
+    throw std::logic_error("No such dictionary.");
+  }
+}
+
+void ananjeva::countWordsInDict(mapOfDictionaries& allDictionaries, std::istream& in, std::ostream& out) {
+  std::string dictName = "";
+  in >> dictName;
+  if (dictName == "") {
+    throw std::invalid_argument("No one dictionary was chosen.");
+  }
+  if (allDictionaries.count(dictName) == 1) {
+    std::size_t countWords = 0;
+    dictTypeWithoutName nessDict = allDictionaries.find(dictName)->second;
+    for (auto it = nessDict.begin(); it != nessDict.end(); it++) {
+      ++countWords;
+    }
+    out << "Dictionary <" << dictName << "> has " << countWords << " words.\n";
+  }
+  else {
+    throw std::logic_error("No such dictionary");
+  }
+}

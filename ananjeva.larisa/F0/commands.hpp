@@ -13,6 +13,9 @@ namespace ananjeva {
   dictTypeWithoutName getDictFromInput(std::istream& in);
   void createDict(mapOfDictionaries&, std::istream&, std::ostream&);
   void renameDict(mapOfDictionaries&, std::istream&, std::ostream&);
+  void listAllDict(mapOfDictionaries&, std::ostream&);
+  void printDict(mapOfDictionaries&, std::istream&, std::ostream&);
+  void countWordsInDict(mapOfDictionaries&, std::istream&, std::ostream&);
 }
 
 #endif
