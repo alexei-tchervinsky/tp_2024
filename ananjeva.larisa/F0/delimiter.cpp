@@ -12,16 +12,3 @@ std::istream& ananjeva::operator>>(std::istream& in, DelimiterIO&& dest) {
   }
   return in;
 }
-
-std::istream& ananjeva::operator>>(std::istream& in, LabelIO&& dest) {
-  std::istream::sentry sentry(in);
-  if (!sentry) {
-    return in;
-  }
-  std::string str = "";
-  in >> str;
-  if (in && (str != dest.expected)) {
-    in.setstate(std::ios::failbit);
-  }
-  return in;
-}

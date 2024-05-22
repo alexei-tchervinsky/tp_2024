@@ -35,15 +35,11 @@ void ananjeva::printCommands(std::ostream& out) {
 
 dictTypeWithoutName ananjeva::getDictFromInput(std::istream& in) {
   dictTypeWithoutName inputDictionary;
-  //std::vector< DictIO > dictionary;
+
   DictIO newPair;
 
   while (!in.eof()) {
-    /*std::copy(
-      std::istream_iterator< DictIO >(in),
-      std::istream_iterator< DictIO >(),
-      std::back_inserter(dictionary)
-    );*/
+
     in >> newPair;
     if (in.fail() && !in.eof()) {
       in.clear();
@@ -51,9 +47,6 @@ dictTypeWithoutName ananjeva::getDictFromInput(std::istream& in) {
     }
     inputDictionary[newPair.dictStr.first] = newPair.dictStr.second;
   }
-  /*for (auto& element : dictionary) {
-    inputDictionary[element.dictStr.first] = element.dictStr.second;
-  }*/
   return inputDictionary;
 }
 

@@ -41,27 +41,12 @@ int main() {
     try {
       command.at(cmd) (allDictionaries, std::cin, std::cout);
     }
-    /*catch (const std::out_of_range&) {
-      std::cin.clear();
-      std::cin.ignore(std::numeric_limits< std::streamsize >::max(), '\n');
-    }
-        catch (const std::invalid_argument&) {
-      std::cin.clear();
-      std::cin.ignore(std::numeric_limits< std::streamsize >::max(), '\n');
-    }
-    catch (const std::logic_error&) {
-      std::cerr << "Invalid command.\n";
-      std::cin.clear();
-      std::cin.ignore(std::numeric_limits< std::streamsize >::max(), '\n');
-      return 2;
-    }*/
     catch (const std::exception& ex) {
       std::cerr << ex.what() << '\n';
       std::cin.clear();
       std::cin.ignore(std::numeric_limits< std::streamsize >::max(), '\n');
       return 2;
     }
-
   }
 
   return 0;

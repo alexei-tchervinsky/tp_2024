@@ -30,9 +30,7 @@ std::istream& ananjeva::operator>>(std::istream& in, RusIO&& dest) {
       readStr += readChar;
     }
     if (in.peek() != '}') {
-      //in >> LabelIO{ ", " };
       in >> DelimiterIO{ ';' };
-      //in >> DelimiterIO{ ' ' };
     }
 
     dest.rus.insert(readStr);
@@ -46,7 +44,6 @@ std::istream& ananjeva::operator>>(std::istream& in, DictIO& dest) {
   if (!sentry) {
     return in;
   }
-  //std::pair< std::string, std::set< std::string > > dictStr;
   DictIO readStr;
   in >> DelimiterIO{ '{' };
   in >> EngIO{ readStr.dictStr.first };
