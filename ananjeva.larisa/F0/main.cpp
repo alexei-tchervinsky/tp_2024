@@ -9,7 +9,6 @@
 int main() {
   setlocale(LC_ALL, "Russian");
 
-  using dictType = std::pair< std::string, std::map< std::string, std::set< std::string > > >;
   using mapOfDictionaries = std::map< std::string, std::map< std::string, std::set< std::string > > >;
 
   mapOfDictionaries allDictionaries;
