@@ -16,6 +16,7 @@ namespace ananjeva {
   void listAllDict(mapOfDictionaries&, std::ostream&);
   void printDict(mapOfDictionaries&, std::istream&, std::ostream&);
   void countWordsInDict(mapOfDictionaries&, std::istream&, std::ostream&);
+  void addDictToDict(mapOfDictionaries&, std::istream&, std::ostream&);
   void uniteDictionaries(mapOfDictionaries&, std::istream&, std::ostream&);
 }
 

@@ -166,6 +166,29 @@ void ananjeva::countWordsInDict(mapOfDictionaries& allDictionaries, std::istream
   }
 }
 
+void ananjeva::addDictToDict(mapOfDictionaries& allDictionaries, std::istream& in, std::ostream& out) {
+  std::string dictNameWhat = "";
+  std::string dictNameWhere = "";
+  in >> dictNameWhat;
+  in >> dictNameWhere;
+
+  if (dictNameWhat == "" || dictNameWhere == "") {
+    throw std::invalid_argument("One of the dictionaries wasn't chosen.");
+  }
+
+  auto dictWhatIt = allDictionaries.find(dictNameWhat);
+  auto dictWhereIt = allDictionaries.find(dictNameWhere);
+  if (dictWhatIt != allDictionaries.end() && dictWhereIt != allDictionaries.end()) {
+    for (auto it = dictWhatIt->second.begin(); it != dictWhatIt->second.end(); it++) {
+      (dictWhereIt->second).emplace(it->first, it->second);
+    }
+    out << "Dictionary '" << dictNameWhat << "' was added to dictionary '" << dictNameWhere << "' successfully.\n";
+  }
+  else {
+    out << "One of the dictionaries doesn't exist.\n";
+  }
+}
+
 void ananjeva::uniteDictionaries(mapOfDictionaries& allDictionaries, std::istream& in, std::ostream& out) {
   std::string newDictName = "";
   std::string firstDictName = "";
