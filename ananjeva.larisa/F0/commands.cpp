@@ -219,3 +219,59 @@ void ananjeva::uniteDictionaries(mapOfDictionaries& allDictionaries, std::istrea
     out << "One of the dictionaries doesn't exist.\n";
   }
 }
+
+void ananjeva::removeDict(mapOfDictionaries& allDictionaries, std::istream& in, std::ostream& out) {
+  std::string delDictName = "";
+  in >> delDictName;
+  if (allDictionaries.erase(delDictName)) {
+    out << "Dictionary <" << delDictName << "> was deleted.\n";
+  }
+  else {
+    out << "Dictionary <" << delDictName << "> was not deleted.\n";
+  }
+}
+
+void ananjeva::SelectedDictionary::selectDict(mapOfDictionaries& allDictionaries, std::istream& in, std::ostream& out) {
+  std::string selectedDictName = "";
+  in >> selectedDictName;
+  auto selectedDictIt = allDictionaries.find(selectedDictName);
+
+  if (selectedDictIt == allDictionaries.end()) {
+    //создать словарь не из файла
+    dictTypeWithoutName dictionary {};
+    allDictionaries.emplace(selectedDictName, dictionary);
+    selectedDictionaryName_ = selectedDictName;
+    out << "New dictionary <" << selectedDictName << "> was created and selected.\n";
+  }
+  else {
+    selectedDictionaryName_ = selectedDictName;
+    out << "Dictionary <" << selectedDictName << "> was selected.\n";
+  }
+}
+
+void ananjeva::SelectedDictionary::insertDict(mapOfDictionaries& allDictionaries, std::istream& in, std::ostream& out) {
+  if (selectedDictionaryName_ == "") {
+    throw std::logic_error("No one dictionary was selected.");
+  }
+  dictTypeWithoutName dictionary = allDictionaries.find(selectedDictionaryName_)->second;
+  DictIO newPair;
+  in >> newPair;
+  if (in.fail()) {
+    throw std::invalid_argument("Invalid command in insertation.");
+  }
+  std::string engPart = newPair.dictStr.first;
+  std::set< std::string > rusPart = newPair.dictStr.second;
+  if (dictionary.count(engPart) == 0) {
+    dictionary[engPart] = rusPart;
+  }
+  else {
+    std::set< std::string > rusPartBeforeInsert = dictionary[engPart];
+    for (auto rusWord = rusPart.cbegin(); rusWord != rusPart.cend(); rusWord++) {
+      if (rusPartBeforeInsert.find(*rusWord) == rusPartBeforeInsert.end()) {
+        rusPartBeforeInsert.insert(*rusWord);
+      }
+    }
+  }
+
+  out << "insertation in <" << selectedDictionaryName_ << "> is successful\n";
+}

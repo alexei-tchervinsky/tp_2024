@@ -1,4 +1,5 @@
 #include "commands.hpp"
+#include "selectedDictionary.hpp"
 #include <iostream>
 #include <map>
 #include <limits>
@@ -13,6 +14,8 @@ int main() {
 
   mapOfDictionaries allDictionaries;
 
+  ananjeva::SelectedDictionary selDict;
+
   std::map< std::string, std::function< void (mapOfDictionaries&, std::istream&, std::ostream&) > > command;
   {
     using namespace std::placeholders;
@@ -24,6 +27,9 @@ int main() {
     command["count"] = std::bind(ananjeva::countWordsInDict, _1, _2, _3);
     command["add"] = std::bind(ananjeva::addDictToDict, _1, _2, _3);
     command["unite"] = std::bind(ananjeva::uniteDictionaries, _1, _2, _3);
+    command["remove"] = std::bind(ananjeva::removeDict, _1, _2, _3);
+    command["select"] = std::bind(&ananjeva::SelectedDictionary::selectDict, &selDict, _1, _2, _3);
+    command["insert"] = std::bind(&ananjeva::SelectedDictionary::insertDict, &selDict, _1, _2, _3);
   }
 
   std::cout << "Enter 'help' to get the list of all available commands.\n";

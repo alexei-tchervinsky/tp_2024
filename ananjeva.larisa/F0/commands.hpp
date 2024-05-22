@@ -2,6 +2,7 @@
 #define COMMANDS_HPP
 
 #include "dataStruct.hpp"
+#include "selectedDictionary.hpp"
 #include <map>
 
 using dictTypeWithoutName = std::map< std::string, std::set< std::string > >;
@@ -18,6 +19,7 @@ namespace ananjeva {
   void countWordsInDict(mapOfDictionaries&, std::istream&, std::ostream&);
   void addDictToDict(mapOfDictionaries&, std::istream&, std::ostream&);
   void uniteDictionaries(mapOfDictionaries&, std::istream&, std::ostream&);
+  void removeDict(mapOfDictionaries&, std::istream&, std::ostream&);
 }
 
 #endif
