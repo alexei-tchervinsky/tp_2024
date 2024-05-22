@@ -237,7 +237,6 @@ void ananjeva::SelectedDictionary::selectDict(mapOfDictionaries& allDictionaries
   auto selectedDictIt = allDictionaries.find(selectedDictName);
 
   if (selectedDictIt == allDictionaries.end()) {
-    //создать словарь не из файла
     dictTypeWithoutName dictionary {};
     allDictionaries.emplace(selectedDictName, dictionary);
     selectedDictionaryName_ = selectedDictName;
@@ -251,9 +250,10 @@ void ananjeva::SelectedDictionary::selectDict(mapOfDictionaries& allDictionaries
 
 void ananjeva::SelectedDictionary::insertDict(mapOfDictionaries& allDictionaries, std::istream& in, std::ostream& out) {
   if (selectedDictionaryName_ == "") {
+    out << "Try to select a dictionary using 'select < dictionary name >'\n";
     throw std::logic_error("No one dictionary was selected.");
   }
-  dictTypeWithoutName dictionary = allDictionaries.find(selectedDictionaryName_)->second;
+  auto dictionaryIt = allDictionaries.find(selectedDictionaryName_);
   DictIO newPair;
   in >> newPair;
   if (in.fail()) {
@@ -261,17 +261,69 @@ void ananjeva::SelectedDictionary::insertDict(mapOfDictionaries& allDictionaries
   }
   std::string engPart = newPair.dictStr.first;
   std::set< std::string > rusPart = newPair.dictStr.second;
-  if (dictionary.count(engPart) == 0) {
-    dictionary[engPart] = rusPart;
+  if (dictionaryIt->second.count(engPart) == 0) {
+    (dictionaryIt->second)[engPart] = rusPart;
   }
   else {
-    std::set< std::string > rusPartBeforeInsert = dictionary[engPart];
     for (auto rusWord = rusPart.cbegin(); rusWord != rusPart.cend(); rusWord++) {
-      if (rusPartBeforeInsert.find(*rusWord) == rusPartBeforeInsert.end()) {
-        rusPartBeforeInsert.insert(*rusWord);
+      if (((dictionaryIt->second)[engPart]).find(*rusWord) == ((dictionaryIt->second)[engPart]).end()) {
+        ((dictionaryIt->second)[engPart]).insert(*rusWord);
       }
     }
   }
 
-  out << "insertation in <" << selectedDictionaryName_ << "> is successful\n";
+  out << "Insertation in <" << selectedDictionaryName_ << "> is successful\n";
+}
+
+void ananjeva::SelectedDictionary::findWordInDict(mapOfDictionaries& allDictionaries, std::istream& in, std::ostream& out) {
+  std::string dictName = selectedDictionaryName_;
+  if (dictName == "") {
+    out << "Try to select a dictionary using 'select < dictionary name >'\n";
+    throw std::invalid_argument("No one dictionary was chosen.");
+  }
+  if (allDictionaries.count(dictName) == 1) {
+    std::string enteredWord = "";
+    in >> enteredWord;
+    dictTypeWithoutName dictionary = allDictionaries.find(selectedDictionaryName_)->second;
+    auto dictStrIt = dictionary.find(enteredWord);
+    if (dictStrIt != dictionary.end()) {
+      out << "The word '" << enteredWord << "' was found:\n";
+      out << "{ " << dictStrIt->first << " - ";
+      for (auto translationsIt = dictStrIt->second.begin(); translationsIt != dictStrIt->second.end(); translationsIt++) {
+        out << *translationsIt << "; ";
+      }
+      out << "}" << '\n';
+    }
+    else {
+      out << "The word '" << enteredWord << "' wasn't found.\n";
+    }
+  }
+  else {
+    throw std::logic_error("No such dictionary");
+  }
+}
+
+void ananjeva::SelectedDictionary::deleteWordInDict(mapOfDictionaries& allDictionaries, std::istream& in, std::ostream& out) {
+  std::string dictName = selectedDictionaryName_;
+  if (dictName == "") {
+    out << "Try to select a dictionary using 'select < dictionary name >'\n";
+    throw std::invalid_argument("No one dictionary was chosen.");
+  }
+  if (allDictionaries.count(dictName) == 1) {
+    auto dictionaryIt = allDictionaries.find(selectedDictionaryName_);
+    std::string enteredWord = "";
+    in >> enteredWord;
+
+    auto dictStrIt = (dictionaryIt->second).find(enteredWord);
+    if (dictStrIt != (dictionaryIt->second).end()) {
+      dictionaryIt->second.erase(enteredWord);
+      out << "The word '" << enteredWord << "' was deleted successfully.\n";
+    }
+    else {
+      out << "The word '" << enteredWord << "' wasn't found and deleted.\n";
+    }
+  }
+  else {
+    throw std::logic_error("No such dictionary");
+  }
 }

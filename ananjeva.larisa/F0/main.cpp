@@ -30,6 +30,8 @@ int main() {
     command["remove"] = std::bind(ananjeva::removeDict, _1, _2, _3);
     command["select"] = std::bind(&ananjeva::SelectedDictionary::selectDict, &selDict, _1, _2, _3);
     command["insert"] = std::bind(&ananjeva::SelectedDictionary::insertDict, &selDict, _1, _2, _3);
+    command["find"] = std::bind(&ananjeva::SelectedDictionary::findWordInDict, &selDict, _1, _2, _3);
+    command["delete_word"] = std::bind(&ananjeva::SelectedDictionary::deleteWordInDict, &selDict, _1, _2, _3);
   }
 
   std::cout << "Enter 'help' to get the list of all available commands.\n";
