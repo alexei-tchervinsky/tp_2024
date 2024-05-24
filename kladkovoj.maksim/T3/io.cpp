@@ -55,7 +55,7 @@ std::istream& kladkovoj::operator>>(std::istream& input, Polygon& res)
   return input;
 }
 
-std::ostream& kladkovoj::operator<<(std::ostream& out, Point& pnt)
+std::ostream& kladkovoj::operator<<(std::ostream& out,const Point& pnt)
 {
   std::ostream::sentry sentry(out);
 
@@ -67,7 +67,7 @@ std::ostream& kladkovoj::operator<<(std::ostream& out, Point& pnt)
 }
 
 
-std::ostream& kladkovoj::operator<<(std::ostream& out, Polygon& poly)
+std::ostream& kladkovoj::operator<<(std::ostream& out,const Polygon& poly)
 {
   std::ostream::sentry sentry(out);
 
@@ -77,6 +77,6 @@ std::ostream& kladkovoj::operator<<(std::ostream& out, Polygon& poly)
   out << poly.points.size() << ' ';
 
   for (const Point& point : poly.points)
-    out << &point << ' ';
+    out << point << ' ';
   return out;
 }

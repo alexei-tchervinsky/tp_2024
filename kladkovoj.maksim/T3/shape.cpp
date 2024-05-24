@@ -58,12 +58,12 @@ bool Segment::isIntersect(const Segment& other, std::pair<double, double>* intr 
 double triangleArea( const Point& p1, const Point& p2, const Point& p3)
 {
   double
-    a = sqrt((p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * p1.y - p2.y),
-    b = sqrt((p1.x - p3.x) * (p1.x - p3.x) + (p1.y - p3.y) * p1.y - p3.y),
-    c = sqrt((p3.x - p2.x) * (p3.x - p2.x) + (p3.y - p2.y) * p3.y - p2.y),
+    a = sqrt((p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y)),
+    b = sqrt((p1.x - p3.x) * (p1.x - p3.x) + (p1.y - p3.y) * (p1.y - p3.y)),
+    c = sqrt((p3.x - p2.x) * (p3.x - p2.x) + (p3.y - p2.y) * (p3.y - p2.y)),
     p = (a + b + c) / 2;
 
-    return sqrt(p * (p - a) * (p - b) * (p - c));
+  return sqrt(p * (p - a) * (p - b) * (p - c));
 }
 
 std::vector<Segment> Polygon::createSegmentPool(void) const
@@ -71,7 +71,8 @@ std::vector<Segment> Polygon::createSegmentPool(void) const
   std::vector<Segment> res(points.size());
   Point prev = points[0];
 
-  auto segmentCreator = [&](const Point& current)
+  auto segmentCreator = [&]
+  (const Point& current)
   {
     Segment ans = {prev, current};
 
@@ -94,7 +95,7 @@ bool Polygon::contains(const Point& pnt) const
 
   int maxX = *std::max_element(xArr.begin(), xArr.end());
 
-  Point outOfBounds = {maxX + 3.0, pnt.y};
+  Point outOfBounds = {maxX + 3, pnt.y};
   Segment ray = {pnt, outOfBounds};
   auto sgmtPool = createSegmentPool();
 
@@ -156,7 +157,7 @@ bool Polygon::isIntersect(const Polygon &other) const
 
   int res = std::accumulate(ourSegments.begin(), ourSegments.end(), 0, countIntrOneIter);
 
-  return res;
+  return res != 0;
 }
 
 double Polygon::area(void) const

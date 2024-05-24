@@ -8,10 +8,10 @@ namespace kladkovoj
 {
   struct Point
   {
-    double x;
-    double y;
+    int x;
+    int y;
 
-    Point(double x0 = 0, double y0 = 0) : x(x0), y(y0)
+    Point(int x0 = 0, int y0 = 0) : x(x0), y(y0)
     {
     }
 
@@ -55,8 +55,8 @@ namespace kladkovoj
   std::istream& operator >>(std::istream& input, Sep&& res);
   std::istream& operator >>(std::istream& input, Point& res);
   std::istream& operator >>(std::istream& input, Polygon& res);
-  std::ostream& operator <<(std::ostream& out, Point& pnt);
-  std::ostream& operator <<(std::ostream& out, Polygon& poly);
+  std::ostream& operator <<(std::ostream& out, const Point& pnt);
+  std::ostream& operator <<(std::ostream& out, const Polygon& poly);
 
 }
 
