@@ -70,47 +70,69 @@ namespace nspace
         return in;
     }
 
-    std::istream& operator>>(std::istream& in, Data& dest)
+    std::istream& operator>>(std::istream& in, Data& data)
     {
         std::istream::sentry sentry(in);
         if (!sentry)
+            return in;
+
+        std::string input;
+        if (!std::getline(in, input, ')'))
         {
+            in.setstate(std::ios::failbit);
             return in;
         }
-        Data input;
+
+        std::istringstream iss(input + ')');
+        char c;
+        if (!(iss >> c) || c != '(')
         {
-            using sep = DelimiterIO;
-            using label = LabelIO;
-            using dbl = DoubleIO;
-            using ll = LongLIO;
-            using str = StringIO;
-            std::string key;
-            in >> sep{ '(' };
-            in >> sep{ ':' };
-            in >> key;
-            if (key == "key1")
-            {
-                in >> dbl{ input.key1 };
-            }
-            in >> sep{ ':' };
-            in >> key;
-            if (key == "key2")
-            {
-                in >> ll{ input.key2 };
-            }
-            in >> sep{ ':' };
-            in >> key;
-            if (key == "key3")
-            {
-                in >> str{ input.key3 };
-            }
-            in >> sep{ ':' };
-            in >> sep{ ')' };
+            in.setstate(std::ios::failbit);
+            return in;
         }
-        if (in)
+
+        while (iss >> c)
         {
-            dest = input;
+            if (c == ':')
+            {
+                std::string key;
+                if (!(iss >> key))
+                {
+                    in.setstate(std::ios::failbit);
+                    return in;
+                }
+
+                if (key == "key1")
+                {
+                    if (!(iss >> data.key1) || !(iss >> c) || (c != 'd' && c != 'D'))
+                    {
+                        in.setstate(std::ios::failbit);
+                        return in;
+                    }
+                }
+                else if (key == "key2")
+                {
+                    if (!(iss >> data.key2) || !(iss >> c) || (c != 'l' &&
+                        c != 'L') || !(iss >> c) || (c != 'l' && c != 'L'))
+                    {
+                        in.setstate(std::ios::failbit);
+                        return in;
+                    }
+                }
+                else if (key == "key3")
+                {
+                    if (!(iss >> std::quoted(data.key3)))
+                    {
+                        in.setstate(std::ios::failbit);
+                        return in;
+                    }
+                }
+            }
+
+            if (iss.peek() == ')')
+                break;
         }
+
         return in;
     }
 
@@ -155,7 +177,7 @@ namespace nspace
         }
         return isOrdered;
     }
-    void sort(std::vector< nspace::Data > Items[], size_t size) {
+    /*void sort(std::vector< nspace::Data > Items[], size_t size) {
         for (size_t i = 0; i <= size - 1; ++i) {
 
             for (size_t j = i + 1; j <= size - 1; ++j) {
@@ -179,5 +201,8 @@ namespace nspace
                 }
             }
         }
-    }
+    }*/
 }
+
+
+
