@@ -64,3 +64,4 @@ namespace nspace
   std::ostream& operator<<(std::ostream& out, const Data& dest);
 }
 #endif
+
