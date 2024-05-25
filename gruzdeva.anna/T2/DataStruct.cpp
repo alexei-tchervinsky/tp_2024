@@ -4,8 +4,7 @@
 #include <iomanip>
 
 namespace ds {
-
-	bool operator<(const DataStruct& rhs, const DataStruct& lhs) {
+  bool operator<(const DataStruct& rhs, const DataStruct& lhs) {
     if (rhs.key1 != lhs.key1)
       return rhs.key1 < lhs.key1;
     if (rhs.key2 != lhs.key2)
@@ -51,7 +50,6 @@ namespace ds {
     os << ":key3 \"" << ds.key3 << "\":)";
     return os;
   }
-
 
   std::istream & operator>>(std::istream & is, DelimiterIO && d) {
     std::istream::sentry s(is);
