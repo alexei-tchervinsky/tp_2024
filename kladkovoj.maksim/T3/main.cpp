@@ -12,7 +12,7 @@ int main(int argC, char *argV[])
   if (argC != 2)
   {
     std::cerr << "INCORRECT USAGE" << std::endl;
-    return 0;
+    return 1;
   }
 
   std::string fileName = argV[1];
@@ -22,7 +22,7 @@ int main(int argC, char *argV[])
   if (!file)
   {
     std::cerr << "File not found!" << std::endl;
-    return 0;
+    return 1;
   }
 
   std::cout << std::setprecision(1) << std::fixed;
