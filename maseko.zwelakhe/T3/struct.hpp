@@ -36,3 +36,5 @@ namespace nspace
   double area(const Polygon& polygon);
 }
 #endif
+
+

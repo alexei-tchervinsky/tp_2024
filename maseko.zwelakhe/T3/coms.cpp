@@ -274,3 +274,5 @@ namespace nspace
     out << std::setprecision(0) << get_seq(polygons.cbegin(), polygons.cend(), param) << '\n';
   }
 }
+
+
