@@ -30,7 +30,7 @@ std::ostream& leontiev::calculateArea(const std::vector<Polygon>& polygons, std:
     int vertexCounter = std::stoi(argument);
     if (vertexCounter < 3)
     {
-      throw std::logic_error("Invalid argument");
+      throw std::out_of_range("Invalid argument");
     }
     out << calculateVertexes(polygons, vertexCounter) << "\n";
   }
@@ -51,7 +51,7 @@ double leontiev::calculateMeanArea(const std::vector<Polygon>& polygons)
 {
   if (polygons.empty())
   {
-    throw std::logic_error("Invalid argument");
+    throw std::out_of_range("Invalid argument");
   }
   double allAreas = std::accumulate(polygons.cbegin(), polygons.cend(), 0, areasSum);
   return allAreas / polygons.size();
@@ -121,7 +121,7 @@ std::ostream& leontiev::getMax(const std::vector<Polygon>& polygons, std::ostrea
 {
   if (polygons.empty())
   {
-    throw std::logic_error("There is no data");
+    throw std::out_of_range("There is no data");
   }
   std::string argument = "";
   in >> argument;
@@ -135,7 +135,7 @@ std::ostream& leontiev::getMax(const std::vector<Polygon>& polygons, std::ostrea
   }
   else
   {
-    throw std::logic_error("Invalid argument");
+    throw std::out_of_range("Invalid argument");
   }
   return out;
 }
@@ -164,7 +164,7 @@ std::ostream& leontiev::getMin(const std::vector<Polygon>& polygons, std::ostrea
 {
   if (polygons.empty())
   {
-    throw std::logic_error("There is no data");
+    throw std::out_of_range("There is no data");
   }
   std::string argument = "";
   in >> argument;
@@ -178,7 +178,7 @@ std::ostream& leontiev::getMin(const std::vector<Polygon>& polygons, std::ostrea
   }
   else
   {
-    throw std::logic_error("Invalid argument");
+    throw std::out_of_range("Invalid argument");
   }
   return out;
 }
@@ -216,7 +216,7 @@ std::ostream& leontiev::count(const std::vector<Polygon>& polygons, std::ostream
     int vertexCounter = std::stoi(argument);
     if (vertexCounter < 3)
     {
-      throw std::logic_error("Invalid argument");
+      throw std::out_of_range("Invalid argument");
     }
     out << shapeCount(polygons, vertexCounter) << "\n";
   }
@@ -328,11 +328,12 @@ std::ostream& leontiev::inFrame(const std::vector<Polygon>& polygons, std::ostre
   in >> polygon;
   if (!in)
   {
-    throw std::logic_error("");
+    throw std::out_of_range("");
   }
   else
   {
-    if (isInFrame(polygons, polygon))
+    bool isChecked = isInFrame(polygons, polygon);
+    if (isChecked)
     {
       out << "<TRUE>\n";
     }
@@ -391,11 +392,19 @@ std::ostream& leontiev::maxSeq(const std::vector<Polygon>& polygons, std::ostrea
   in >> polygon;
   if (!in)
   {
-    throw std::logic_error("");
+    throw std::out_of_range("Invalid argument");
   }
   else
   {
-    out << maxSeries(polygons, polygon) << "\n";
+    std::size_t maxS = maxSeries(polygons, polygon);
+    if (maxS == 0)
+    {
+      throw std::out_of_range("Invalid argument");
+    }
+    else
+    {
+      out << maxS << "\n";
+    }
   }
   return out;
 }

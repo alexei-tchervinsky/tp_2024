@@ -49,13 +49,6 @@ int main(int argc, char* argv[])
       std::cin.clear();
       std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
-    catch(const std::logic_error& e)
-    {
-      std::cout << "<INVALID COMMAND>" << "\n";
-      std::cin.clear();
-      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    }
-
   }
 
   return 0;
