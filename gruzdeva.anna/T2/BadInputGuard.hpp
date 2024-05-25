@@ -4,9 +4,9 @@
 #include <iostream>
 
 namespace ds {
-	class BadInputGuard {
-	public:
-		explicit BadInputGuard(std::basic_ios<char>& s);
+  class BadInputGuard {
+  public:
+    explicit BadInputGuard(std::basic_ios<char>& s);
     ~BadInputGuard();
   private:
     std::basic_ios<char>& s_;

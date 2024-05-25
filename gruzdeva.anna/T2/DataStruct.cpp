@@ -14,32 +14,33 @@ namespace ds {
 
   std::istream& operator>>(std::istream& is, DataStruct& ds) {
     std::istream::sentry s(is);
-    if (!s)
+    if (!s) {
       return is;
+    }
 
-	  BadInputGuard ioGuard(is);
-	  {
-		  is >> DelimiterIO{'('};
-		  for (std::size_t i = 0; i < 3; i++) {
-			  is >> DelimiterIO{':'};
-			  std::string key;
-			  is >> key;
-			  if (key == "key1") {
-				  is >> DoubleLitIO{ds.key1};
-			  } else if (key == "key2") {
-				  is >> ULLLitIO{ds.key2};
-			  } else if (key == "key3") {
-				  is >> StringIO{ds.key3};
-			  }
-			  if (!s) {
-				  return is;
-			  }
-		  }
+    BadInputGuard ioGuard(is);
+    {
+      is >> DelimiterIO{'('};
+      for (std::size_t i = 0; i < 3; i++) {
+        is >> DelimiterIO{':'};
+        std::string key;
+        is >> key;
+        if (key == "key1") {
+          is >> DoubleLitIO{ds.key1};
+        } else if (key == "key2") {
+          is >> ULLLitIO{ds.key2};
+        } else if (key == "key3") {
+          is >> StringIO{ds.key3};
+        }
+        if (!s) {
+          return is;
+        }
+      }
       is >> DelimiterIO{':'};
-		  is >> DelimiterIO{')'};
-	  }
+      is >> DelimiterIO{')'};
+    }
     if (!is) {
-	    is.setstate(std::ios_base::failbit);
+      is.setstate(std::ios_base::failbit);
     }
     return is;
   }
