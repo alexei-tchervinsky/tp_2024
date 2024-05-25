@@ -251,3 +251,121 @@ int leontiev::shapeCount(const std::vector<Polygon>& polygons, int vertexNum)
 {
   return std::count_if(polygons.begin(), polygons.end(), std::bind(isVertexEqual, _1, vertexNum));
 }
+
+int leontiev::getX(const Point& point)
+{
+  return point.x;
+}
+
+int leontiev::getY(const Point& point)
+{
+  return point.y;
+}
+
+int leontiev::getMaxCoordinate(const Polygon& polygon, int(*getCoordinate)(const Point& point))
+{
+  std::vector<int> allCoordinates;
+  std::transform(polygon.points.begin(), polygon.points.end(), std::back_inserter(allCoordinates), getCoordinate);
+  int max = *std::max_element(allCoordinates.begin(), allCoordinates.end());
+  return max;
+}
+
+int leontiev::getMinCoordinate(const Polygon& polygon, int(*getCoordinate)(const Point& point))
+{
+  std::vector<int> allCoordinates;
+  std::transform(polygon.points.begin(), polygon.points.end(), std::back_inserter(allCoordinates), getCoordinate);
+  int min = *std::min_element(allCoordinates.begin(), allCoordinates.end());
+  return min;
+}
+
+std::vector<leontiev::Point> leontiev::getFrame(const std::vector<Polygon>& polygons)
+{
+  std::vector<int> allMaxX;
+  std::vector<int> allMaxY;
+  std::vector<int> allMinX;
+  std::vector<int> allMinY;
+  std::transform(polygons.begin(), polygons.end(), std::back_inserter(allMaxX), std::bind(getMaxCoordinate, _1, getX));
+  std::transform(polygons.begin(), polygons.end(), std::back_inserter(allMaxY), std::bind(getMaxCoordinate, _1, getY));
+  std::transform(polygons.begin(), polygons.end(), std::back_inserter(allMinX), std::bind(getMinCoordinate, _1, getX));
+  std::transform(polygons.begin(), polygons.end(), std::back_inserter(allMinY), std::bind(getMinCoordinate, _1, getY));
+  int maxX = *std::max_element(allMaxX.begin(), allMaxX.end());
+  int maxY = *std::max_element(allMaxY.begin(), allMaxY.end());
+  int minX = *std::min_element(allMinX.begin(), allMinX.end());
+  int minY = *std::min_element(allMinY.begin(), allMinY.end());
+  std::vector <Point> frame;
+  frame.push_back(Point{minX, maxY});
+  frame.push_back(Point{maxX, maxY});
+  frame.push_back(Point{maxX, minY});
+  frame.push_back(Point{minX, minY});
+  return frame;
+}
+bool leontiev::isInFrame(const std::vector<Polygon>& polygons, const Polygon& polygon)
+{
+  std::vector< Point > frame = getFrame(polygons);
+  int maxFrameX = frame[1].x;
+  int minFrameX = frame[0].x;
+  int maxFrameY = frame[0].y;
+  int minFrameY = frame[2].y;
+  int maxPolygonX = getMaxCoordinate(polygon, getX);
+  int minPolygonX = getMinCoordinate(polygon, getX);
+  int maxPolygonY = getMaxCoordinate(polygon, getY);
+  int minPolygonY = getMinCoordinate(polygon, getY);
+  bool noMoreMax = maxPolygonX <= maxFrameX || maxPolygonY <= maxFrameY;
+  bool noLessMin = minPolygonX >= minFrameX || minPolygonY >= minFrameY;
+  if(noMoreMax && noLessMin)
+  {
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
+
+std::ostream& leontiev::inFrame(const std::vector<Polygon>& polygons, std::ostream& out, std::istream& in)
+{
+  Polygon polygon;
+  in >> polygon;
+  if (!in)
+  {
+    throw std::logic_error("");
+  }
+  else
+  {
+    if (isInFrame(polygons, polygon))
+    {
+      out << "<TRUE>\n";
+    }
+    else
+    {
+      out << "<FALSE>\n";
+    }
+  }
+  return out;
+}
+
+bool leontiev::isEquaPoints(const Point& first, const Point& second)
+{
+  return first.x == second.x && first.y == second.y;
+}
+bool leontiev::isEqualPolygons(const Polygon& first, const Polygon& second)
+{
+  if (second.points.size() == first.points.size())
+  {
+    return std::equal(std::begin(first.points), std::end(first.points), std::begin(second.points), std::end(second.points));
+  }
+}
+
+std::ostream& leontiev::maxSeq(const std::vector<Polygon>& polygons, std::ostream& out, std::istream& in)
+{
+  Polygon polygon;
+  in >> polygon;
+  if (!in)
+  {
+    throw std::logic_error("");
+  }
+  else
+  {
+    out << std::count_if(polygons.begin(), polygons.end(), std::bind(isEqualPolygons, _1, polygon));
+  }
+}

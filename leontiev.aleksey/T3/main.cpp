@@ -33,6 +33,8 @@ int main(int argc, char* argv[])
   commands["MAX"] = std::bind(leontiev::getMax, _3, _2, _1);
   commands["MIN"] = std::bind(leontiev::getMin, _3, _2, _1);
   commands["COUNT"] = std::bind(leontiev::count, _3, _2, _1);
+  commands["INFRAME"] = std::bind(leontiev::inFrame, _3, _2, _1);
+  commands["MAXSEQ"] = std::bind(leontiev::maxSeq, _3, _2, _1);
 
   std::string argument = "";
   while (std::cin >> argument)
