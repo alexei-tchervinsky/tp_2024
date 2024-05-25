@@ -357,6 +357,34 @@ bool leontiev::isEqualPolygons(const Polygon& first, const Polygon& second)
   return false;
 }
 
+struct SamePolygons
+{
+public:
+  std::size_t operator()(const leontiev::Polygon& first,const leontiev::Polygon& second);
+  std::size_t sequence = 0;
+};
+
+std::size_t SamePolygons::operator()(const leontiev::Polygon& first,const leontiev::Polygon& second )
+{
+  if (first == second)
+  {
+    ++sequence;
+  }
+  else
+  {
+    sequence = 0;
+  }
+  return sequence;
+}
+
+std::size_t maxSeries(const std::vector<leontiev::Polygon>& polygons, const leontiev::Polygon& polygon)
+{
+  std::vector<std::size_t> seriesCounter;
+  SamePolygons samePolygons;
+  std::transform(polygons.begin(), polygons.end(), std::back_inserter(seriesCounter), std::bind(samePolygons, _1, polygon));
+  return *std::max_element(seriesCounter.begin(), seriesCounter.end());
+}
+
 std::ostream& leontiev::maxSeq(const std::vector<Polygon>& polygons, std::ostream& out, std::istream& in)
 {
   Polygon polygon;
@@ -367,7 +395,7 @@ std::ostream& leontiev::maxSeq(const std::vector<Polygon>& polygons, std::ostrea
   }
   else
   {
-    out << std::count_if(polygons.begin(), polygons.end(), std::bind(isEqualPolygons, _1, polygon));
+    out << maxSeries(polygons, polygon) << "\n";
   }
   return out;
 }
