@@ -20,8 +20,8 @@ int main() {
   }
   std::sort(data.begin(), data.end());
   std::copy(
-      data.begin(),
-      data.end(),
+      std::begin(data),
+      std::end(data),
       std::ostream_iterator<ds::DataStruct>{std::cout, "\n"}
   );
   return 0;

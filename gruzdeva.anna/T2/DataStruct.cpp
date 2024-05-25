@@ -46,7 +46,7 @@ namespace ds {
   }
 
   std::ostream& operator<<(std::ostream& os, const DataStruct& ds) {
-    os << "(:key1 " << std::fixed << std::setprecision(2) << ds.key1 << "d";
+    os << "(:key1 " << std::fixed << std::setprecision(1) << ds.key1 << "d";
     os << ":key2 " << ds.key2 << "ull";
     os << ":key3 \"" << ds.key3 << "\":)";
     return os;
