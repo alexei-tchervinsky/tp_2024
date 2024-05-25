@@ -33,12 +33,6 @@ namespace leontiev
   bool isVertexOdd(const Polygon polygon);
   int shapeCount(const std::vector<Polygon>& polygons, int vertexNum);
   bool isVertexEqual(const Polygon polygon, std::size_t vertexNum);
-
-
-
-
-
 }
-
 
 #endif
