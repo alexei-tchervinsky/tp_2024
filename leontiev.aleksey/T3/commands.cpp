@@ -354,6 +354,7 @@ bool leontiev::isEqualPolygons(const Polygon& first, const Polygon& second)
   {
     return std::equal(std::begin(first.points), std::end(first.points), std::begin(second.points), std::end(second.points));
   }
+  return false;
 }
 
 std::ostream& leontiev::maxSeq(const std::vector<Polygon>& polygons, std::ostream& out, std::istream& in)
@@ -368,4 +369,5 @@ std::ostream& leontiev::maxSeq(const std::vector<Polygon>& polygons, std::ostrea
   {
     out << std::count_if(polygons.begin(), polygons.end(), std::bind(isEqualPolygons, _1, polygon));
   }
+  return out;
 }

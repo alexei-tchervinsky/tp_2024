@@ -52,3 +52,17 @@ std::istream& leontiev::operator>>(std::istream& in, Polygon& dest)
   }
   return in;
 }
+
+bool leontiev::operator==(const Point& first, const Point& second)
+{
+  return first.x == second.x && first.y == second.y;
+}
+
+bool leontiev::operator==(const Polygon& first, const Polygon& second)
+{
+  if (second.points.size() == first.points.size())
+  {
+    return std::equal(std::begin(first.points), std::end(first.points), std::begin(second.points), std::end(second.points));
+  }
+  return false;
+}
