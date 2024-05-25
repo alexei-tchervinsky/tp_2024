@@ -1,9 +1,11 @@
 #include "DataStruct.hpp"
+#include "BadInputGuard.hpp"
 
 #include <iomanip>
 
 namespace ds {
-  bool operator<(const DataStruct& rhs, const DataStruct& lhs) {
+
+	bool operator<(const DataStruct& rhs, const DataStruct& lhs) {
     if (rhs.key1 != lhs.key1)
       return rhs.key1 < lhs.key1;
     if (rhs.key2 != lhs.key2)
@@ -16,34 +18,37 @@ namespace ds {
     if (!s)
       return is;
 
-    is >> DelimiterIO{ '(' };
-    for (std::size_t i = 0; i < 3; i++) {
-      is >> DelimiterIO{ ':' };
-      std::string key;
-      is >> key;
-      if (key == "key1") {
-        is >> DoubleLitIO{ ds.key1 };
-      }
-      else if (key == "key2") {
-        is >> ULLLitIO{ds.key2};
-      }
-      else if (key == "key3") {
-        is >> StringIO{ds.key3};
-      }
-      if(!s) {
-        return is;
-      }
+	  BadInputGuard ioGuard(is);
+	  {
+		  is >> DelimiterIO{'('};
+		  for (std::size_t i = 0; i < 3; i++) {
+			  is >> DelimiterIO{':'};
+			  std::string key;
+			  is >> key;
+			  if (key == "key1") {
+				  is >> DoubleLitIO{ds.key1};
+			  } else if (key == "key2") {
+				  is >> ULLLitIO{ds.key2};
+			  } else if (key == "key3") {
+				  is >> StringIO{ds.key3};
+			  }
+			  if (!s) {
+				  return is;
+			  }
+		  }
+      is >> DelimiterIO{':'};
+		  is >> DelimiterIO{')'};
+	  }
+    if (!is) {
+	    is.setstate(std::ios_base::failbit);
     }
-    is >> DelimiterIO{ ')' };
-    if (!is)
-      is.setstate(std::ios_base::failbit);
     return is;
   }
 
   std::ostream& operator<<(std::ostream& os, const DataStruct& ds) {
     os << "(:key1 " << std::fixed << std::setprecision(2) << ds.key1 << "d";
     os << ":key2 " << ds.key2 << "ull";
-    os << ":key3 \"" << ds.key3 << "\")";
+    os << ":key3 \"" << ds.key3 << "\":)";
     return os;
   }
 
