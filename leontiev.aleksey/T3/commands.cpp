@@ -30,7 +30,7 @@ std::ostream& leontiev::calculateArea(const std::vector<Polygon>& polygons, std:
     int vertexCounter = std::stoi(argument);
     if (vertexCounter < 3)
     {
-      throw std::out_of_range("Invalid argument");
+      throw std::logic_error("Invalid argument");
     }
     out << calculateVertexes(polygons, vertexCounter) << "\n";
   }
@@ -51,7 +51,7 @@ double leontiev::calculateMeanArea(const std::vector<Polygon>& polygons)
 {
   if (polygons.empty())
   {
-    throw std::out_of_range("Invalid argument");
+    throw std::logic_error("Invalid argument");
   }
   double allAreas = std::accumulate(polygons.cbegin(), polygons.cend(), 0, areasSum);
   return allAreas / polygons.size();
@@ -121,7 +121,7 @@ std::ostream& leontiev::getMax(const std::vector<Polygon>& polygons, std::ostrea
 {
   if (polygons.empty())
   {
-    throw std::out_of_range("There is no data");
+    throw std::logic_error("There is no data");
   }
   std::string argument = "";
   in >> argument;
@@ -135,7 +135,7 @@ std::ostream& leontiev::getMax(const std::vector<Polygon>& polygons, std::ostrea
   }
   else
   {
-    throw std::out_of_range("Invalid argument");
+    throw std::logic_error("Invalid argument");
   }
   return out;
 }
@@ -164,7 +164,7 @@ std::ostream& leontiev::getMin(const std::vector<Polygon>& polygons, std::ostrea
 {
   if (polygons.empty())
   {
-    throw std::out_of_range("There is no data");
+    throw std::logic_error("There is no data");
   }
   std::string argument = "";
   in >> argument;
@@ -178,7 +178,7 @@ std::ostream& leontiev::getMin(const std::vector<Polygon>& polygons, std::ostrea
   }
   else
   {
-    throw std::out_of_range("Invalid argument");
+    throw std::logic_error("Invalid argument");
   }
   return out;
 }
@@ -216,7 +216,7 @@ std::ostream& leontiev::count(const std::vector<Polygon>& polygons, std::ostream
     int vertexCounter = std::stoi(argument);
     if (vertexCounter < 3)
     {
-      throw std::out_of_range("Invalid argument");
+      throw std::logic_error("Invalid argument");
     }
     out << shapeCount(polygons, vertexCounter) << "\n";
   }
@@ -301,7 +301,7 @@ std::vector<leontiev::Point> leontiev::getFrame(const std::vector<Polygon>& poly
 }
 bool leontiev::isInFrame(const std::vector<Polygon>& polygons, const Polygon& polygon)
 {
-  std::vector< Point > frame = getFrame(polygons);
+  std::vector<Point> frame = getFrame(polygons);
   int maxFrameX = frame[1].x;
   int minFrameX = frame[0].x;
   int maxFrameY = frame[0].y;
@@ -326,21 +326,22 @@ std::ostream& leontiev::inFrame(const std::vector<Polygon>& polygons, std::ostre
 {
   Polygon polygon;
   in >> polygon;
-  if (!in)
+  if (in.fail())
   {
-    throw std::out_of_range("");
+    throw std::logic_error("");
+  }
+  if (polygon.points.size() == 3)
+  {
+    return out;
+  }
+  bool isChecked = isInFrame(polygons, polygon);
+  if (isChecked && !in.fail())
+  {
+    out << "<TRUE>\n";
   }
   else
   {
-    bool isChecked = isInFrame(polygons, polygon);
-    if (isChecked)
-    {
-      out << "<TRUE>\n";
-    }
-    else
-    {
-      out << "<FALSE>\n";
-    }
+    out << "<FALSE>\n";
   }
   return out;
 }
@@ -362,7 +363,8 @@ struct SamePolygons
 {
 public:
   std::size_t operator()(const leontiev::Polygon& first,const leontiev::Polygon& second);
-  std::size_t sequence = 0;
+private:
+  std::size_t sequence;
 };
 
 std::size_t SamePolygons::operator()(const leontiev::Polygon& first,const leontiev::Polygon& second )
@@ -388,18 +390,26 @@ std::size_t maxSeries(const std::vector<leontiev::Polygon>& polygons, const leon
 
 std::ostream& leontiev::maxSeq(const std::vector<Polygon>& polygons, std::ostream& out, std::istream& in)
 {
+  if (polygons.empty())
+  {
+    throw std::logic_error("Empty data");
+  }
   Polygon polygon;
   in >> polygon;
   if (!in)
   {
-    throw std::out_of_range("Invalid argument");
+    throw std::logic_error("Invalid argument");
+  }
+  if (polygon.points.size() <= 2)
+  {
+    throw std::logic_error("Invalid size");
   }
   else
   {
     std::size_t maxS = maxSeries(polygons, polygon);
     if (maxS == 0)
     {
-      throw std::out_of_range("Invalid argument");
+      throw std::logic_error("Invalid argument");
     }
     else
     {

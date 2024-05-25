@@ -22,7 +22,7 @@ int main(int argc, char* argv[])
   while (!input.eof())
   {
     std::copy(std::istream_iterator<leontiev::Polygon>{input}, std::istream_iterator<leontiev::Polygon>{}, std::back_inserter(polygons));
-    if (input.fail())
+    if (input.fail() && !input.eof())
     {
       input.clear();
       input.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -43,7 +43,7 @@ int main(int argc, char* argv[])
     {
       commands.at(argument)(std::cin, std::cout, polygons);
     }
-    catch(const std::out_of_range& e)
+    catch(const std::exception& e)
     {
       std::cout << "<INVALID COMMAND>" << '\n';
       std::cin.clear();
