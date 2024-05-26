@@ -16,7 +16,11 @@ int main()
   commands["create"] = std::bind(leontiev::create, _1, _2, _3);
   commands["display"] = std::bind(leontiev::display, _1, _3);
   commands["top"] = std::bind(leontiev::top, _1, _2, _3);
-
+  commands["findW"] = std::bind(leontiev::findWord, _1, _2, _3);
+  commands["clear"] = std::bind(leontiev::clear, _1, _3);
+  commands["merge"] = std::bind(leontiev::merge, _1, _2, _3);
+  commands["findN"] = std::bind(leontiev::findN, _1, _2, _3);
+  commands["out"] = std::bind(leontiev::out, _1, _2, _3);
 
   std::string command = "";
   while (std::cin >> command)
@@ -25,7 +29,11 @@ int main()
     {
       commands.at(command)(frDict, std::cin, std::cout);
     }
-    catch (std::exception& e)
+    catch (std::out_of_range& e)
+    {
+      std::cout << "Invalid command\n";
+    }
+    catch (std::logic_error& e)
     {
       std::cerr << e.what() << "\n";
     }
