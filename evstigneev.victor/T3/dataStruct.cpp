@@ -25,14 +25,14 @@ std::istream& evstigneev::operator>>(std::istream& in, evstigneev::Point& dest)
 
 std::istream& evstigneev::operator>>(std::istream& in, evstigneev::Polygon& poly)
 {
-  std::istream::sentry sentry(in);
+  /*std::istream::sentry sentry(in);
   if (!sentry)
   {
     return in;
   }
   poly.points.clear();
   size_t vexes = 0;
-  if (!(in >> vexes) || vexes < 3)
+  if (!(in >> vexes) || vexes <= 2)
   {
     in.setstate(std::ios::failbit);
     return in;
@@ -48,6 +48,46 @@ std::istream& evstigneev::operator>>(std::istream& in, evstigneev::Polygon& poly
     in >> point;
   }
   if (in.get() != '\n')
+  {
+    in.setstate(std::ios::failbit);
+  }
+  return in;*/
+  std::istream::sentry sentry(in);
+  if (!sentry)
+  {
+    return in;
+  }
+  Polygon polygon;
+  size_t vexes = 0;
+  if (!(in >> vexes) || vexes <= 2)
+  {
+    in.setstate(std::ios::failbit);
+    return in;
+  }
+  Point point;
+  for (size_t i = 0; i < vexes; i++)
+  {
+    if (in.get() == '\n')
+    {
+      in.setstate(std::ios::failbit);
+      return in;
+    }
+    in >> point;
+    if (in)
+    {
+      polygon.points.push_back(point);
+    }
+    else
+    {
+      in.setstate(std::ios::failbit);
+      return in;
+    }
+  }
+  if (in && polygon.points.size() == vexes && in.get() == '\n')
+  {
+    poly = polygon;
+  }
+  else
   {
     in.setstate(std::ios::failbit);
   }
