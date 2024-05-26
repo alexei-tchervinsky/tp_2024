@@ -122,37 +122,34 @@ void evstigneev::min(const std::vector<evstigneev::Polygon>& poly)
 
 void evstigneev::count(const std::vector<Polygon>& poly)
 {
+  auto c_if = [](const evstigneev::Polygon& poly,
+    std::size_t m, std::size_t vexes)
+  {
+    return ((poly.points.size() % 2 == 0 && m == 0) ||
+      (poly.points.size() % 2 == 1 && m == 1) ||
+      (m == 2 && poly.points.size() == vexes));
+  };
+
   std::string cmd;
   std::cin >> cmd;
-
-  if (cmd == "ODD")
+  if (cmd == "EVEN")
   {
     std::cout << std::count_if(poly.begin(), poly.end(),
-      [](const Polygon& p)
-      {
-        return p.points.size() % 2 == 1;
-      }) << "\n";
+      std::bind(c_if, std::placeholders::_1, 0, 0)) << '\n';
   }
-  else if (cmd == "EVEN")
+  else if (cmd == "ODD")
   {
     std::cout << std::count_if(poly.begin(), poly.end(),
-      [](const Polygon& p)
-      {
-        return p.points.size() % 2 == 0;
-      }) << "\n";
+      std::bind(c_if, std::placeholders::_1, 1, 0)) << '\n';
   }
   else if (std::all_of(cmd.begin(), cmd.end(), isdigit) && stoi(cmd) > 2)
   {
-    std::size_t vexes = stoi(cmd);
     std::cout << std::count_if(poly.begin(), poly.end(),
-      [&vexes](const Polygon& p)
-      {
-        return p.points.size() == vexes;
-      }) << "\n";
+      std::bind(c_if, std::placeholders::_1, 2, stoi(cmd))) << '\n';
   }
   else
   {
-    throw std::logic_error("<INVALID COMMAND>");
+    throw std::runtime_error("<INVALID COMMAND>");
   }
 }
 
