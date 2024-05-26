@@ -189,7 +189,21 @@ void evstigneev::mxSeq(const std::vector<evstigneev::Polygon>& poly)
   std::vector<Point> srcPoints;
   std::vector<size_t> seques;
 
-  using in_it = std::istream_iterator< Point >;
+  auto isEqualCount = [](const Polygon& poly,
+    const std::vector<Point>& src, size_t& c)
+  {
+    if (src == poly.points)
+    {
+      c++;
+    }
+    else
+    {
+      c = 0;
+    }
+    return c;
+  };
+
+  using in_it = std::istream_iterator<Point>;
   std::cin >> numOfVexes;
 
   if (numOfVexes < 3)
@@ -209,19 +223,7 @@ void evstigneev::mxSeq(const std::vector<evstigneev::Polygon>& poly)
   std::transform(poly.begin(), poly.end(),
     std::back_inserter(seques), f);
 
-  std::cout << *(std::max_element(seques.begin(), seques.end())) << "\n";
-}
+  auto mx = std::max_element(seques.begin(), seques.end());
 
-size_t evstigneev::isEqualCount(const Polygon& poly,
-  const std::vector<Point>& src, size_t& c)
-{
-  if (src == poly.points)
-  {
-    c++;
-  }
-  else
-  {
-    c = 0;
-  }
-  return c;
+  std::cout << *mx << "\n";
 }
