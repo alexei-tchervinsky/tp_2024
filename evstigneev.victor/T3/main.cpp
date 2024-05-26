@@ -35,35 +35,6 @@ int main(int argc, char* argv[])
       in.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
   }
-  /*std::map<std::string,
-    std::function<void(const std::vector<evstigneev::Polygon>&)>> cmd =
-  {
-    {"AREA", evstigneev::area},
-    {"MAX", evstigneev::max},
-    {"MIN", evstigneev::min},
-    {"COUNT", evstigneev::count},
-    {"LESSAREA", evstigneev::lessArea}
-  };*/
-  /*std::string command = "";
-  while (std::cin >> command)
-  {
-    try
-    {
-      cmd.at(command)(poly);
-    }
-    catch (const std::out_of_range&)
-    {
-      std::cerr << "<INVALID COMMAND>" << "\n";
-      std::cin.clear();
-      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    }
-    catch (const std::logic_error&)
-    {
-      std::cerr << "<INVALID COMMAND>" << "\n";
-      std::cin.clear();
-      std::cin.ignore(std::numeric_limits< std::streamsize >::max(), '\n');
-    }
-  }*/
   while (!std::cin.eof())
   {
     std::cin.clear();
@@ -83,6 +54,10 @@ int main(int argc, char* argv[])
       else if (cmd == "MIN")
       {
         evstigneev::min(poly);
+      }
+      else if (cmd == "COUNT")
+      {
+        evstigneev::count(poly);
       }
       else if (cmd == "LESSAREA")
       {

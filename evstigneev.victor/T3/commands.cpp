@@ -194,9 +194,9 @@ void evstigneev::mxSeq(const std::vector<evstigneev::Polygon>& poly)
   }
 
   using namespace std::placeholders;
-  auto functor = std::bind(isEqualCount, _1, srcPoints, counter);
+  auto f = std::bind(isEqualCount, _1, srcPoints, counter);
   std::transform(poly.begin(), poly.end(),
-    std::back_inserter(seques), functor);
+    std::back_inserter(seques), f);
 
   std::cout << *(std::max_element(seques.begin(), seques.end())) << "\n";
 }
