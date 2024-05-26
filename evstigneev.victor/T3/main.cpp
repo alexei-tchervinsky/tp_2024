@@ -39,9 +39,9 @@ int main(int argc, char* argv[])
     }
   }
   in.close();
-  std::string cmd;
   while (!std::cin.eof())
   {
+    std::string cmd;
     std::cin.clear();
     std::cin >> cmd;
     try
