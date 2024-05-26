@@ -67,7 +67,6 @@ void evstigneev::max(const std::vector<evstigneev::Polygon>& poly)
   }
   else if (cmd == "VERTEXES")
   {
-    std::vector<int> polys(poly.size());
     std::cout << std::accumulate(poly.begin() + 1, poly.end(),
       poly[0].points.size(), [](std::size_t max_i, const Polygon& poly)
       {
@@ -101,7 +100,6 @@ void evstigneev::min(const std::vector<evstigneev::Polygon>& poly)
   }
   else if (cmd == "VERTEXES")
   {
-    std::vector<int> polys(poly.size());
     std::cout << std::accumulate(poly.begin() + 1, poly.end(),
       poly[0].points.size(), [](std::size_t min_i, const Polygon& poly)
       {
