@@ -1,5 +1,7 @@
 #include "dataStruct.hpp"
 #include "delimiter.hpp"
+#include <algorithm>
+#include <numeric>
 
 std::istream& evstigneev::operator>>(std::istream& in, evstigneev::Point& dest)
 {
@@ -64,7 +66,7 @@ bool evstigneev::operator==(const Polygon& fp, const Polygon& sp)
   {
     return false;
   }
-  for (size_t i = 0; i < fp.points.size(); ++i)
+  for (int i = 0; i < fp.points.size(); ++i)
   {
     if (fp.points[i].x != sp.points[i].x || fp.points[i].y != sp.points[i].y)
     {
@@ -72,4 +74,19 @@ bool evstigneev::operator==(const Polygon& fp, const Polygon& sp)
     }
   }
   return true;
+}
+
+bool evstigneev::Polygon::operator<(const Polygon& p)
+{
+  return getArea() < p.getArea();
+}
+
+double evstigneev::Polygon::getArea() const
+{
+  double area = 0.0;
+  for (size_t i = 0; i < points.size(); ++i) {
+    size_t next = (i + 1) % points.size();
+    area += points[i].x * points[next].y - points[i].y * points[next].x;
+  }
+  return std::abs(area) / 2.0;
 }

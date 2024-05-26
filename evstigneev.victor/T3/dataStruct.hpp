@@ -13,23 +13,13 @@ namespace evstigneev
   struct Polygon
   {
     std::vector<Point> points;
+    bool operator<(const Polygon& p);
+    double getArea() const;
   };
-
-  /*struct CArea
-  {
-    Point point_;
-    double operator()(double d, Point& p1, Point& p2);
-  };
-
-  struct CAngle
-  {
-    Point point_1, point_2;
-    bool operator()(Point& p_);
-  };*/
 
   std::istream& operator>>(std::istream& in, evstigneev::Point& dest);
   std::istream& operator>>(std::istream& in, evstigneev::Polygon& poly);
   bool operator==(const Polygon& fp, const Polygon& sp);
-  //std::ostream& operator<<(std::ostream& out, evstigneev::Polygon& poly);
+  
 }
 #endif

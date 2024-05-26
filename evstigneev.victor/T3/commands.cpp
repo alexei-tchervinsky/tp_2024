@@ -6,264 +6,171 @@
 #include <numeric>
 #include <functional>
 
-double evstigneev::countArea(const Polygon& poly) {
-  std::vector<int> p(poly.points.size());
-  std::transform(poly.points.cbegin()++, poly.points.cend(), poly.points.cbegin(),
-    p.begin(), pair);
-  p.push_back(pair(poly.points.front(), poly.points.back()));
-  return std::abs(std::accumulate(p.cbegin(), p.cend(), 0)) / 2.0;
-}
-
-double evstigneev::sAreaEven(double res, const Polygon& poly)
+void evstigneev::area(const std::vector<evstigneev::Polygon>& poly)
 {
-  return (poly.points.size() % 2 == 0) ? res + countArea(poly) : res;
-}
-
-double evstigneev::sAreaOdd(double res, const Polygon& poly)
-{
-  return (poly.points.size() % 2 != 0) ? res + countArea(poly) : res;
-}
-
-double evstigneev::sArea(double res, const Polygon& poly)
-{
-  return res + countArea(poly);
-}
-
-double evstigneev::sAreaEqual(double res, const Polygon& poly, size_t numOfVexes)
-{
-  return (poly.points.size() == numOfVexes) ? res + countArea(poly) : res;
-}
-
-std::ostream& evstigneev::area(std::istream& in, std::ostream& out, const std::vector<Polygon>& poly)
-{
-  std::string cmd = "";
-  in >> cmd;
-
+  enum ModType {EVEN, ODD, NUM, MEAN};
+  auto area_if = [](double ac, const evstigneev::Polygon& poly,
+    std::size_t vexes, ModType m)
+  {
+    if ((m == EVEN && poly.points.size() % 2 == 0) ||
+      (m == ODD && poly.points.size() % 2 == 1) ||
+      (m == NUM && poly.points.size() == vexes) ||
+      (m == MEAN))
+    {
+      ac += poly.getArea();
+    }
+    return ac;
+  };
+  std::string cmd;
+  std::cin >> cmd;
   if (cmd == "ODD")
   {
-    out << cAreaOdd(poly) << "\n";
+    std::cout << std::accumulate(poly.begin(), poly.end(),
+      0.0, std::bind(area_if, std::placeholders::_1,
+        std::placeholders::_2, 0, ODD)) << "\n";
   }
   else if (cmd == "EVEN")
   {
-    out << cAreaEven(poly) << "\n";
+    std::cout << std::accumulate(poly.begin(), poly.end(),
+      0.0, std::bind(area_if, std::placeholders::_1,
+        std::placeholders::_2, 0, EVEN)) << "\n";
   }
-  else if (cmd == "MEAN")
+  else if (cmd == "MEAN" && poly.size() != 0)
   {
-    out << cAreaMean(poly) << "\n";
+    std::cout << std::accumulate(poly.begin(), poly.end(),
+      0.0, std::bind(area_if, std::placeholders::_1,
+        std::placeholders::_2, 0, MEAN)) / poly.size() << "\n";
+  }
+  else if (std::all_of(cmd.begin(), cmd.end(), isdigit) && stoi(cmd) > 2)
+  {
+    std::cout << std::accumulate(poly.begin(), poly.end(),
+      0.0, std::bind(area_if, std::placeholders::_1,
+        std::placeholders::_2, stoi(cmd), NUM)) << "\n";
   }
   else
   {
-    int numOfVexes = std::stoi(cmd);
-    if (numOfVexes <= 2)
-    {
-      throw std::logic_error("incorrect command");
-    }
-    out << cAreaVexes(poly, numOfVexes) << "\n";
+    throw std::logic_error("<INVALID COMMAND>");
   }
-  return out;
 }
 
-double evstigneev::cAreaEven(const std::vector <Polygon>& poly)
-{
-  return std::accumulate(poly.cbegin(), poly.cend(), 0, sAreaEven);
-}
-
-double evstigneev::cAreaOdd(const std::vector <Polygon>& poly)
-{
-  return std::accumulate(poly.cbegin(), poly.cend(), 0, sAreaOdd);
-}
-
-double evstigneev::cAreaMean(const std::vector <Polygon>& poly)
+void evstigneev::max(const std::vector<evstigneev::Polygon>& poly)
 {
   if (poly.empty())
   {
-    throw std::logic_error("data is empty");
+    throw std::logic_error("<INVALID COMMAND>");
   }
-  return std::accumulate(poly.cbegin(), poly.cend(), 0, sArea) / poly.size();
-}
-
-double evstigneev::cAreaVexes(const std::vector <Polygon>& poly, int numOfVexes)
-{
-  return std::accumulate(poly.cbegin(), poly.cend(), 0, std::bind(sAreaEqual,
-    std::placeholders::_1, std::placeholders::_2, numOfVexes));
-}
-
-std::ostream& evstigneev::max(std::istream& in, std::ostream& out, const std::vector<Polygon>& poly)
-{
-  if (poly.empty())
-  {
-    throw std::logic_error("data is empty");
-  }
-  std::string cmd = "";
-  in >> cmd;
+  std::string cmd;
+  std::cin >> cmd;
   if (cmd == "AREA")
   {
-    out << std::fixed << std::setprecision(1) << maxArea(poly) << "\n";
+    std::cout << std::max_element(poly.begin(), poly.end())->getArea() << "\n";
   }
   else if (cmd == "VERTEXES")
   {
-    out << std::fixed << std::setprecision(0) << maxVexes(poly) << "\n";
+    std::vector<int> polys(poly.size());
+    std::cout << std::accumulate(poly.begin() + 1, poly.end(),
+      poly[0].points.size(), [](std::size_t max_i, const Polygon& poly)
+      {
+        if (poly.points.size() > max_i)
+        {
+          return poly.points.size();
+        }
+        else
+        {
+          return max_i;
+        }
+      }) << "\n";
   }
   else
   {
-    throw std::logic_error("incorrect command");
+    throw std::logic_error("<INVALID COMMAND>");
   }
-  return out;
 }
 
-double evstigneev::maxArea(const std::vector<Polygon>& poly)
-{
-  std::vector<double> area(poly.size());
-  std::transform(poly.begin(), poly.end(), area.begin(), countArea);
-  return *std::max_element(area.begin(), area.end());
-}
-
-double evstigneev::maxVexes(const std::vector<Polygon>& poly)
-{
-  std::vector<int> numOfVexes(poly.size());
-  std::transform(poly.begin(), poly.end(), numOfVexes.begin(), getNumVexes);
-  return *std::max_element(numOfVexes.begin(), numOfVexes.end());
-}
-
-std::ostream& evstigneev::min(std::istream& in, std::ostream& out, const std::vector<Polygon>& poly)
+void evstigneev::min(const std::vector<evstigneev::Polygon>& poly)
 {
   if (poly.empty())
   {
-    throw std::logic_error("data is empty");
+    throw std::logic_error("<INVALID COMMAND>");
   }
-  std::string cmd = "";
-  in >> cmd;
+  std::string cmd;
+  std::cin >> cmd;
   if (cmd == "AREA")
   {
-    out << std::fixed << std::setprecision(1) << minArea(poly) << "\n";
+    std::cout << std::min_element(poly.begin(), poly.end())->getArea() << "\n";
   }
   else if (cmd == "VERTEXES")
   {
-    out << std::fixed << std::setprecision(0) << minVexes(poly) << "\n";
+    std::vector<int> polys(poly.size());
+    std::cout << std::accumulate(poly.begin() + 1, poly.end(),
+      poly[0].points.size(), [](std::size_t min_i, const Polygon& poly)
+      {
+        if (poly.points.size() < min_i)
+        {
+          return poly.points.size();
+        }
+        else
+        {
+          return min_i;
+        }
+      }) << "\n";
   }
   else
   {
-    throw std::logic_error("incorrect command");
+    throw std::logic_error("<INVALID COMMAND>");
   }
-  return out;
 }
 
-double evstigneev::minArea(const std::vector<Polygon>& poly)
+void evstigneev::count(const std::vector<evstigneev::Polygon>& poly)
 {
-  std::vector<double> area(poly.size());
-  std::transform(poly.begin(), poly.end(), area.begin(), countArea);
-  return *std::min_element(area.begin(), area.end());
-}
-
-double evstigneev::minVexes(const std::vector<Polygon>& poly)
-{
-  std::vector<int> numOfVexes(poly.size());
-  std::transform(poly.cbegin(), poly.cend(), numOfVexes.begin(), getNumVexes);
-  return *std::min_element(numOfVexes.begin(), numOfVexes.end());
-}
-
-std::ostream& evstigneev::count(std::istream& in, std::ostream& out,
-  const std::vector<Polygon>& poly)
-{
-  std::string cmd = "";
-  in >> cmd;
-  if (cmd == "EVEN")
+  enum ModType { EVEN, ODD, NUM };
+  auto c_if = [](const evstigneev::Polygon& poly,
+    std::size_t vexes, ModType m)
   {
-    out << countEven(poly) << "\n";
+    return ((m == EVEN && poly.points.size() % 2 == 0) ||
+      (m == ODD && poly.points.size() % 2 == 1) ||
+      (m == NUM && poly.points.size() == vexes));
+  };
+  std::string cmd;
+  std::cin >> cmd;
+  if (cmd == "ODD")
+  {
+    std::cout << std::count_if(poly.begin(), poly.end(),
+      std::bind(c_if, std::placeholders::_1,
+        0, ODD)) << "\n";
   }
-  else if (cmd == "ODD")
+  else if (cmd == "EVEN")
   {
-    out << countOdd(poly) << "\n";
+    std::cout << std::count_if(poly.begin(), poly.end(),
+      std::bind(c_if, std::placeholders::_1,
+        0, EVEN)) << "\n";
+  }
+  else if (std::all_of(cmd.begin(), cmd.end(), isdigit) && stoi(cmd) > 2)
+  {
+    std::cout << std::count_if(poly.begin(), poly.end(),
+      std::bind(c_if, std::placeholders::_1,
+        0, stoi(cmd))) << "\n";
   }
   else
   {
-    int numOfVexes = std::stoi(cmd);
-    if (numOfVexes <= 2)
-    {
-      throw std::logic_error("incorrect command");
-    }
-    out << countPolys(poly, numOfVexes) << "\n";
+    throw std::logic_error("<INVALID COMMAND>");
   }
-  return out;
 }
 
-int evstigneev::countEven(const std::vector <Polygon>& poly)
+void evstigneev::lessArea(const std::vector<evstigneev::Polygon>& poly)
 {
-  return std::count_if(poly.begin(), poly.end(), vexesEven);
-}
-
-int evstigneev::countOdd(const std::vector <Polygon>& poly)
-{
-  return std::count_if(poly.begin(), poly.end(), vexesOdd);
-}
-
-int evstigneev::countPolys(const std::vector <Polygon>& poly, int numOfVexes)
-{
-  return std::count_if(poly.begin(), poly.end(), std::bind(numOfVexesEqual, std::placeholders::_1, numOfVexes));
-}
-
-bool evstigneev::vexesEven(const Polygon& poly)
-{
-  return poly.points.size() % 2 == 0;
-}
-
-bool evstigneev::vexesOdd(const Polygon& poly)
-{
-  return poly.points.size() % 2 == 1;
-}
-
-bool evstigneev::numOfVexesEqual(const Polygon poly, size_t numOfVexes)
-{
-  return poly.points.size() == numOfVexes;
-}
-
-int evstigneev::getNumVexes(const Polygon poly)
-{
-  return poly.points.size();
-}
-
-int evstigneev::pair(const Point& f, const Point& s)
-{
-  return f.x * s.y - f.y * s.x;
-}
-
-std::ostream& evstigneev::lessArea(std::istream& in, std::ostream& out,
-  const std::vector<Polygon>& poly)
-{
-  Polygon polygon;
-  if (in >> polygon)
+  if (poly.empty())
   {
-    out << std::count_if(poly.cbegin(), poly.cend(), std::bind(isLessArea,
-      std::placeholders::_1, polygon)) << "\n";
+    throw std::logic_error("<INVALID COMMAND>");
   }
-  return out;
-}
-
-std::ostream& evstigneev::maxSeq(std::istream& in, std::ostream& out,
-  const std::vector<Polygon>& poly)
-{
-  Polygon polygon;
-  in >> polygon;
-
-  int maxSeq = 0;
-  int curr = 0;
-
-  for (const auto& p : poly)
+  Polygon p1, p2;
+  if (!std::cin)
   {
-    if (p == polygon)
-    {
-      curr++;
-      maxSeq = std::max(maxSeq, curr);
-    }
-    else
-    {
-      curr = 0;
-    }
+    throw std::logic_error("<INVALID COMMAND>");
   }
-  return out << maxSeq << "\n";
-}
-
-bool evstigneev::isLessArea(const Polygon& poly1, const Polygon& poly2)
-{
-  return countArea(poly1) < countArea(poly2);
+  auto lss = [&p1](const Polygon& p2)
+  {
+    return p1.getArea() > p2.getArea();
+  };
+  std::cout << std::count_if(poly.begin(), poly.end(), lss) << "\n";
 }
