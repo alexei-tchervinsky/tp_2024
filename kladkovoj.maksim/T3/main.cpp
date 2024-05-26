@@ -2,6 +2,8 @@
 #include <iomanip>
 #include <fstream>
 #include <limits>
+#include <map>
+#include <functional>
 
 #include "command.hpp"
 
@@ -36,6 +38,17 @@ int main(int argC, char *argV[])
       file.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
   }
+
+  std::map<std::string, std::function<void(const std::vector<Polygon>&)>> commandMap =
+  {
+    {"AREA", command::area},
+    {"MIN", command::min},
+    {"MAX", command::max},
+    {"COUNT", command::count},
+    {"RECTS", command::rects},
+    {"INTERSECTIONS", command::intersections}
+  };
+
   try
   {
     while (!std::cin.eof())
@@ -46,18 +59,9 @@ int main(int argC, char *argV[])
 
       try
       {
-        if (cmd == "AREA")
-          command::area(data);
-        else if (cmd == "MIN")
-          command::min(data);
-        else if (cmd == "MAX")
-          command::max(data);
-        else if (cmd == "COUNT")
-          command::count(data);
-        else if (cmd == "RECTS")
-          command::rects(data);
-        else if (cmd == "INTERSECTIONS")
-          command::intersections(data);
+        auto it = commandMap.find(cmd);
+        if (it != commandMap.end())
+          it->second(data);
         else if (!cmd.empty())
           throw "<INVALID COMMAND>";
       }
@@ -70,9 +74,9 @@ int main(int argC, char *argV[])
 
     return 0;
   }
-  catch (...)
+  catch (std::exception &e)
   {
-    std::cerr << "Did I write this?..." << std::endl;
+    std::cerr << e.what() << '\n';
     return 0;
   }
 }

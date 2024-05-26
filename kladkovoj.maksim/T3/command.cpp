@@ -72,32 +72,22 @@ void command::area(const std::vector<Polygon>& data)
     return res;
   };
 
-  if (num == -1)
+  try
   {
     if (arg == "EVEN")
-    {
       std::cout << std::accumulate(data.begin(), data.end(), 0.0, std::bind(cntFunc, _1, _2, 2, 0)) << std::endl;
-    }
     else if (arg == "ODD")
-    {
       std::cout << std::accumulate(data.begin(), data.end(), 0.0, std::bind(cntFunc, _1, _2, 2, 1)) << std::endl;
-    }
     else if(arg == "MEAN"&& !data.empty())
-    {
       std::cout << std::accumulate(data.begin(), data.end(), 0.0, std::bind(cntFunc, _1, _2, 2, -1)) / data.size() << std::endl;
-    }
-    else
-    {
-      throw "<INVALID COMMAND>";
-    }
-  }
-  else if(num > 2)
-  {
+    else if(num > 2)
       std::cout << std::accumulate(data.begin(), data.end(), 0.0, std::bind(cntFunc, _1, _2, 0x7FFFFFFF, num)) << std::endl;
+    else
+      throw std::invalid_argument("<INVALID COMMAND>");
   }
-  else
+  catch(const std::exception& e)
   {
-    throw "<INVALID COMMAND>";
+    throw std::invalid_argument("<INVALID COMMAND>");
   }
 }
 
@@ -107,7 +97,8 @@ void command::min(const std::vector<Polygon>& data)
   std::cin >> arg;
 
   if (data.size() == 0)
-    throw "<INVALID COMMAND>";
+    throw std::invalid_argument("<INVALID COMMAND>");
+
 
   std::vector<size_t> sizeVec(data.size());
 
@@ -120,7 +111,8 @@ void command::min(const std::vector<Polygon>& data)
   else if(arg == "VERTEXES")
     std::cout << *minSize << std::endl;
   else
-    throw "<INVALID COMMAND>";
+    throw std::invalid_argument("<INVALID COMMAND>");
+
 }
 
 void command::max(const std::vector<Polygon>& data)
@@ -128,8 +120,8 @@ void command::max(const std::vector<Polygon>& data)
   std::string arg;
   std::cin >> arg;
 
-  if (data.size() == 0)
-    throw "<INVALID COMMAND>";
+  if (data.empty())
+    throw std::invalid_argument("<INVALID COMMAND>");
 
   std::vector<size_t> sizeVec(data.size());
 
@@ -142,7 +134,7 @@ void command::max(const std::vector<Polygon>& data)
   else if(arg == "VERTEXES")
     std::cout << *maxSize << std::endl;
   else
-    throw "<INVALID COMMAND>";
+    throw std::invalid_argument("<INVALID COMMAND>");
 }
 
 void command::count(const std::vector<Polygon>& data)
@@ -160,7 +152,7 @@ void command::count(const std::vector<Polygon>& data)
     return (el.points.size() % div == static_cast<size_t>(rest) || rest == -1);
   };
 
-  if(num == -1)
+  try
   {
     if (arg == "EVEN")
     {
@@ -170,18 +162,18 @@ void command::count(const std::vector<Polygon>& data)
     {
       std::cout << std::count_if(data.begin(), data.end(), std::bind(cntFunc, _1, 2, 1)) << std::endl;
     }
+    else if(num > 2)
+    {
+      std::cout << std::count_if(data.begin(), data.end(), std::bind(cntFunc, _1, 0x7FFFFFFF, num)) << std::endl;
+    }
     else
     {
-      throw "<INVALID COMMAND>";
+      throw std::invalid_argument("<INVALID COMMAND>");
     }
   }
-  else if(num > 2)
+  catch(const std::exception& e)
   {
-    std::cout << std::count_if(data.begin(), data.end(), std::bind(cntFunc, _1, 0x7FFFFFFF, num)) << std::endl;
-  }
-  else
-  {
-    throw "<INVALID COMMAND>";
+    throw std::invalid_argument("<INVALID COMMAND>");
   }
 }
 
@@ -211,7 +203,7 @@ void command::intersections(const std::vector<Polygon>& data)
   if (!std::cin)
   {
     std::cin.clear();
-    throw "<INVALID COMMAND>";
+    throw std::invalid_argument("<INVALID COMMAND>");
   }
 
   auto cntFunc = [&arg]
