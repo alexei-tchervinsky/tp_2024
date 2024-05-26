@@ -1,10 +1,12 @@
 ﻿#include <fstream>
 #include <iostream>
-#include <functional>
+#include <vector>
 #include <limits>
-#include <map>
+#include <algorithm>
+#include <numeric>
 #include <iterator>
 #include "commands.hpp"
+#include "dataStruct.hpp"
 #include <iomanip>
 
 int main(int argc, char* argv[])
@@ -20,7 +22,7 @@ int main(int argc, char* argv[])
     std::cerr << "Error: unable to open the file\n";
     return 2;
   }
-  using namespace evstigneev;
+
   std::cout << std::setprecision(1) << std::fixed;
   std::vector<evstigneev::Polygon> poly;
   while (!in.eof())
@@ -80,7 +82,7 @@ int main(int argc, char* argv[])
     {
       std::cerr << e.what() << "\n";
       std::cin.clear();
-      std::cin.ignore(std::numeric_limits< std::streamsize >::max(), '\n');
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
   }
   return 0;

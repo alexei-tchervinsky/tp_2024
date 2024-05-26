@@ -56,12 +56,14 @@ void evstigneev::area(const std::vector<evstigneev::Polygon>& poly)
 
 void evstigneev::max(const std::vector<evstigneev::Polygon>& poly)
 {
+  std::string cmd;
+  std::cin >> cmd;
+
   if (poly.empty())
   {
     throw std::logic_error("<INVALID COMMAND>");
   }
-  std::string cmd;
-  std::cin >> cmd;
+
   if (cmd == "AREA")
   {
     std::cout << std::max_element(poly.begin(), poly.end())->getArea() << "\n";
@@ -89,12 +91,14 @@ void evstigneev::max(const std::vector<evstigneev::Polygon>& poly)
 
 void evstigneev::min(const std::vector<evstigneev::Polygon>& poly)
 {
+  std::string cmd;
+  std::cin >> cmd;
+
   if (poly.empty())
   {
     throw std::logic_error("<INVALID COMMAND>");
   }
-  std::string cmd;
-  std::cin >> cmd;
+
   if (cmd == "AREA")
   {
     std::cout << std::min_element(poly.begin(), poly.end())->getArea() << "\n";
