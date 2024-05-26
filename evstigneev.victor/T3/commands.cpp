@@ -194,7 +194,7 @@ void mxSeq(const std::vector<evstigneev::Polygon>& poly)
   }
   auto isEqualCounterFunctor = [&srcPoints, &counter](const evstigneev::Polygon& polygon)
   {
-    return isEqualC(polygon, srcPoints);
+    return isEqualC(polygon, srcPoints, counter);
   };
   std::transform(poly.begin(),
     poly.end(), std::back_inserter(seques), isEqualCounterFunctor);
@@ -207,7 +207,7 @@ void mxSeq(const std::vector<evstigneev::Polygon>& poly)
   }
 }
 
-size_t isEqualC(const evstigneev::Polygon& poly,
+size_t evstigneev::isEqualC(const evstigneev::Polygon& poly,
   const std::vector<evstigneev::Point>& src, size_t& counter)
 {
   if (src == poly.points)
