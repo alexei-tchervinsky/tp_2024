@@ -68,10 +68,6 @@ int main(int argc, char* argv[])
       {
         evstigneev::mxSeq(poly);
       }
-      else if (!std::cin)
-      {
-        throw std::runtime_error("<INVALID COMMAND>");
-      }
     }
     catch (const std::logic_error&)
     {
