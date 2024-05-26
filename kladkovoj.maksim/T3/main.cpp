@@ -63,7 +63,7 @@ int main(int argC, char *argV[])
         if (it != commandMap.end())
           it->second(data);
         else if (!cmd.empty())
-          throw "<INVALID COMMAND>";
+          throw std::invalid_argument("<INVALID COMMAND>");
       }
       catch (const char* err)
       {
@@ -77,6 +77,8 @@ int main(int argC, char *argV[])
   catch (std::exception &e)
   {
     std::cerr << e.what() << '\n';
+    std::cin.clear();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     return 0;
   }
 }
