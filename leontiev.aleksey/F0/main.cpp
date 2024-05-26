@@ -8,7 +8,7 @@ using namespace std::placeholders;
 
 int main()
 {
-  std::cout << "It is a Frequancy Dictionary. Use 'help' to see all the commands\n";
+  std::cout << "It is a Frequency Dictionary. Use 'help' to see all the commands\n";
   std::unordered_map<std::string, std::size_t> frDict;
 
   std::unordered_map<std::string, std::function<void(std::unordered_map<std::string, std::size_t>&, std::istream&, std::ostream&)>> commands;

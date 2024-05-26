@@ -11,10 +11,10 @@
 void leontiev::help(std::ostream& out)
 {
   out << "Available commands: \n";
-  out << "create <filename> - creates Frequence Dictionary with text from the file\n";
-  out << "display - shows current Frequence Dictionary\n";
+  out << "create <filename> - creates Frequency Dictionary with text from the file\n";
+  out << "display - shows current Frequency Dictionary\n";
   out << "top <N> - shows N most popular words\n";
-  out << "findW <word> - tries to find word in the Frequence Dictionary\n";
+  out << "findW <word> - tries to find word in the Frequency Dictionary\n";
   out << "findN <N> - tries to find words which repeats N times\n";
   out << "clear - deletes the dictionary\n";
   out << "merge <filename> - adds words from the file to existing dictionary\n";
@@ -52,7 +52,7 @@ void leontiev::create(std::unordered_map<std::string, std::size_t>& frDict, std:
     }
   }
 
-  out << "Frequence Dictionary is created from " << "'" << fileName << "'\n";
+  out << "Frequency Dictionary is created from " << "'" << fileName << "'\n";
 }
 
 void leontiev::display(std::unordered_map<std::string, std::size_t>& frDict, std::ostream& out)
@@ -62,7 +62,7 @@ void leontiev::display(std::unordered_map<std::string, std::size_t>& frDict, std
     throw std::logic_error("Dictionary is empty");
   }
 
-  out << "Current Frequence Dictionary: " << "\n";
+  out << "Current Frequency Dictionary: " << "\n";
 
   for (auto it = frDict.begin(); it != frDict.end(); ++it)
   {
@@ -180,7 +180,7 @@ void leontiev::merge(std::unordered_map<std::string, std::size_t>& frDict, std::
     }
   }
 
-  out << "Frequence Dictionary is merged with file " << "'" << fileName << "'\n";
+  out << "Frequency Dictionary is merged with file " << "'" << fileName << "'\n";
 }
 
 void leontiev::findN(std::unordered_map<std::string, std::size_t>& frDict, std::istream& in, std::ostream& out)
