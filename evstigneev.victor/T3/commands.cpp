@@ -50,7 +50,7 @@ void evstigneev::area(const std::vector<evstigneev::Polygon>& poly)
   }
   else
   {
-    throw std::logic_error("<INVALID COMMAND>");
+    throw std::runtime_error("<INVALID COMMAND>");
   }
 }
 
@@ -61,7 +61,7 @@ void evstigneev::max(const std::vector<evstigneev::Polygon>& poly)
 
   if (poly.empty())
   {
-    throw std::logic_error("<INVALID COMMAND>");
+    throw std::runtime_error("<INVALID COMMAND>");
   }
 
   if (cmd == "AREA")
@@ -85,7 +85,7 @@ void evstigneev::max(const std::vector<evstigneev::Polygon>& poly)
   }
   else
   {
-    throw std::logic_error("<INVALID COMMAND>");
+    throw std::runtime_error("<INVALID COMMAND>");
   }
 }
 
@@ -96,7 +96,7 @@ void evstigneev::min(const std::vector<evstigneev::Polygon>& poly)
 
   if (poly.empty())
   {
-    throw std::logic_error("<INVALID COMMAND>");
+    throw std::runtime_error("<INVALID COMMAND>");
   }
 
   if (cmd == "AREA")
@@ -120,7 +120,7 @@ void evstigneev::min(const std::vector<evstigneev::Polygon>& poly)
   }
   else
   {
-    throw std::logic_error("<INVALID COMMAND>");
+    throw std::runtime_error("<INVALID COMMAND>");
   }
 }
 
@@ -156,7 +156,7 @@ void evstigneev::count(const std::vector<Polygon>& poly)
   }
   else
   {
-    throw std::logic_error("<INVALID COMMAND>");
+    throw std::runtime_error("<INVALID COMMAND>");
   }
 
 }
@@ -165,12 +165,12 @@ void evstigneev::lessArea(const std::vector<evstigneev::Polygon>& poly)
 {
   if (poly.empty())
   {
-    throw std::logic_error("<INVALID COMMAND>");
+    throw std::runtime_error("<INVALID COMMAND>");
   }
   Polygon p1, p2;
   if (!std::cin)
   {
-    throw std::logic_error("<INVALID COMMAND>");
+    throw std::runtime_error("<INVALID COMMAND>");
   }
   auto lss = [&p1](const Polygon& p2)
   {
@@ -183,7 +183,7 @@ void evstigneev::mxSeq(const std::vector<evstigneev::Polygon>& poly)
 {
   if (poly.empty())
   {
-    throw std::logic_error("<INVALID COMMAND>");
+    throw std::runtime_error("<INVALID COMMAND>");
   }
   size_t numOfVexes = 0, counter = 0;
   std::vector<Point> srcPoints;
@@ -194,14 +194,14 @@ void evstigneev::mxSeq(const std::vector<evstigneev::Polygon>& poly)
 
   if (numOfVexes < 3)
   {
-    throw std::logic_error("<INVALID COMMAND>");
+    throw std::runtime_error("<INVALID COMMAND>");
   }
 
   std::copy_n(in_it{ std::cin }, numOfVexes, std::back_inserter(srcPoints));
 
   if (srcPoints.empty())
   {
-    throw std::logic_error("<INVALID COMMAND>");
+    throw std::runtime_error("<INVALID COMMAND>");
   }
 
   using namespace std::placeholders;

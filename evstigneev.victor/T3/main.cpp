@@ -73,7 +73,7 @@ int main(int argc, char* argv[])
       }
       else if (!std::cin.eof())
       {
-        throw std::logic_error("<INVALID COMMAND>");
+        throw std::runtime_error("<INVALID COMMAND>");
       }
     }
     catch (const std::exception& e)

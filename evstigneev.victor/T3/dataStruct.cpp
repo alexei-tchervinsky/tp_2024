@@ -99,8 +99,8 @@ std::ostream& evstigneev::operator<<(std::ostream& out,
 {
   return out << '(' << dest.x << ';' << dest.y << ')';
 }
-std::ostream& operator<<(std::ostream& out,
-  const evstigneev::Polygon& poly)
+std::ostream& evstigneev::operator<<(std::ostream& out,
+  const Polygon& poly)
 {
   out << poly.points.size();
   for (auto& point : poly.points)
