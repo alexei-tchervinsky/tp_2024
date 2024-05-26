@@ -5,20 +5,22 @@
 #include <map>
 #include <iterator>
 #include "commands.hpp"
+#include <iomanip>
 
 int main(int argc, char* argv[])
 {
   if (argc != 2)
   {
     std::cerr << "Error: wrong number of parameters\n";
-    return 2;
+    return -1;
   }
   std::ifstream in(argv[1]);
   if (!in)
   {
     std::cerr << "Error: unable to open the file\n";
-    return 2;
+    return -1;
   }
+  std::cout << std::setprecision(1) << std::fixed;
   std::vector<evstigneev::Polygon> poly;
   while (!in.eof())
   {
@@ -62,7 +64,7 @@ int main(int argc, char* argv[])
       std::cin.ignore(std::numeric_limits< std::streamsize >::max(), '\n');
     }
   }*/
-  while (std::cin.eof())
+  while (!std::cin.eof())
   {
     std::cin.clear();
     std::string cmd;
