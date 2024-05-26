@@ -31,7 +31,7 @@ void leontiev::create(std::unordered_map<std::string, std::size_t>& frDict, std:
   std::ifstream input(fileName);
   while (std::getline(input, str))
   {
-    char* token = std::strtok(str.data(), delimiters);
+    char* token = std::strtok(strdup(str.c_str()), delimiters);
     while (token != nullptr)
     {
       token[0] = std::tolower(token[0]);
@@ -42,7 +42,7 @@ void leontiev::create(std::unordered_map<std::string, std::size_t>& frDict, std:
   out << "Frequence Dictionary is created from " << "'" << fileName << "'\n";
 }
 
-void leontiev::display(std::unordered_map<std::string, std::size_t>& frDict, std::istream& in, std::ostream& out)
+void leontiev::display(std::unordered_map<std::string, std::size_t>& frDict, std::ostream& out)
 {
   out << "Current Frequence Dictionary: " << "\n";
   for (auto it = frDict.begin(); it != frDict.end(); ++it)
