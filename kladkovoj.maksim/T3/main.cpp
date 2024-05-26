@@ -49,36 +49,25 @@ int main(int argC, char *argV[])
     {"INTERSECTIONS", command::intersections}
   };
 
-  try
+  while (!std::cin.eof())
   {
-    while (!std::cin.eof())
+    std::string cmd;
+
+    std::cin >> cmd;
+
+    try
     {
-      std::string cmd;
-
-      std::cin >> cmd;
-
-      try
-      {
-        auto it = commandMap.find(cmd);
-        if (it != commandMap.end())
-          it->second(data);
-        else if (!cmd.empty())
-          throw std::invalid_argument("<INVALID COMMAND>");
-      }
-      catch (const char* err)
-      {
-        std::cout << err << std::endl;
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-      }
+      auto it = commandMap.find(cmd);
+      if (it != commandMap.end())
+        it->second(data);
+      else if (!cmd.empty())
+        throw std::invalid_argument("<INVALID COMMAND>");
     }
-
-    return 0;
-  }
-  catch (std::exception &e)
-  {
-    std::cerr << e.what() << '\n';
-    std::cin.clear();
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    return 0;
+    catch (std::exception &e)
+    {
+      std::cout << e.what() << '\n';
+      std::cin.clear();
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
   }
 }
