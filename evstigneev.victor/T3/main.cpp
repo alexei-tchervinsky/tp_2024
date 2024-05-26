@@ -39,53 +39,46 @@ int main(int argc, char* argv[])
     }
   }
   in.close();
-  std::string cmd;
-  while (std::cin >> cmd)
+  while (!std::cin.eof())
   {
-    if (std::cin)
+    std::cin.clear();
+    std::string cmd;
+    std::cin >> cmd;
+    try
     {
-      try
+      //cmd.at(command)(poly);
+      if (cmd == "AREA")
       {
-        //cmd.at(command)(poly);
-        if (cmd == "AREA")
-        {
-          evstigneev::area(poly);
-        }
-        else if (cmd == "MAX")
-        {
-          evstigneev::max(poly);
-        }
-        else if (cmd == "MIN")
-        {
-          evstigneev::min(poly);
-        }
-        else if (cmd == "COUNT")
-        {
-          evstigneev::count(poly);
-        }
-        else if (cmd == "LESSAREA")
-        {
-          evstigneev::lessArea(poly);
-        }
-        else if (cmd == "MAXSEQ")
-        {
-          evstigneev::mxSeq(poly);
-        }
-        else if (!std::cin.eof())
-        {
-          throw std::logic_error("<INVALID COMMAND>");
-        }
+        evstigneev::area(poly);
       }
-      catch (const std::logic_error& e)
+      else if (cmd == "MAX")
       {
-        std::cerr << e.what() << "\n";
-        std::cin.clear();
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        evstigneev::max(poly);
+      }
+      else if (cmd == "MIN")
+      {
+        evstigneev::min(poly);
+      }
+      else if (cmd == "COUNT")
+      {
+        evstigneev::count(poly);
+      }
+      else if (cmd == "LESSAREA")
+      {
+        evstigneev::lessArea(poly);
+      }
+      else if (cmd == "MAXSEQ")
+      {
+        evstigneev::mxSeq(poly);
+      }
+      else if (!std::cin.eof())
+      {
+        throw std::logic_error("<INVALID COMMAND>");
       }
     }
-    else
+    catch (const std::exception& e)
     {
-      std::cerr << "<INVALID COMMAND>" << "\n";
+      std::cerr << e.what() << "\n";
       std::cin.clear();
       std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
