@@ -40,8 +40,10 @@ int main(int argc, char* argv[])
   }
   in.close();
   std::string cmd;
-  while (std::cin >> cmd)
+  while (!std::cin.eof())
   {
+    std::cin.clear();
+    std::cin >> cmd;
     try
     {
       if (cmd == "AREA")
@@ -67,6 +69,10 @@ int main(int argc, char* argv[])
       else if (cmd == "MAXSEQ")
       {
         evstigneev::mxSeq(poly);
+      }
+      else if (!std::cin.eof())
+      {
+        throw std::runtime_error("<INVALID COMMAND>");
       }
     }
     catch (const std::logic_error&)
