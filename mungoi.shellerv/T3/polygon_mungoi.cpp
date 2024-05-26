@@ -28,9 +28,12 @@ namespace mungoisheller
         return result;
     }
 
-    double get_area(std::size_t param, const std::vector<Polygon>& polygons)
+    double get_area(std::size_t param, const std::vector< mungoisheller::Polygon > polygons)
     {
-        std::function<double(double, const Polygon&)> BinaryOperation = std::bind(get_sum, std::placeholders::_1, std::placeholders::_2, param);
+        std::function< double(double, const Polygon&) > BinaryOperation = std::bind(get_sum,
+            std::placeholders::_1,
+            std::placeholders::_2,
+            param);
         if (param == 0)
         {
             return std::accumulate(polygons.cbegin(), polygons.cend(), 0.0, BinaryOperation) / polygons.size();
@@ -38,7 +41,7 @@ namespace mungoisheller
         return std::accumulate(polygons.cbegin(), polygons.cend(), 0.0, BinaryOperation);
     }
 
-    double get_max(std::size_t param, const std::vector<Polygon>& polygons)
+    double get_max(std::size_t param, const std::vector< mungoisheller::Polygon > polygons)
     {
         if (param == 0)
         {
@@ -53,7 +56,7 @@ namespace mungoisheller
             })->points.size();
     }
 
-    double get_min(std::size_t param, const std::vector<Polygon>& polygons)
+    double get_min(std::size_t param, const std::vector< mungoisheller::Polygon > polygons)
     {
         if (param == 0)
         {
@@ -68,7 +71,7 @@ namespace mungoisheller
             })->points.size();
     }
 
-    std::size_t get_count(std::size_t param, const std::vector<Polygon>& polygons)
+    std::size_t get_count(std::size_t param, const std::vector< mungoisheller::Polygon > polygons)
     {
         if (param == 1)
         {
@@ -84,10 +87,12 @@ namespace mungoisheller
                     return a.points.size() % 2 == 0;
                 });
         }
-        std::function<std::size_t(const Polygon&)> UnarOperation = std::bind([](const Polygon& a, std::size_t param)
+        std::function< std::size_t(const Polygon&) > UnarOperation = std::bind([](const Polygon& a, std::size_t param)
             {
                 return a.points.size() == param;
-            }, std::placeholders::_1, param);
+            },
+            std::placeholders::_1,
+            param);
         return std::count_if(polygons.cbegin(), polygons.cend(), UnarOperation);
     }
 
@@ -101,204 +106,171 @@ namespace mungoisheller
         vectors[2].x = end3.x - start.x;
         vectors[2].y = end3.y - start.y;
         bool angle01 = ((vectors[0].x * vectors[1].x + vectors[0].y * vectors[1].y) /
-            (std::sqrt(std::pow(vectors[0].x, 2) + std::pow(vectors[0].y, 2)) * std::sqrt(std::pow(vectors[1].x, 2) + std::pow(vectors[1].y, 2)))) == 0;
+            (sqrt(std::pow(vectors[0].x, 2) + std::pow(vectors[0].y, 2)) * sqrt(std::pow(vectors[1].x, 2) + std::pow(vectors[1].y, 2))) == 0);
         bool angle02 = ((vectors[0].x * vectors[2].x + vectors[0].y * vectors[2].y) /
-            (std::sqrt(std::pow(vectors[0].x, 2) + std::pow(vectors[0].y, 2)) * std::sqrt(std::pow(vectors[2].x, 2) + std::pow(vectors[2].y, 2)))) == 0;
-        bool angle12 = ((vectors[1].x * vectors[2].x + vectors[1].y * vectors[2].y) /
-            (std::sqrt(std::pow(vectors[1].x, 2) + std::pow(vectors[1].y, 2)) * std::sqrt(std::pow(vectors[2].x, 2) + std::pow(vectors[2].y, 2)))) == 0;
+            (sqrt(std::pow(vectors[0].x, 2) + std::pow(vectors[0].y, 2)) * sqrt(std::pow(vectors[2].x, 2) + std::pow(vectors[2].y, 2))) == 0);
+        bool angle12 = ((vectors[2].x * vectors[1].x + vectors[2].y * vectors[1].y) /
+            (sqrt(std::pow(vectors[2].x, 2) + std::pow(vectors[2].y, 2)) * sqrt(std::pow(vectors[1].x, 2) + std::pow(vectors[1].y, 2))) == 0);
         return angle01 || angle02 || angle12;
     }
-
-    std::size_t get_seq(std::vector<Polygon>::const_iterator begin, std::vector<Polygon>::const_iterator end, const Polygon& param)
+    std::size_t get_seq(std::vector< mungoisheller::Polygon >::const_iterator begin,
+        std::vector< mungoisheller::Polygon >::const_iterator end, const Polygon& param)
     {
-        std::vector<Polygon>::const_iterator found = std::find(begin, end, param);
-        return found != end ? std::distance(begin, found) : std::distance(begin, end);
-    }
-
-    void area_param(const std::vector<Polygon>& polygons, std::istream& in, std::ostream& out)
-    {
-        std::istream::sentry sentry(in);
-        if (!sentry)
+        bool repeat = true;
+        std::function<bool(const Polygon&)> FindIfUO = std::bind([](const Polygon& polygon, const Polygon& param)
+            {
+                return (polygon == param);
+            }, std::placeholders::_1, param);
+        std::function<bool(const Polygon&)> CountIfUO = std::bind([](const Polygon& polygon, const Polygon& param, bool& repeat)
+            {
+                if (polygon == param && repeat == true)
+                {
+                    return true;
+                }
+                repeat = false;
+                return false;
+            }, std::placeholders::_1, param, repeat);
+        std::vector< mungoisheller::Polygon >::const_iterator begin_new = std::find_if(begin, end, FindIfUO);
+        if (begin_new != end)
         {
-            return;
-        }
-        std::size_t param;
-        in >> param;
-        if (param == 0)
-        {
-            out << std::fixed << std::setprecision(1) << get_area(param, polygons) << "\n";
+            std::size_t count_current = std::count_if(begin_new, end, CountIfUO);
+            std::size_t count_next = get_seq(begin_new + count_current, end, param);
+            if (count_current > count_next)
+            {
+                return count_current;
+            }
+            return count_next;
         }
         else
         {
-            std::vector<Polygon> local_polygons;
-            std::copy_if(polygons.cbegin(), polygons.cend(), std::back_inserter(local_polygons), [param](const Polygon& a)
-                {
-                    return a.points.size() == param;
-                });
-            if (local_polygons.empty())
+            return 0;
+        }
+    }
+
+    void area_param(const std::vector< mungoisheller::Polygon > polygons, std::istream& in, std::ostream& out)
+    {
+        std::string param;
+        in >> param;
+        try
+        {
+            if (param == "MEAN" && polygons.size() >= 1)
             {
-                out << "none\n";
+                out << std::setprecision(1) << get_area(0, polygons) << '\n';
+            }
+            else if (param == "ODD")
+            {
+                out << std::setprecision(1) << get_area(1, polygons) << '\n';
+            }
+            else if (param == "EVEN")
+            {
+                out << std::setprecision(1) << get_area(2, polygons) << '\n';
+            }
+            else if (stoll(param) >= 3)
+            {
+                out << std::setprecision(1) << get_area(stoll(param), polygons) << '\n';
             }
             else
             {
-                out << std::fixed << std::setprecision(1) << get_area(param, local_polygons) << "\n";
+                throw std::invalid_argument("<INVALID COMMAND>");
             }
+        }
+        catch (std::exception& ex)
+        {
+            throw std::invalid_argument("<INVALID COMMAND>");
         }
     }
 
-    void max_param(const std::vector<Polygon>& polygons, std::istream& in, std::ostream& out)
+    void max_param(const std::vector< mungoisheller::Polygon > polygons, std::istream& in, std::ostream& out)
     {
-        std::istream::sentry sentry(in);
-        if (!sentry)
-        {
-            return;
-        }
-        std::size_t param;
+        std::string param;
         in >> param;
-        if (param == 0)
+        if (param == "AREA" && polygons.size() >= 1)
         {
-            out << std::fixed << std::setprecision(1) << get_max(param, polygons) << "\n";
+            out << std::setprecision(1) << get_max(0, polygons) << '\n';
+        }
+        else if (param == "VERTEXES" && polygons.size() >= 1)
+        {
+            out << std::setprecision(0) << get_max(1, polygons) << '\n';
         }
         else
         {
-            std::vector<Polygon> local_polygons;
-            std::copy_if(polygons.cbegin(), polygons.cend(), std::back_inserter(local_polygons), [param](const Polygon& a)
-                {
-                    return a.points.size() == param;
-                });
-            if (local_polygons.empty())
+            throw std::invalid_argument("<INVALID COMMAND>");
+        }
+    }
+
+    void min_param(const std::vector< mungoisheller::Polygon > polygons, std::istream& in, std::ostream& out)
+    {
+        std::string param;
+        in >> param;
+        if (param == "AREA" && polygons.size() >= 1)
+        {
+            out << std::setprecision(1) << get_min(0, polygons) << '\n';
+        }
+        else if (param == "VERTEXES" && polygons.size() >= 1)
+        {
+            out << std::setprecision(0) << get_min(1, polygons) << '\n';
+        }
+        else
+        {
+            throw std::invalid_argument("<INVALID COMMAND>");
+        }
+    }
+
+    void count_param(const std::vector< mungoisheller::Polygon > polygons, std::istream& in, std::ostream& out)
+    {
+        std::string param;
+        in >> param;
+        try
+        {
+            if (param == "ODD")
             {
-                out << "none\n";
+                out << std::setprecision(0) << get_count(1, polygons) << '\n';
+            }
+            else if (param == "EVEN")
+            {
+                out << std::setprecision(0) << get_count(2, polygons) << '\n';
+            }
+            else if (stoll(param) >= 3)
+            {
+                out << std::setprecision(0) << get_count(stoll(param), polygons) << '\n';
             }
             else
             {
-                out << std::fixed << std::setprecision(1) << get_max(param, local_polygons) << "\n";
+                throw std::invalid_argument("<INVALID COMMAND>");
             }
+        }
+        catch (std::exception& ex)
+        {
+            throw std::invalid_argument("<INVALID COMMAND>");
         }
     }
 
-    void min_param(const std::vector<Polygon>& polygons, std::istream& in, std::ostream& out)
+    void rects_param(const std::vector< mungoisheller::Polygon > polygons, std::istream& in, std::ostream& out)
     {
-        std::istream::sentry sentry(in);
-        if (!sentry)
+        if (!in)
         {
-            return;
+            throw std::invalid_argument("<INVALID COMMAND>");
         }
-        std::size_t param;
-        in >> param;
-        if (param == 0)
-        {
-            out << std::fixed << std::setprecision(1) << get_min(param, polygons) << "\n";
-        }
-        else
-        {
-            std::vector<Polygon> local_polygons;
-            std::copy_if(polygons.cbegin(), polygons.cend(), std::back_inserter(local_polygons), [param](const Polygon& a)
+        out << std::setprecision(0) << std::count_if(polygons.cbegin(), polygons.cend(), [](const Polygon& polygon)
+            {
+                if (polygon.points.size() == 4)
                 {
-                    return a.points.size() == param;
-                });
-            if (local_polygons.empty())
-            {
-                out << "none\n";
-            }
-            else
-            {
-                out << std::fixed << std::setprecision(1) << get_min(param, local_polygons) << "\n";
-            }
-        }
+                    return get_rects(polygon.points[0], polygon.points[1], polygon.points[2], polygon.points[3]) &&
+                        get_rects(polygon.points[1], polygon.points[2], polygon.points[3], polygon.points[0]) &&
+                        get_rects(polygon.points[2], polygon.points[3], polygon.points[0], polygon.points[1]);
+                }
+                return false;
+            }) << '\n';
     }
 
-    void count_param(const std::vector<Polygon>& polygons, std::istream& in, std::ostream& out)
+    void maxseq_param(const std::vector< mungoisheller::Polygon > polygons, std::istream& in, std::ostream& out)
     {
-        std::istream::sentry sentry(in);
-        if (!sentry)
-        {
-            return;
-        }
-        std::size_t param;
-        in >> param;
-        std::size_t result = get_count(param, polygons);
-        if (result == 0)
-        {
-            out << "none\n";
-        }
-        else
-        {
-            out << result << "\n";
-        }
-    }
-
-    void rects_param(const std::vector<Polygon>& polygons, std::istream& in, std::ostream& out)
-    {
-        std::istream::sentry sentry(in);
-        if (!sentry)
-        {
-            return;
-        }
-        std::size_t count = 0;
-        for (auto& polygon : polygons)
-        {
-            if (polygon.points.size() == 4)
-            {
-                Point point1 = polygon.points[0];
-                Point point2 = polygon.points[1];
-                Point point3 = polygon.points[2];
-                Point point4 = polygon.points[3];
-                count += get_rects(point1, point2, point3, point4);
-            }
-        }
-        if (count == 0)
-        {
-            out << "none\n";
-        }
-        else
-        {
-            out << count << "\n";
-        }
-    }
-
-    void maxseq_param(const std::vector<Polygon>& polygons, std::istream& in, std::ostream& out)
-    {
-        std::istream::sentry sentry(in);
-        if (!sentry)
-        {
-            return;
-        }
         Polygon param;
         in >> param;
-        std::vector<Polygon>::const_iterator begin = polygons.cbegin();
-        std::vector<Polygon>::const_iterator end = polygons.cend();
-        std::size_t max_size = 0;
-        std::size_t last_position = 0;
-        std::size_t current_position = 0;
-        std::vector<std::size_t> sizes;
-        while (begin != end)
+        if (!in || in.peek() != '\n')
         {
-            std::size_t count = get_seq(begin, end, param);
-            if (count != static_cast<std::size_t>(std::distance(begin, end)))
-            {
-                sizes.push_back(count);
-                if (max_size < count)
-                {
-                    max_size = count;
-                    last_position = current_position;
-                }
-                current_position += count + 1;
-                begin += count + 1;
-            }
-            else
-            {
-                sizes.push_back(count);
-                break;
-            }
+            throw std::invalid_argument("<INVALID COMMAND>");
         }
-        if (max_size == 0)
-        {
-            out << "none\n";
-        }
-        else
-        {
-            out << last_position << " " << last_position + max_size << "\n";
-        }
+        out << std::setprecision(0) << get_seq(polygons.cbegin(), polygons.cend(), param) << '\n';
     }
 }

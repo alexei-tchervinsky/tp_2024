@@ -1,17 +1,42 @@
-#include <iostream>
-#include <vector>
-#include "struct_mungoi.h"
+#include "Struct_mungoi.h"
 #include "polygon_mungoi.h"
+#include <algorithm>
+#include <limits>
+#include <exception>
+#include <map>
+#include <functional>
 
-int main()
+using namespace mungoisheller;
+
+int main(int argc, char* argv[])
 {
-    std::vector<mungoisheller::Polygon> polygons;
-    mungoisheller::Polygon polygon;
-    while (std::cin >> polygon)
+    if (argc != 2)
     {
-        polygons.push_back(polygon);
+        std::cerr << "FILENAME_NOT_SPECIFIED\n";
+        return 1;
     }
-    std::map<std::string, std::function<void(const std::vector<mungoisheller::Polygon>&, std::istream&, std::ostream&)>> command_map = {
+    std::ifstream in;
+    in.open(argv[1]);
+    if (!in)
+    {
+        std::cerr << "FILE_NOT_FOUND\n";
+        return 1;
+    }
+    std::vector< mungoisheller::Polygon > polygons;
+    while (!in.eof())
+    {
+        std::copy(std::istream_iterator< mungoisheller::Polygon >(in),
+            std::istream_iterator< mungoisheller::Polygon >(),
+            std::back_inserter(polygons));
+        if (in.fail())
+        {
+            in.clear();
+            in.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
+    }
+
+    std::map< std::string, std::function< void(const std::vector< mungoisheller::Polygon >, std::istream&, std::ostream&) > > commands
+    {
       {"AREA", mungoisheller::area_param},
       {"MAX", mungoisheller::max_param},
       {"MIN", mungoisheller::min_param},
@@ -20,16 +45,28 @@ int main()
       {"MAXSEQ", mungoisheller::maxseq_param}
     };
 
-    std::string command;
-    while (std::cin >> command)
+    std::cout << std::fixed;
+    while (!std::cin.eof())
     {
-        if (command_map.find(command) != command_map.end())
+        try
         {
-            command_map[command](polygons, std::cin, std::cout);
+            std::string key;
+            std::cin >> key;
+            if (commands.find(key) != commands.end())
+            {
+                auto command = std::bind(commands[key], std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+                command(polygons, std::cin, std::cout);
+            }
+            else if (!std::cin.eof())
+            {
+                throw std::invalid_argument("<INVALID COMMAND>");
+            }
         }
-        else
+        catch (const std::exception& ex)
         {
-            std::cout << "Invalid command\n";
+            std::cout << ex.what() << '\n';
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         }
     }
     return 0;

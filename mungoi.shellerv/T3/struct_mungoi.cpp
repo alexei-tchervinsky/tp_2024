@@ -1,5 +1,4 @@
 #include "struct_mungoi.h"
-#include <cmath>
 
 namespace mungoisheller
 {
