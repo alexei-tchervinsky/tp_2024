@@ -8,7 +8,6 @@ namespace evstigneev
   struct Point
   {
     int x, y;
-    bool operator==(const evstigneev::Point& lhs, const evstigneev::Point& rhs);
   };
 
   struct Polygon
@@ -21,5 +20,6 @@ namespace evstigneev
   std::istream& operator>>(std::istream& in, evstigneev::Point& dest);
   std::istream& operator>>(std::istream& in, evstigneev::Polygon& poly);
   bool operator==(const Polygon& fp, const Polygon& sp);
+  bool operator==(const Point& lhs, const Point& rhs);
 }
 #endif

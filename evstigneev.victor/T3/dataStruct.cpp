@@ -91,7 +91,7 @@ double evstigneev::Polygon::getArea() const
   return std::abs(area) / 2.0;
 }
 
-bool operator==(const evstigneev::Point& lhs, const evstigneev::Point& rhs)
+bool evstigneev::operator==(const Point& lhs, const Point& rhs)
 {
   return lhs.x == rhs.x && lhs.y == rhs.y;
 }
