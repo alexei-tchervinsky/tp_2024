@@ -167,56 +167,49 @@ void evstigneev::lessArea(const std::vector<evstigneev::Polygon>& poly)
   std::cout << std::count_if(poly.begin(), poly.end(), lss) << "\n";
 }
 
-void mxSeq(const std::vector<evstigneev::Polygon>& poly)
+void evstigneev::mxSeq(const std::vector<evstigneev::Polygon>& poly)
 {
   if (poly.empty())
   {
     throw std::logic_error("<INVALID COMMAND>");
   }
   size_t numOfVexes = 0, counter = 0;
-  std::vector<evstigneev::Point> srcPoints;
+  std::vector<Point> srcPoints;
   std::vector<size_t> seques;
 
+  using in_it = std::istream_iterator< Point >;
   std::cin >> numOfVexes;
 
   if (numOfVexes < 3)
   {
     throw std::logic_error("<INVALID COMMAND>");
   }
-  srcPoints.reserve(numOfVexes);
 
-  std::copy_n(std::istream_iterator<evstigneev::Point>(std::cin),
-    numOfVexes, std::back_inserter(srcPoints));
+  std::copy_n(in_it{ std::cin }, numOfVexes, std::back_inserter(srcPoints));
 
   if (srcPoints.empty())
   {
     throw std::logic_error("<INVALID COMMAND>");
   }
-  auto isEqualCounterFunctor = [&srcPoints, &counter](const evstigneev::Polygon& polygon)
-  {
-    return isEqualC(polygon, srcPoints, counter);
-  };
-  std::transform(poly.begin(),
-    poly.end(), std::back_inserter(seques), isEqualCounterFunctor);
 
-  auto max_iter = std::max_element(seques.begin(), seques.end());
+  using namespace std::placeholders;
+  auto functor = std::bind(isEqualCount, _1, srcPoints, counter);
+  std::transform(poly.begin(), poly.end(),
+    std::back_inserter(seques), functor);
 
-  if (max_iter != seques.end())
-  {
-    std::cout << *max_iter << "\n";
-  }
+  std::cout << *(std::max_element(seques.begin(), seques.end())) << "\n";
 }
 
-size_t evstigneev::isEqualC(const evstigneev::Polygon& poly,
-  const std::vector<evstigneev::Point>& src, size_t& counter)
+size_t isEqualCount(const evstigneev::Polygon& poly,
+  const std::vector<evstigneev::Point>& src, size_t& c)
 {
   if (src == poly.points)
   {
-    counter++;
+    c++;
   }
   else
   {
-    counter = 0;
+    c = 0;
   }
-  return counter;
+  return c;
 }
