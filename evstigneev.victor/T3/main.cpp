@@ -71,12 +71,10 @@ int main(int argc, char* argv[])
       {
         evstigneev::mxSeq(poly);
       }
-    }
-    catch (const std::out_of_range&)
-    {
-      std::cerr << "<INVALID COMMAND>" << "\n";
-      std::cin.clear();
-      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+      else if (!std::cin.eof())
+      {
+        throw std::logic_error("<INVALID COMMAND>");
+      }
     }
     catch (const std::logic_error& e)
     {
