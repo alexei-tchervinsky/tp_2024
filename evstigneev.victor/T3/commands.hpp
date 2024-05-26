@@ -10,6 +10,8 @@ namespace evstigneev
   void count(const std::vector<evstigneev::Polygon>& poly);
   void lessArea(const std::vector<evstigneev::Polygon>& poly);
   void mxSeq(const std::vector<evstigneev::Polygon>& poly);
+  size_t isEqualC(const Polygon& plg,
+    const std::vector< Point >& src, size_t& counter);
 }
 
 #endif

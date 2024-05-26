@@ -166,3 +166,57 @@ void evstigneev::lessArea(const std::vector<evstigneev::Polygon>& poly)
   };
   std::cout << std::count_if(poly.begin(), poly.end(), lss) << "\n";
 }
+
+void mxSeq(const std::vector<evstigneev::Polygon>& poly)
+{
+  if (poly.empty())
+  {
+    throw std::logic_error("<INVALID COMMAND>");
+  }
+  size_t numOfVexes = 0, counter = 0;
+  std::vector<evstigneev::Point> srcPoints;
+  std::vector<size_t> seques;
+
+  std::cin >> numOfVexes;
+
+  if (numOfVexes < 3)
+  {
+    throw std::logic_error("<INVALID COMMAND>");
+  }
+  srcPoints.reserve(numOfVexes);
+
+  std::copy_n(std::istream_iterator<evstigneev::Point>(std::cin),
+    numOfVexes, std::back_inserter(srcPoints));
+
+  if (srcPoints.empty())
+  {
+    throw std::logic_error("<INVALID COMMAND>");
+  }
+  auto isEqualCounterFunctor = [&srcPoints, &counter](const evstigneev::Polygon& polygon)
+  {
+    return isEqualC(polygon, srcPoints);
+  };
+  std::transform(poly.begin(),
+    poly.end(), std::back_inserter(seques), isEqualCounterFunctor);
+
+  auto max_iter = std::max_element(seques.begin(), seques.end());
+
+  if (max_iter != seques.end())
+  {
+    std::cout << *max_iter << "\n";
+  }
+}
+
+size_t isEqualC(const evstigneev::Polygon& poly,
+  const std::vector<evstigneev::Point>& src, size_t& counter)
+{
+  if (src == poly.points)
+  {
+    counter++;
+  }
+  else
+  {
+    counter = 0;
+  }
+  return counter;
+}

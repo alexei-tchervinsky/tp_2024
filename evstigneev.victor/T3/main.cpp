@@ -88,6 +88,10 @@ int main(int argc, char* argv[])
       {
         evstigneev::lessArea(poly);
       }
+      else if (cmd == "MAXSEQ")
+      {
+        evstigneev::mxSeq(poly);
+      }
     }
     catch (const std::out_of_range&)
     {
