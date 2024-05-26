@@ -120,7 +120,7 @@ void evstigneev::min(const std::vector<evstigneev::Polygon>& poly)
   }
 }
 
-void evstigneev::count(const std::vector<evstigneev::Polygon>& poly)
+void evstigneev::count(const std::vector<Polygon>& poly)
 {
   std::string cmd;
   std::cin >> cmd;
@@ -128,12 +128,18 @@ void evstigneev::count(const std::vector<evstigneev::Polygon>& poly)
   if (cmd == "ODD")
   {
     std::cout << std::count_if(poly.begin(), poly.end(),
-      [](const Polygon& p) { return p.points.size() % 2 == 1; }) << "\n";
+      [](const Polygon& p)
+      {
+        return p.points.size() % 2 == 1;
+      }) << "\n";
   }
   else if (cmd == "EVEN")
   {
     std::cout << std::count_if(poly.begin(), poly.end(),
-      [](const Polygon& p) { return p.points.size() % 2 == 0; }) << "\n";
+      [](const Polygon& p)
+      {
+        return p.points.size() % 2 == 0;
+      }) << "\n";
   }
   else if (std::all_of(cmd.begin(), cmd.end(), isdigit) && stoi(cmd) > 2)
   {
