@@ -8,7 +8,7 @@ namespace evstigneev
   struct Point
   {
     int x, y;
-    //bool operator==(const Point& p1, const Point& p2);
+    bool operator==(const evstigneev::Point& lhs, const evstigneev::Point& rhs);
   };
 
   struct Polygon
