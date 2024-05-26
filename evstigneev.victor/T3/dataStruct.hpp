@@ -13,7 +13,7 @@ namespace evstigneev
   struct Polygon
   {
     std::vector<Point> points;
-    bool operator<(const Polygon& p);
+    bool operator<(const Polygon& p) const;
     double getArea() const;
   };
 

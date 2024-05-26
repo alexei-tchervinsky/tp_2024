@@ -76,7 +76,7 @@ bool evstigneev::operator==(const Polygon& fp, const Polygon& sp)
   return true;
 }
 
-bool evstigneev::Polygon::operator<(const Polygon& p)
+bool evstigneev::Polygon::operator<(const Polygon& p) const
 {
   return getArea() < p.getArea();
 }
