@@ -39,14 +39,11 @@ int main(int argc, char* argv[])
     }
   }
   in.close();
-  while (!std::cin.eof())
+  std::string cmd;
+  while (std::cin >> cmd)
   {
-    std::cin.clear();
-    std::string cmd;
-    std::cin >> cmd;
     try
     {
-      //cmd.at(command)(poly);
       if (cmd == "AREA")
       {
         evstigneev::area(poly);
@@ -71,7 +68,7 @@ int main(int argc, char* argv[])
       {
         evstigneev::mxSeq(poly);
       }
-      else if (!std::cin.eof())
+      else if (!std::cin)
       {
         throw std::runtime_error("<INVALID COMMAND>");
       }
