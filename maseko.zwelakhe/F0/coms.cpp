@@ -402,3 +402,5 @@ void mynspace::sort(dictionaries& dicts, std::ostream& out, std::istream& in)
 
   out << "Dictionary was successfully sorted\n";
 }
+
+

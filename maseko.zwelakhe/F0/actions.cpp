@@ -173,3 +173,4 @@ void mynspace::showAllWords(dictionary& dict, std::ostream& out)
     out << pair.first << ": " << pair.second << '\n';
   }
 }
+
