@@ -19,6 +19,8 @@ namespace evstigneev
 
   std::istream& operator>>(std::istream& in, evstigneev::Point& dest);
   std::istream& operator>>(std::istream& in, evstigneev::Polygon& poly);
+  std::ostream& operator<<(std::ostream& out, const evstigneev::Point& dest);
+  std::ostream& operator<<(std::ostream& out, const evstigneev::Polygon& poly);
   bool operator==(const Polygon& fp, const Polygon& sp);
   bool operator==(const Point& lhs, const Point& rhs);
 }

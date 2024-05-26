@@ -1,6 +1,7 @@
 #include "dataStruct.hpp"
 #include "delimiter.hpp"
 #include <algorithm>
+#include <sstream>
 #include <numeric>
 
 std::istream& evstigneev::operator>>(std::istream& in, evstigneev::Point& dest)
@@ -10,14 +11,15 @@ std::istream& evstigneev::operator>>(std::istream& in, evstigneev::Point& dest)
   {
     return in;
   }
-  using del = DelimiterIO;
-  int x = 0, y = 0;
-  in >> del{ '(' } >> x >> del{ ';' } >> y >> del{ ')' };
-  if (in)
+  std::string str;
+  in >> str;
+  if (!in)
   {
-    dest.x = x;
-    dest.y = y;
+    in.setstate(std::ios::failbit);
   }
+  char c;
+  std::stringstream s(str);
+  s >> c >> dest.x >> c >> dest.y >> c;
   return in;
 }
 
@@ -28,15 +30,15 @@ std::istream& evstigneev::operator>>(std::istream& in, evstigneev::Polygon& poly
   {
     return in;
   }
-  Polygon polygon;
+  poly.points.clear();
   size_t vexes = 0;
-  if (!(in >> vexes) || vexes <=2 )
+  if (!(in >> vexes) || vexes < 3)
   {
     in.setstate(std::ios::failbit);
     return in;
   }
-  Point point;
-  for (size_t i = 0; i < vexes; i++)
+  poly.points.resize(vexes);
+  for (auto &point : poly.points)
   {
     if (in.get() == '\n')
     {
@@ -44,20 +46,28 @@ std::istream& evstigneev::operator>>(std::istream& in, evstigneev::Polygon& poly
       return in;
     }
     in >> point;
-    if (in)
-    {
-      polygon.points.push_back(point);
-    }
   }
-  if (in && polygon.points.size() == vexes && in.get() == '\n')
-  {
-    poly = polygon;
-  }
-  else
+  if (in.get() != '\n')
   {
     in.setstate(std::ios::failbit);
   }
   return in;
+}
+
+std::ostream& evstigneev::operator<<(std::ostream& out,
+  const evstigneev::Point& dest)
+{
+  return out << '(' << dest.x << ';' << dest.y << ')';
+}
+std::ostream& operator<<(std::ostream& out,
+  const evstigneev::Polygon& poly)
+{
+  out << poly.points.size();
+  for (auto& point : poly.points)
+  {
+    out << ' ' << point;
+  }
+  return out << '\n';
 }
 
 bool evstigneev::operator==(const Polygon& fp, const Polygon& sp)

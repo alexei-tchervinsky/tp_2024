@@ -12,14 +12,15 @@ int main(int argc, char* argv[])
   if (argc != 2)
   {
     std::cerr << "Error: wrong number of parameters\n";
-    return -1;
+    return 1;
   }
   std::ifstream in(argv[1]);
   if (!in)
   {
     std::cerr << "Error: unable to open the file\n";
-    return -1;
+    return 2;
   }
+  using namespace evstigneev;
   std::cout << std::setprecision(1) << std::fixed;
   std::vector<evstigneev::Polygon> poly;
   while (!in.eof())
@@ -35,6 +36,7 @@ int main(int argc, char* argv[])
       in.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
   }
+  in.close();
   while (!std::cin.eof())
   {
     std::cin.clear();
