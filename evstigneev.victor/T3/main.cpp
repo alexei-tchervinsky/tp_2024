@@ -6,7 +6,7 @@
 #include <iterator>
 #include "commands.hpp"
 
-int main(int argc, char** argv)
+int main(int argc, char* argv [])
 {
   if (argc != 2)
   {
@@ -33,13 +33,15 @@ int main(int argc, char** argv)
       in.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
   }
-  std::map<std::string, std::function<void (const std::vector<evstigneev::Polygon>&)>> cmd;
+  std::map<std::string, 
+    std::function<void(const std::vector<evstigneev::Polygon>&)>> cmd =
   {
-    cmd["AREA"] = evstigneev::area;
-    cmd["MAX"] = evstigneev::max;
-    cmd["MIN"] = evstigneev::min;
-    cmd["COUNT"] = evstigneev::count;
-  }
+    {"AREA", evstigneev::area},
+    {"MAX", evstigneev::max},
+    {"MIN", evstigneev::min},
+    {"COUNT", evstigneev::count},
+    {"LESSAREA", evstigneev::lessArea}
+  };
   std::string command = "";
   while (std::cin >> command)
   {
