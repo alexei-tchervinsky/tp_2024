@@ -201,8 +201,8 @@ void evstigneev::mxSeq(const std::vector<evstigneev::Polygon>& poly)
   std::cout << *(std::max_element(seques.begin(), seques.end())) << "\n";
 }
 
-size_t isEqualCount(const evstigneev::Polygon& poly,
-  const std::vector<evstigneev::Point>& src, size_t& c)
+size_t evstigneev::isEqualCount(const Polygon& poly,
+  const std::vector<Point>& src, size_t& c)
 {
   if (src == poly.points)
   {
