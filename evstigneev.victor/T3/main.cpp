@@ -4,10 +4,12 @@
 #include <limits>
 #include <algorithm>
 #include <numeric>
+#include <functional>
 #include <iterator>
 #include "commands.hpp"
 #include "dataStruct.hpp"
 #include <iomanip>
+#include <map>
 
 int main(int argc, char* argv[])
 {
@@ -39,37 +41,27 @@ int main(int argc, char* argv[])
     }
   }
   in.close();
-  while (!std::cin.eof())
+  std::map<std::string, 
+    std::function<void(std::istream&, std::ostream&)>> cmd;
+  cmd["AREA"] = std::bind(evstigneev::area, poly, std::placeholders::_1,
+    std::placeholders::_2);
+  cmd["MAX"] = std::bind(evstigneev::max, poly, std::placeholders::_1,
+    std::placeholders::_2);
+  cmd["MIN"] = std::bind(evstigneev::min, poly, std::placeholders::_1,
+    std::placeholders::_2);
+  cmd["COUNT"] = std::bind(evstigneev::count, poly, std::placeholders::_1,
+    std::placeholders::_2);
+  cmd["LESSAREA"] = std::bind(evstigneev::lessArea, poly, std::placeholders::_1,
+    std::placeholders::_2);
+  cmd["MAXSEQ"] = std::bind(evstigneev::mxSeq, poly, std::placeholders::_1,
+    std::placeholders::_2);
+
+  std::string comm;
+  while (std::cin >> comm)
   {
-    std::cin.clear();
-    std::string cmd;
-    std::cin >> cmd;
     try
     {
-      if (cmd == "AREA")
-      {
-        evstigneev::area(poly);
-      }
-      else if (cmd == "MAX")
-      {
-        evstigneev::max(poly);
-      }
-      else if (cmd == "MIN")
-      {
-        evstigneev::min(poly);
-      }
-      else if (cmd == "COUNT")
-      {
-        evstigneev::count(poly);
-      }
-      else if (cmd == "LESSAREA")
-      {
-        evstigneev::lessArea(poly);
-      }
-      else if (cmd == "MAXSEQ")
-      {
-        evstigneev::mxSeq(poly);
-      }
+      cmd.at(comm)(std::cin, std::cout);
     }
     catch (const std::logic_error&)
     {

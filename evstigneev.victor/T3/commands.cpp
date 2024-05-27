@@ -7,7 +7,7 @@
 #include <numeric>
 #include <functional>
 
-void evstigneev::area(const std::vector<evstigneev::Polygon>& poly)
+void evstigneev::area(const std::vector<evstigneev::Polygon>& poly, std::istream& in, std::ostream& out)
 {
   enum ModType {EVEN, ODD, NUM, MEAN};
   auto area_if = [](double ac, const evstigneev::Polygon& poly,
@@ -23,28 +23,28 @@ void evstigneev::area(const std::vector<evstigneev::Polygon>& poly)
     return ac;
   };
   std::string cmd;
-  std::cin >> cmd;
+  in >> cmd;
   if (cmd == "ODD")
   {
-    std::cout << std::accumulate(poly.begin(), poly.end(),
+    out << std::accumulate(poly.begin(), poly.end(),
       0.0, std::bind(area_if, std::placeholders::_1,
         std::placeholders::_2, 0, ODD)) << "\n";
   }
   else if (cmd == "EVEN")
   {
-    std::cout << std::accumulate(poly.begin(), poly.end(),
+    out << std::accumulate(poly.begin(), poly.end(),
       0.0, std::bind(area_if, std::placeholders::_1,
         std::placeholders::_2, 0, EVEN)) << "\n";
   }
   else if (cmd == "MEAN" && poly.size() != 0)
   {
-    std::cout << std::accumulate(poly.begin(), poly.end(),
+    out << std::accumulate(poly.begin(), poly.end(),
       0.0, std::bind(area_if, std::placeholders::_1,
         std::placeholders::_2, 0, MEAN)) / poly.size() << "\n";
   }
   else if (std::all_of(cmd.begin(), cmd.end(), isdigit) && stoi(cmd) > 2)
   {
-    std::cout << std::accumulate(poly.begin(), poly.end(),
+    out << std::accumulate(poly.begin(), poly.end(),
       0.0, std::bind(area_if, std::placeholders::_1,
         std::placeholders::_2, stoi(cmd), NUM)) << "\n";
   }
@@ -54,10 +54,10 @@ void evstigneev::area(const std::vector<evstigneev::Polygon>& poly)
   }
 }
 
-void evstigneev::max(const std::vector<evstigneev::Polygon>& poly)
+void evstigneev::max(const std::vector<evstigneev::Polygon>& poly, std::istream& in, std::ostream& out)
 {
   std::string cmd;
-  std::cin >> cmd;
+  in >> cmd;
 
   if (poly.empty())
   {
@@ -66,11 +66,11 @@ void evstigneev::max(const std::vector<evstigneev::Polygon>& poly)
 
   if (cmd == "AREA")
   {
-    std::cout << std::max_element(poly.begin(), poly.end())->getArea() << "\n";
+    out << std::max_element(poly.begin(), poly.end())->getArea() << "\n";
   }
   else if (cmd == "VERTEXES")
   {
-    std::cout << std::accumulate(poly.begin() + 1, poly.end(),
+    out << std::accumulate(poly.begin() + 1, poly.end(),
       poly[0].points.size(), [](std::size_t max_i, const Polygon& poly)
       {
         if (poly.points.size() > max_i)
@@ -89,10 +89,10 @@ void evstigneev::max(const std::vector<evstigneev::Polygon>& poly)
   }
 }
 
-void evstigneev::min(const std::vector<evstigneev::Polygon>& poly)
+void evstigneev::min(const std::vector<evstigneev::Polygon>& poly, std::istream& in, std::ostream& out)
 {
   std::string cmd;
-  std::cin >> cmd;
+  in >> cmd;
 
   if (poly.empty())
   {
@@ -101,11 +101,11 @@ void evstigneev::min(const std::vector<evstigneev::Polygon>& poly)
 
   if (cmd == "AREA")
   {
-    std::cout << std::min_element(poly.begin(), poly.end())->getArea() << "\n";
+    out << std::min_element(poly.begin(), poly.end())->getArea() << "\n";
   }
   else if (cmd == "VERTEXES")
   {
-    std::cout << std::accumulate(poly.begin() + 1, poly.end(),
+    out << std::accumulate(poly.begin() + 1, poly.end(),
       poly[0].points.size(), [](std::size_t min_i, const Polygon& poly)
       {
         if (poly.points.size() < min_i)
@@ -124,14 +124,14 @@ void evstigneev::min(const std::vector<evstigneev::Polygon>& poly)
   }
 }
 
-void evstigneev::count(const std::vector<Polygon>& poly)
+void evstigneev::count(const std::vector<evstigneev::Polygon>& poly, std::istream& in, std::ostream& out)
 {
   std::string cmd;
-  std::cin >> cmd;
+  in >> cmd;
 
   if (cmd == "ODD")
   {
-    std::cout << std::count_if(poly.begin(), poly.end(),
+    out << std::count_if(poly.begin(), poly.end(),
       [](const Polygon& p)
       {
         return p.points.size() % 2 == 1;
@@ -139,7 +139,7 @@ void evstigneev::count(const std::vector<Polygon>& poly)
   }
   else if (cmd == "EVEN")
   {
-    std::cout << std::count_if(poly.begin(), poly.end(),
+    out << std::count_if(poly.begin(), poly.end(),
       [](const Polygon& p)
       {
         return p.points.size() % 2 == 0;
@@ -148,7 +148,7 @@ void evstigneev::count(const std::vector<Polygon>& poly)
   else if (std::all_of(cmd.begin(), cmd.end(), isdigit) && stoi(cmd) > 2)
   {
     std::size_t vexes = stoi(cmd);
-    std::cout << std::count_if(poly.begin(), poly.end(),
+    out << std::count_if(poly.begin(), poly.end(),
       [&vexes](const Polygon& p)
       {
         return p.points.size() == vexes;
@@ -161,7 +161,7 @@ void evstigneev::count(const std::vector<Polygon>& poly)
 
 }
 
-void evstigneev::lessArea(const std::vector<evstigneev::Polygon>& poly)
+void evstigneev::lessArea(const std::vector<evstigneev::Polygon>& poly, std::istream& in, std::ostream& out)
 {
   if (poly.empty())
   {
@@ -176,10 +176,10 @@ void evstigneev::lessArea(const std::vector<evstigneev::Polygon>& poly)
   {
     return p1.getArea() > p2.getArea();
   };
-  std::cout << std::count_if(poly.begin(), poly.end(), lss) << "\n";
+  out << std::count_if(poly.begin(), poly.end(), lss) << "\n";
 }
 
-void evstigneev::mxSeq(const std::vector<evstigneev::Polygon>& poly)
+void evstigneev::mxSeq(const std::vector<evstigneev::Polygon>& poly, std::istream& in, std::ostream& out)
 {
   if (poly.empty())
   {
@@ -204,7 +204,7 @@ void evstigneev::mxSeq(const std::vector<evstigneev::Polygon>& poly)
   };
 
   using in_it = std::istream_iterator<Point>;
-  std::cin >> numOfVexes;
+  in >> numOfVexes;
 
   if (numOfVexes < 3)
   {
@@ -225,5 +225,5 @@ void evstigneev::mxSeq(const std::vector<evstigneev::Polygon>& poly)
 
   auto mx = std::max_element(seques.begin(), seques.end());
 
-  std::cout << *mx << "\n";
+  out << *mx << "\n";
 }

@@ -4,14 +4,14 @@
 
 namespace evstigneev
 {
-  void area(const std::vector<evstigneev::Polygon>& poly);
-  void max(const std::vector<evstigneev::Polygon>& poly);
-  void min(const std::vector<evstigneev::Polygon>& poly);
-  void count(const std::vector<evstigneev::Polygon>& poly);
-  void lessArea(const std::vector<evstigneev::Polygon>& poly);
-  void mxSeq(const std::vector<evstigneev::Polygon>& poly);
-  size_t isEqualCount(const Polygon& poly,
-    const std::vector<Point>& src, size_t& c);
+  void area(const std::vector<evstigneev::Polygon>& poly, std::istream& in, std::ostream& out);
+  void max(const std::vector<evstigneev::Polygon>& poly, std::istream& in, std::ostream& out);
+  void min(const std::vector<evstigneev::Polygon>& poly, std::istream& in, std::ostream& out);
+  void count(const std::vector<evstigneev::Polygon>& poly, std::istream& in, std::ostream& out);
+  void lessArea(const std::vector<evstigneev::Polygon>& poly, std::istream& in, std::ostream& out);
+  void mxSeq(const std::vector<evstigneev::Polygon>& poly, std::istream& in, std::ostream& out);
+  /*size_t isEqualCount(const Polygon& poly,
+    const std::vector<Point>& src, size_t& c);*/
 }
 
 #endif
