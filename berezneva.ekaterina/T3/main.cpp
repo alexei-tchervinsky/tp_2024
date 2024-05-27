@@ -57,22 +57,16 @@ int main(int argc, char* argv[])
     {"LESSAREA", std::bind(berezneva::lessArea, _1, std::ref(std::cin), std::ref(std::cout))},
     {"INTERSECTIONS", std::bind(berezneva::intersect, _1, std::ref(std::cin), std::ref(std::cout))}
   };
-  while (!std::cin.eof())
-  {
-    std::cin.clear();
-    std::string command;
-    std::cin >> command;
-    try
-    {
-      cmds.at(command)(vec);
+  std::string cmd = "";
+  while (std::cin >> cmd) {
+    try {
+      cmds.at(cmd)(vec);
     }
-    catch (std::exception& ex)
-    {
+    catch (const std::exception &) {
       std::cout << "<INVALID COMMAND>" << '\n';
       std::cin.clear();
+      std::cin.ignore(std::numeric_limits< std::streamsize >::max(), '\n');
     }
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
-    return 0;
   }
+  return 0;
 }
