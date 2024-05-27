@@ -52,6 +52,7 @@ void evstigneev::area(const std::vector<evstigneev::Polygon>& poly, std::istream
   {
     throw std::runtime_error("<INVALID COMMAND>");
   }
+  return out;
 }
 
 void evstigneev::max(const std::vector<evstigneev::Polygon>& poly, std::istream& in, std::ostream& out)
@@ -87,6 +88,7 @@ void evstigneev::max(const std::vector<evstigneev::Polygon>& poly, std::istream&
   {
     throw std::runtime_error("<INVALID COMMAND>");
   }
+  return out;
 }
 
 void evstigneev::min(const std::vector<evstigneev::Polygon>& poly, std::istream& in, std::ostream& out)
@@ -122,6 +124,7 @@ void evstigneev::min(const std::vector<evstigneev::Polygon>& poly, std::istream&
   {
     throw std::runtime_error("<INVALID COMMAND>");
   }
+  return out;
 }
 
 void evstigneev::count(const std::vector<evstigneev::Polygon>& poly, std::istream& in, std::ostream& out)
@@ -158,7 +161,7 @@ void evstigneev::count(const std::vector<evstigneev::Polygon>& poly, std::istrea
   {
     throw std::runtime_error("<INVALID COMMAND>");
   }
-
+  return out;
 }
 
 void evstigneev::lessArea(const std::vector<evstigneev::Polygon>& poly, std::istream& in, std::ostream& out)
@@ -169,15 +172,17 @@ void evstigneev::lessArea(const std::vector<evstigneev::Polygon>& poly, std::ist
   }
   Polygon p1, p2;
   in >> p2;
-  if (!in)
+  if (!in || in.peek() != '\n')
   {
     throw std::runtime_error("<INVALID COMMAND>");
   }
   auto lss = [&p1](const Polygon& p2)
   {
-    return p1.getArea() > p2.getArea();
+    bool r = p1.getArea() > p2.getArea()
+    return r;
   };
   out << std::count_if(poly.begin(), poly.end(), lss) << '\n';
+  return out;
 }
 
 void evstigneev::mxSeq(const std::vector<evstigneev::Polygon>& poly, std::istream& in, std::ostream& out)
