@@ -70,8 +70,8 @@ int main(int argc, char* argv[])
     {
       std::cout << "<INVALID COMMAND>" << '\n';
       std::cin.clear();
-      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
     return 0;
   }
