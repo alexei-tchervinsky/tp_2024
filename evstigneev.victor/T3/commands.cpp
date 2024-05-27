@@ -126,34 +126,24 @@ void evstigneev::min(const std::vector<evstigneev::Polygon>& poly, std::istream&
 
 void evstigneev::count(const std::vector<Polygon>& poly, std::istream& in, std::ostream& out)
 {
-  auto c_if = [](const evstigneev::Polygon& p,
-    std::size_t m, std::size_t vexes)
-  {
-    return ((p.points.size() % 2 == m) || (m == 2 && p.points.size() == vexes));
-  };
-
   std::string cmd;
   in >> cmd;
-  if (cmd == "EVEN")
+  if (cmd == "ODD")
   {
-    out << std::count_if(poly.begin(), poly.end(),
-      std::bind(c_if, std::placeholders::_1, 0, 0)) << '\n';
+    out << std::setprecision(0) << count_(1, poly) << '\n';
   }
-  else if (cmd == "ODD")
+  else if (cmd == "EVEN")
   {
-    out << std::count_if(poly.begin(), poly.end(),
-      std::bind(c_if, std::placeholders::_1, 1, 0)) << '\n';
+    out << std::setprecision(0) << count_(2, poly) << '\n';
   }
-  else if (std::all_of(cmd.begin(), cmd.end(), isdigit) && stoi(cmd) > 2)
+  else if (stoll(cmd) >= 3)
   {
-    out << std::count_if(poly.begin(), poly.end(),
-      std::bind(c_if, std::placeholders::_1, 2, stoi(cmd))) << '\n';
+    out << std::setprecision(0) << count_(stoll(cmd), poly) << '\n';
   }
   else
   {
     throw std::runtime_error("<INVALID COMMAND>");
   }
-
 }
 
 void evstigneev::lessArea(const std::vector<evstigneev::Polygon>& poly, std::istream& in, std::ostream& out)
