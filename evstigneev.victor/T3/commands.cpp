@@ -179,7 +179,6 @@ void evstigneev::lessArea(const std::vector<evstigneev::Polygon>& poly, std::ist
     return r;
   };
   out << std::count_if(poly.begin(), poly.end(), lss) << '\n';
-  return out
 }
 
 void evstigneev::mxSeq(const std::vector<evstigneev::Polygon>& poly, std::istream& in, std::ostream& out)
