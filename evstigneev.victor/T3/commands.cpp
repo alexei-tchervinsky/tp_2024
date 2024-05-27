@@ -128,19 +128,26 @@ void evstigneev::count(const std::vector<Polygon>& poly, std::istream& in, std::
 {
   std::string cmd;
   in >> cmd;
-  if (cmd == "ODD")
+  try
   {
-    out << std::setprecision(0) << count_(1, poly) << '\n';
+    if (cmd == "ODD")
+    {
+      out << std::setprecision(0) << count_(1, poly) << '\n';
+    }
+    else if (cmd == "EVEN")
+    {
+      out << std::setprecision(0) << count_(2, poly) << '\n';
+    }
+    else if (stoll(cmd) >= 3)
+    {
+      out << std::setprecision(0) << count_(stoll(cmd), poly) << '\n';
+    }
+    else
+    {
+      throw std::runtime_error("<INVALID COMMAND>");
+    }
   }
-  else if (cmd == "EVEN")
-  {
-    out << std::setprecision(0) << count_(2, poly) << '\n';
-  }
-  else if (stoll(cmd) >= 3)
-  {
-    out << std::setprecision(0) << count_(stoll(cmd), poly) << '\n';
-  }
-  else
+  catch (std::exception& ex)
   {
     throw std::runtime_error("<INVALID COMMAND>");
   }
