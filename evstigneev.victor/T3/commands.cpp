@@ -289,7 +289,7 @@ std::size_t evstigneev::count_(std::size_t param, const std::vector<Polygon> pol
       });
   }
   std::function<std::size_t(const Polygon&)> UOp =
-    std::bind([](const Polygon& a, std::size_t param, auto isValidPolygon)
+    std::bind([](const Polygon& a, std::size_t param, std::function<bool(const Polygon&)> isValidPolygon)
     {
       return isValidPolygon(a) && a.points.size() == param;
     },
