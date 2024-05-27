@@ -236,8 +236,8 @@ void evstigneev::mxSeq(const std::vector<evstigneev::Polygon>& poly, std::istrea
   out << std::setprecision(0) << seq(poly.cb(), poly.ce(), p) << '\n';
 }
 
-std::size_t seq(std::vector< nspace::Polygon >::const_iterator b,
-  std::vector< nspace::Polygon >::const_iterator e, const Polygon& poly)
+std::size_t evstigneev::seq(std::vector<Polygon>::const_iterator b,
+  std::vector<Polygon>::const_iterator e, const Polygon& poly)
 {
   bool r = true;
   std::function<bool(const Polygon&)> find_if = std::bind([](const Polygon& polygon, const Polygon& poly)
