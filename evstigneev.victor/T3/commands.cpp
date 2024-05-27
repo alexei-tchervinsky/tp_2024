@@ -257,7 +257,7 @@ std::size_t seq(std::vector<evstigneev::Polygon>::const_iterator begin,
   if (begin_new != end)
   {
     std::size_t count_current = std::count_if(begin_new, end, count);
-    std::size_t count_next = get_seq(begin_new + count_current, end, param);
+    std::size_t count_next = seq(begin_new + count_current, end, param);
     if (count_current > count_next)
     {
       return count_current;
