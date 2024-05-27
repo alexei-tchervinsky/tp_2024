@@ -56,22 +56,16 @@ int main(int argc, char* argv[])
   cmd["MAXSEQ"] = std::bind(evstigneev::mxSeq, poly, std::placeholders::_1,
     std::placeholders::_2);
 
-  std::string comm;
+  std::string comm = "";
   while (std::cin >> comm)
   {
     try
     {
       cmd.at(comm)(std::cin, std::cout);
     }
-    /*catch (const std::logic_error&)
+    catch (const std::exception&)
     {
-      std::cerr << "<INVALID COMMAND>" << "\n";
-      std::cin.clear();
-      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    }*/
-    catch (const std::exception& e)
-    {
-      std::cerr << e.what() << "\n";
+      std::cerr << "<INVALID COMMAND>" << '\n';
       std::cin.clear();
       std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
