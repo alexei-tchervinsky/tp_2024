@@ -236,15 +236,15 @@ void evstigneev::mxSeq(const std::vector<evstigneev::Polygon>& poly, std::istrea
   out << std::setprecision(0) << seq(poly.cbegin(), poly.cend(), p) << '\n';
 }
 
-std::size_t seq(std::vector<evstigneev::Polygon>::const_iterator b,
-  std::vector<evstigneev::Polygon>::const_iterator e, const Polygon& poly)
+std::size_t seq(std::vector<evstigneev::Polygon>::const_iterator begin,
+  std::vector<evstigneev::Polygon>::const_iterator end, const Polygon& param)
 {
   bool repeat = true;
-  std::function<bool(const Polygon&)> FindIfUO = std::bind([](const Polygon& polygon, const Polygon& param)
+  std::function<bool(const Polygon&)> find = std::bind([](const Polygon& polygon, const Polygon& param)
     {
       return (polygon == param);
     }, std::placeholders::_1, param);
-  std::function<bool(const Polygon&)> CountIfUO = std::bind([](const Polygon& polygon, const Polygon& param, bool& repeat)
+  std::function<bool(const Polygon&)> count = std::bind([](const Polygon& polygon, const Polygon& param, bool& repeat)
     {
       if (polygon == param && repeat == true)
       {
@@ -253,10 +253,10 @@ std::size_t seq(std::vector<evstigneev::Polygon>::const_iterator b,
       repeat = false;
       return false;
     }, std::placeholders::_1, param, repeat);
-  std::vector< nspace::Polygon >::const_iterator begin_new = std::find_if(begin, end, FindIfUO);
+  std::vector<evstigneev::Polygon >::const_iterator begin_new = std::find_if(begin, end, find);
   if (begin_new != end)
   {
-    std::size_t count_current = std::count_if(begin_new, end, CountIfUO);
+    std::size_t count_current = std::count_if(begin_new, end, count);
     std::size_t count_next = get_seq(begin_new + count_current, end, param);
     if (count_current > count_next)
     {
