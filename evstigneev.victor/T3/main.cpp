@@ -43,25 +43,25 @@ int main(int argc, char* argv[])
   in.close();
   std::map<std::string,
     std::function<void(std::istream&, std::ostream&)>> cmd;
-  cmd["AREA"] = std::bind(evstigneev::area, std::placeholders::_1,
-    std::cin, std::cout);
-  cmd["MAX"] = std::bind(evstigneev::max, std::placeholders::_1,
-    std::cin, std::cout);
-  cmd["MIN"] = std::bind(evstigneev::min, std::placeholders::_1,
-    std::cin, std::cout);
-  cmd["COUNT"] = std::bind(evstigneev::count, std::placeholders::_1,
-    std::cin, std::cout);
-  cmd["LESSAREA"] = std::bind(evstigneev::lessArea, std::placeholders::_1,
-    std::cin, std::cout);
-  cmd["MAXSEQ"] = std::bind(evstigneev::mxSeq, std::placeholders::_1,
-    std::cin, std::cout);
+  cmd["AREA"] = std::bind(evstigneev::area, poly, std::placeholders::_1,
+    std::placeholders::_2);
+  cmd["MAX"] = std::bind(evstigneev::max, poly, std::placeholders::_1,
+    std::placeholders::_2);
+  cmd["MIN"] = std::bind(evstigneev::min, poly, std::placeholders::_1,
+    std::placeholders::_2);
+  cmd["COUNT"] = std::bind(evstigneev::count, poly, std::placeholders::_1,
+    std::placeholders::_2);
+  cmd["LESSAREA"] = std::bind(evstigneev::lessArea, poly, std::placeholders::_1,
+    std::placeholders::_2);
+  cmd["MAXSEQ"] = std::bind(evstigneev::mxSeq, poly, std::placeholders::_1,
+    std::placeholders::_2);
 
   std::string comm;
   while (std::cin >> comm)
   {
     try
     {
-      cmd.at(comm)(poly);
+      cmd.at(comm)(std::cin, std::cout);
     }
     catch (const std::logic_error&)
     {
