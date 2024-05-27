@@ -9,8 +9,9 @@ namespace evstigneev
     {
       return in;
     }
-    char c = '0';
-    if (c != dest.del)
+    char c = '\0';
+    in >> c;
+    if (in && (c != dest.del))
     {
       in.setstate(std::ios::failbit);
     }

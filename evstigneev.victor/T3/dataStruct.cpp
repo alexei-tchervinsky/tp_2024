@@ -4,54 +4,21 @@
 #include <sstream>
 #include <numeric>
 
-std::istream& evstigneev::operator>>(std::istream& in, evstigneev::Point& dest)
+std::istream& evstigneev::operator>>(std::istream& in, Point& dest)
 {
   std::istream::sentry sentry(in);
   if (!sentry)
   {
     return in;
   }
-  std::string str;
-  in >> str;
-  if (!in)
-  {
-    in.setstate(std::ios::failbit);
-  }
-  char c;
-  std::stringstream s(str);
-  s >> c >> dest.x >> c >> dest.y >> c;
+  Point temp;
+  in >> temp.x >> DelimiterIO{ ';' } >> temp.y;
+  dest = temp;
   return in;
 }
 
-std::istream& evstigneev::operator>>(std::istream& in, evstigneev::Polygon& poly)
+std::istream& evstigneev::operator>>(std::istream& in, Polygon& poly)
 {
-  /*std::istream::sentry sentry(in);
-  if (!sentry)
-  {
-    return in;
-  }
-  poly.points.clear();
-  size_t vexes = 0;
-  if (!(in >> vexes) || vexes <= 2)
-  {
-    in.setstate(std::ios::failbit);
-    return in;
-  }
-  poly.points.resize(vexes);
-  for (auto &point : poly.points)
-  {
-    if (in.get() == '\n')
-    {
-      in.setstate(std::ios::failbit);
-      return in;
-    }
-    in >> point;
-  }
-  if (in.get() != '\n')
-  {
-    in.setstate(std::ios::failbit);
-  }
-  return in;*/
   std::istream::sentry sentry(in);
   if (!sentry)
   {
@@ -59,20 +26,15 @@ std::istream& evstigneev::operator>>(std::istream& in, evstigneev::Polygon& poly
   }
   Polygon polygon;
   size_t vexes = 0;
-  if (!(in >> vexes) || vexes <= 2)
+  if (!(in >> vexes) || vexes < 3)
   {
     in.setstate(std::ios::failbit);
     return in;
   }
-  Point point;
   for (size_t i = 0; i < vexes; i++)
   {
-    if (in.get() == '\n')
-    {
-      in.setstate(std::ios::failbit);
-      return in;
-    }
-    in >> point;
+    Point point;
+    in >> DelimiterIO{ '(' } >> point >> DelimiterIO{ ')' };
     if (in)
     {
       polygon.points.push_back(point);
@@ -86,10 +48,6 @@ std::istream& evstigneev::operator>>(std::istream& in, evstigneev::Polygon& poly
   if (in && polygon.points.size() == vexes && in.get() == '\n')
   {
     poly = polygon;
-  }
-  else
-  {
-    in.setstate(std::ios::failbit);
   }
   return in;
 }

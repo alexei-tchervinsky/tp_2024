@@ -175,51 +175,6 @@ void evstigneev::lessArea(const std::vector<evstigneev::Polygon>& poly, std::ist
 
 void evstigneev::mxSeq(const std::vector<evstigneev::Polygon>& poly, std::istream& in, std::ostream& out)
 {
- /* if (poly.empty())
-  {
-    throw std::runtime_error("<INVALID COMMAND>");
-  }
-  size_t numOfVexes = 0, counter = 0;
-  std::vector<Point> srcPoints;
-  std::vector<size_t> seques;
-
-  auto isEqualCount = [](const Polygon& poly,
-    const std::vector<Point>& src, size_t& c)
-  {
-    if (src == poly.points)
-    {
-      c++;
-    }
-    else
-    {
-      c = 0;
-    }
-    return c;
-  };
-
-  using in_it = std::istream_iterator<Point>;
-  in >> numOfVexes;
-
-  if (numOfVexes < 3)
-  {
-    throw std::runtime_error("<INVALID COMMAND>");
-  }
-
-  std::copy_n(in_it{ std::cin }, numOfVexes, std::back_inserter(srcPoints));
-
-  if (srcPoints.empty())
-  {
-    throw std::runtime_error("<INVALID COMMAND>");
-  }
-
-  using namespace std::placeholders;
-  auto f = std::bind(isEqualCount, _1, srcPoints, counter);
-  std::transform(poly.begin(), poly.end(),
-    std::back_inserter(seques), f);
-
-  auto mx = std::max_element(seques.begin(), seques.end());
-
-  out << *mx << '\n';*/
   Polygon p;
   in >> p;
   if (!in || in.peek() != '\n')
