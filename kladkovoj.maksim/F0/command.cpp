@@ -6,7 +6,7 @@
 #include <sstream>  // istringstream
 
 #include "command.hpp"
-#include "KnapsackProblem.hpp"
+#include "function.hpp"
 
 using namespace kladkovoj;
 
