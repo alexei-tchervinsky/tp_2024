@@ -253,7 +253,7 @@ std::size_t evstigneev::seq(std::vector<Polygon>::const_iterator b,
       r = false;
       return false;
     }, std::placeholders::_1, poly, r);
-  std::vector< nspace::Polygon >::const_iterator b_new = std::find_if(b, e, find_if);
+  std::vector<evstigneev::Polygon>::const_iterator b_new = std::find_if(b, e, find_if);
   if (b_new != e)
   {
     std::size_t c_curr = std::count_if(b_new, e, count_if);
