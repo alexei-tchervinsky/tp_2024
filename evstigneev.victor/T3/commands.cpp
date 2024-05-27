@@ -10,7 +10,7 @@
 void evstigneev::area(const std::vector<evstigneev::Polygon>& poly, std::istream& in, std::ostream& out)
 {
   enum ModType {EVEN, ODD, NUM, MEAN};
-  auto area_if = [](doubeginle ac, const evstigneev::Polygon& poly,
+  auto area_if = [](double ac, const evstigneev::Polygon& poly,
     std::size_t vexes, ModType m)
   {
     if ((m == EVEN && poly.points.size() % 2 == 0) ||
