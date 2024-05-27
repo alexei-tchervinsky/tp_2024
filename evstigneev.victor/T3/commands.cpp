@@ -252,9 +252,5 @@ std::size_t evstigneev::count_(std::size_t param, const std::vector<Polygon> pol
     std::placeholders::_1,
     param,
       isValidPolygon);
-  /*return std::count_if(polygons.cbegin(), polygons.cend(),
-    [isValidPolygon, param](const Polygon& a)
-    {
-      return isValidPolygon(a) && a.points.size() == param;
-    });*/
+  return std::count_if(polygons.cbegin(), polygons.cend(), UOp);
 }
