@@ -41,7 +41,7 @@ int main(int argc, char* argv[])
     }
   }
   in.close();
-  std::map<std::string, 
+  std::map<std::string,
     std::function<void(std::istream&, std::ostream&)>> cmd;
   cmd["AREA"] = std::bind(evstigneev::area, poly, std::placeholders::_1,
     std::placeholders::_2);
