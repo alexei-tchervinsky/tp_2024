@@ -236,7 +236,7 @@ void evstigneev::mxSeq(const std::vector<evstigneev::Polygon>& poly, std::istrea
   out << std::setprecision(0) << seq(poly.cbegin(), poly.cend(), p) << '\n';
 }
 
-std::size_t seq(std::vector<evstigneev::Polygon>::const_iterator begin,
+std::size_t evstigneev::seq(std::vector<evstigneev::Polygon>::const_iterator begin,
   std::vector<evstigneev::Polygon>::const_iterator end, const Polygon& param)
 {
   bool repeat = true;
