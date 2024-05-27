@@ -229,7 +229,7 @@ void evstigneev::mxSeq(const std::vector<evstigneev::Polygon>& poly, std::istrea
   out << *mx << '\n';*/
   Polygon p;
   in >> p;
-  if (!in)
+  if (!in || in.peek() != '\n')
   {
     throw std::runtime_error("<INVALID COMMAND>");
   }
