@@ -137,17 +137,17 @@ void evstigneev::count(const std::vector<Polygon>& poly, std::istream& in, std::
   if (cmd == "EVEN")
   {
     out << std::count_if(poly.begin(), poly.end(),
-      std::bind(c_if, _1, 0, 0)) << '\n';
+      std::bind(c_if, std::placeholders::_1, 0, 0)) << '\n';
   }
   else if (cmd == "ODD")
   {
     out << std::count_if(poly.begin(), poly.end(),
-      std::bind(c_if, _1, 1, 0)) << '\n';
+      std::bind(c_if, std::placeholders::_1, 1, 0)) << '\n';
   }
   else if (std::all_of(cmd.begin(), cmd.end(), isdigit) && stoi(cmd) > 2)
   {
     out << std::count_if(poly.begin(), poly.end(),
-      std::bind(_if, _1, 2, stoi(cmd))) << '\n';
+      std::bind(c_if, std::placeholders::_1, 2, stoi(cmd))) << '\n';
   }
   else
   {
