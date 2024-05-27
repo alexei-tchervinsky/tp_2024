@@ -139,7 +139,7 @@ std::ostream& berezneva::count(const std::vector<Polygon>& data, std::istream& i
   return out;
 }
 
-std::ostream& berezneva::lessArea(std::vector<Polygon>& data, std::istream& in, std::ostream& out)
+std::ostream& berezneva::lessArea(const std::vector<Polygon>& data, std::istream& in, std::ostream& out)
 {
   if (data.empty())
   {

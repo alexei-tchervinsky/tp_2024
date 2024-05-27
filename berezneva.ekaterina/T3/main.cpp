@@ -13,7 +13,8 @@
 #include "geometry.h"
 #include "io.h"
 #include "commands.h"
-using namespace berezneva;
+using namespace std::placeholders;
+
 
 int main(int argc, char* argv[])
 {
@@ -47,16 +48,15 @@ int main(int argc, char* argv[])
     }
   }
 
-  std::map< std::string, std::function < std::ostream& (std::vector < berezneva::Polygon >&, std::istream&, std::ostream&) > > cmds;
+  std::map< std::string, std::function<std::ostream &(const std::vector<berezneva::Polygon> &)> > cmds
   {
-    using namespace std::placeholders;
-    cmds["AREA"] = std::bind(berezneva::area, _1, _2, _3);
-    cmds["MIN"] = std::bind(berezneva::min, _1, _2, _3);
-    cmds["MAX"] = std::bind(berezneva::max, _1, _2, _3);
-    cmds["COUNT"] = std::bind(berezneva::count, _1, _2, _3);
-    cmds["LESSAREA"] = std::bind(berezneva::lessArea, _1, _2, _3);
-    cmds["INTERSECTIONS"] = std::bind(berezneva::intersect, _1, _2, _3);
-  }
+    {"AREA", std::bind(berezneva::area, _1, std::ref(std::cin), std::ref(std::cout))},
+    {"MIN", std::bind(berezneva::min, _1, std::ref(std::cin), std::ref(std::cout))},
+    {"MAX", std::bind(berezneva::max, _1, std::ref(std::cin), std::ref(std::cout))},
+    {"COUNT", std::bind(berezneva::count, _1, std::ref(std::cin), std::ref(std::cout))},
+    {"LESSAREA", std::bind(berezneva::lessArea, _1, std::ref(std::cin), std::ref(std::cout))},
+    {"INTERSECTIONS", std::bind(berezneva::intersect, _1, std::ref(std::cin), std::ref(std::cout))}
+  };
 
   std::string command;
 
@@ -64,7 +64,7 @@ int main(int argc, char* argv[])
   {
     try
     {
-      cmds.at(command)(vec, std::cin, std::cout);
+      cmds.at(command)(vec);
       if (!(std::cin >> command))
       {
         throw std::runtime_error("<INVALID COMMAND>");

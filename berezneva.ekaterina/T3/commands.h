@@ -17,7 +17,7 @@ namespace berezneva
   std::ostream& min(const std::vector<Polygon>& data, std::istream& in, std::ostream& out);
   std::ostream& max(const std::vector<Polygon>& data, std::istream& in, std::ostream& out);
   std::ostream& count(const std::vector<Polygon>& data, std::istream& in, std::ostream& out);
-  std::ostream& lessArea(std::vector<Polygon>& data, std::istream& in, std::ostream& out);
+  std::ostream& lessArea(const std::vector<Polygon>& data, std::istream& in, std::ostream& out);
   std::ostream& intersect(const std::vector<Polygon>& data, std::istream& in, std::ostream& out);
 }
 #endif
