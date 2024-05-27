@@ -4,6 +4,11 @@
 #include <sstream>
 #include <numeric>
 
+bool evstigneev::Point::operator==(const Point& rhs) const
+{
+  return x == rhs.x && y == rhs.y;
+}
+
 std::istream& evstigneev::operator>>(std::istream& in, Point& dest)
 {
   std::istream::sentry sentry(in);
