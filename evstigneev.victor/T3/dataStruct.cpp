@@ -50,7 +50,7 @@ std::istream& evstigneev::operator>>(std::istream& in, Polygon& poly)
       return in;
     }
   }
-  if (in && polygon.points.size() == vexes && in.get() == '\n')
+  if (in && polygon.points.size() == vexes)
   {
     poly = polygon;
   }
