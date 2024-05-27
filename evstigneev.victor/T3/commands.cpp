@@ -124,35 +124,30 @@ void evstigneev::min(const std::vector<evstigneev::Polygon>& poly, std::istream&
   }
 }
 
-void evstigneev::count(const std::vector<evstigneev::Polygon>& poly, std::istream& in, std::ostream& out)
+void evstigneev::count(const std::vector<Polygon>& poly, std::istream& in, std::ostream& out)
 {
+  auto c_if = [](const evstigneev::Polygon& p,
+    std::size_t m, std::size_t vexes)
+  {
+    return ((p.points.size() % 2 == m) || (m == 2 && p.points.size() == vexes));
+  };
+
   std::string cmd;
   in >> cmd;
-
-  if (cmd == "ODD")
+  if (cmd == "EVEN")
   {
     out << std::count_if(poly.begin(), poly.end(),
-      [](const Polygon& p)
-      {
-        return p.points.size() % 2 == 1;
-      }) << '\n';
+      std::bind(c_if, _1, 0, 0)) << '\n';
   }
-  else if (cmd == "EVEN")
+  else if (cmd == "ODD")
   {
     out << std::count_if(poly.begin(), poly.end(),
-      [](const Polygon& p)
-      {
-        return p.points.size() % 2 == 0;
-      }) << '\n';
+      std::bind(c_if, _1, 1, 0)) << '\n';
   }
-  else if (stoi(cmd) >= 3)
+  else if (std::all_of(cmd.begin(), cmd.end(), isdigit) && stoi(cmd) > 2)
   {
-    std::size_t vexes = stoi(cmd);
     out << std::count_if(poly.begin(), poly.end(),
-      [&vexes](const Polygon& p)
-      {
-        return p.points.size() == vexes;
-      }) << '\n';
+      std::bind(_if, _1, 2, stoi(cmd))) << '\n';
   }
   else
   {
