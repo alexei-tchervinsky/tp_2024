@@ -1,25 +1,25 @@
 #include "io.h"
 
-bool berezneva::isPoint(const std::string &str)
+bool berezneva::isPoint(const std::string& str)
 {
   std::regex pattern("\\(-?[0-9]+;-?[0-9]+\\)");
   return std::regex_match(str, pattern);
 }
 
-std::ostream & berezneva::operator<<(std::ostream &out, const berezneva::Point &point)
+std::ostream& berezneva::operator<<(std::ostream& out, const berezneva::Point& point)
 {
   return (out << '(' << point.x_ << ';' << point.y_ << ')');
 }
 
-std::ostream & berezneva::operator<<(std::ostream &out, const berezneva::Polygon &polygon)
+std::ostream& berezneva::operator<<(std::ostream& out, const berezneva::Polygon& polygon)
 {
   out << polygon.points_.size();
-  for (auto &p : polygon.points_)
+  for (auto& p : polygon.points_)
     out << ' ' << p;
   return (out << '\n');
 }
 
-std::istream & berezneva::operator>>(std::istream &in, berezneva::Point &point)  // (1;1)
+std::istream& berezneva::operator>>(std::istream& in, berezneva::Point& point)  // (1;1)
 {
   std::istream::sentry sentry(in);
 
@@ -40,7 +40,7 @@ std::istream & berezneva::operator>>(std::istream &in, berezneva::Point &point) 
 }
 
 
-std::istream & berezneva::operator>>(std::istream &in, berezneva::Polygon &polygon)  // 3 (1;2) (0;0) (0;3)
+std::istream& berezneva::operator>>(std::istream& in, berezneva::Polygon& polygon)  // 3 (1;2) (0;0) (0;3)
 {
   std::istream::sentry sentry(in);
   if (!sentry)
@@ -56,7 +56,7 @@ std::istream & berezneva::operator>>(std::istream &in, berezneva::Polygon &polyg
   }
   polygon.points_.resize(n);
 
-  for (auto &p : polygon.points_)
+  for (auto& p : polygon.points_)
   {
     if (in.peek() == '\n')
     {
