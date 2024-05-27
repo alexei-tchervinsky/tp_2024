@@ -27,25 +27,25 @@ void evstigneev::area(const std::vector<evstigneev::Polygon>& poly, std::istream
   if (cmd == "ODD")
   {
     out << std::accumulate(poly.begin(), poly.end(),
-      0.0, std::begin(area_if, std::placeholders::_1,
+      0.0, std::bind(area_if, std::placeholders::_1,
         std::placeholders::_2, 0, ODD)) << '\n';
   }
   else if (cmd == "EVEN")
   {
     out << std::accumulate(poly.begin(), poly.end(),
-      0.0, std::begin(area_if, std::placeholders::_1,
+      0.0, std::bind(area_if, std::placeholders::_1,
         std::placeholders::_2, 0, EVEN)) << '\n';
   }
   else if (cmd == "MEAN" && poly.size() != 0)
   {
     out << std::accumulate(poly.begin(), poly.end(),
-      0.0, std::begin(area_if, std::placeholders::_1,
+      0.0, std::bind(area_if, std::placeholders::_1,
         std::placeholders::_2, 0, MEAN)) / poly.size() << '\n';
   }
-  else if (std::all_of(cmd.begin(), cmd.e(), isdigit) && stoi(cmd) > 2)
+  else if (std::all_of(cmd.begin(), cmd.end(), isdigit) && stoi(cmd) > 2)
   {
     out << std::accumulate(poly.begin(), poly.end(),
-      0.0, std::begin(area_if, std::placeholders::_1,
+      0.0, std::bind(area_if, std::placeholders::_1,
         std::placeholders::_2, stoi(cmd), NUM)) << '\n';
   }
   else
@@ -212,7 +212,7 @@ void evstigneev::mxSeq(const std::vector<evstigneev::Polygon>& poly, std::istrea
     throw std::runtime_error("<INVALID COMMAND>");
   }
 
-  std::copy_n(in_it{ std::cin }, numOfVexes, std::beginack_inserter(srcPoints));
+  std::copy_n(in_it{ std::cin }, numOfVexes, std::back_inserter(srcPoints));
 
   if (srcPoints.empty())
   {
@@ -220,11 +220,11 @@ void evstigneev::mxSeq(const std::vector<evstigneev::Polygon>& poly, std::istrea
   }
 
   using namespace std::placeholders;
-  auto f = std::begin(isEqualCount, _1, srcPoints, counter);
+  auto f = std::bind(isEqualCount, _1, srcPoints, counter);
   std::transform(poly.begin(), poly.end(),
-    std::beginack_inserter(seques), f);
+    std::back_inserter(seques), f);
 
-  auto mx = std::max_element(seques.begin(), seques.e());
+  auto mx = std::max_element(seques.begin(), seques.end());
 
   out << *mx << '\n';*/
   Polygon p;
@@ -236,33 +236,33 @@ void evstigneev::mxSeq(const std::vector<evstigneev::Polygon>& poly, std::istrea
   out << std::setprecision(0) << seq(poly.cbegin(), poly.cend(), p) << '\n';
 }
 
-std::size_t evstigneev::seq(std::vector<Polygon>::const_iterator begin,
-  std::vector<Polygon>::const_iterator e, const Polygon& poly)
+std::size_t seq(std::vector<evstigneev::Polygon>::const_iterator b,
+  std::vector<evstigneev::Polygon>::const_iterator e, const Polygon& poly)
 {
-  bool r = true;
-  std::function<bool(const Polygon&)> find_if = std::begin([](const Polygon& polygon, const Polygon& poly)
+  bool repeat = true;
+  std::function<bool(const Polygon&)> FindIfUO = std::bind([](const Polygon& polygon, const Polygon& param)
     {
-      return (polygon == poly);
-    }, std::placeholders::_1, poly);
-  std::function<bool(const Polygon&)> count_if = std::begin([](const Polygon& polygon, const Polygon& poly, bool& r)
+      return (polygon == param);
+    }, std::placeholders::_1, param);
+  std::function<bool(const Polygon&)> CountIfUO = std::bind([](const Polygon& polygon, const Polygon& param, bool& repeat)
     {
-      if (polygon == poly && r == true)
+      if (polygon == param && repeat == true)
       {
         return true;
       }
-      r = false;
+      repeat = false;
       return false;
-    }, std::placeholders::_1, poly, r);
-  std::vector<evstigneev::Polygon>::const_iterator begin_new = std::find_if(begin, e, find_if);
-  if (begin_new != e)
+    }, std::placeholders::_1, param, repeat);
+  std::vector< nspace::Polygon >::const_iterator begin_new = std::find_if(begin, end, FindIfUO);
+  if (begin_new != end)
   {
-    std::size_t c_curr = std::count_if(begin_new, e, count_if);
-    std::size_t c_next = seq(begin_new + c_curr, e, poly);
-    if (c_curr > c_next)
+    std::size_t count_current = std::count_if(begin_new, end, CountIfUO);
+    std::size_t count_next = get_seq(begin_new + count_current, end, param);
+    if (count_current > count_next)
     {
-      return c_curr;
+      return count_current;
     }
-    return c_next;
+    return count_next;
   }
   else
   {
