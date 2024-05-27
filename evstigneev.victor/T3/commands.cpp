@@ -160,14 +160,19 @@ void evstigneev::lessArea(const std::vector<evstigneev::Polygon>& poly, std::ist
     throw std::runtime_error("<INVALID COMMAND>");
   }
   Polygon p1, p2;
+  in >> p1;
+  if (!in || in.peek() != '\n')
+  {
+    throw std::runtime_error("<INVALID COMMAND>");
+  }
   in >> p2;
   if (!in || in.peek() != '\n')
   {
     throw std::runtime_error("<INVALID COMMAND>");
   }
-  auto lss = [&p1](const Polygon& p2)
+  auto lss = [&p1, &p2](const Polygon& p)
   {
-    bool r = p1.getArea() > p2.getArea();
+    bool r = p1.getArea() > p.getArea() && p.getArea() < p2.getArea();
     return r;
   };
   out << std::count_if(poly.begin(), poly.end(), lss) << '\n';
