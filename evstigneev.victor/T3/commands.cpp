@@ -168,7 +168,8 @@ void evstigneev::lessArea(const std::vector<evstigneev::Polygon>& poly, std::ist
     throw std::runtime_error("<INVALID COMMAND>");
   }
   Polygon p1, p2;
-  if (!std::cin)
+  in >> p2;
+  if (!in)
   {
     throw std::runtime_error("<INVALID COMMAND>");
   }
