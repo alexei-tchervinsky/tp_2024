@@ -145,7 +145,7 @@ void evstigneev::count(const std::vector<evstigneev::Polygon>& poly, std::istrea
         return p.points.size() % 2 == 0;
       }) << '\n';
   }
-  else if (std::all_of(cmd.begin(), cmd.end(), isdigit) && stoi(cmd) > 2)
+  else if (stoi(cmd) >= 3)
   {
     std::size_t vexes = stoi(cmd);
     out << std::count_if(poly.begin(), poly.end(),
