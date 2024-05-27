@@ -265,3 +265,28 @@ std::size_t evstigneev::seq(std::vector<Polygon>::const_iterator begin,
     return 0;
   }
 }
+
+std::size_t evstigneev::count_(std::size_t param, const std::vector<Polygon> polygons)
+{
+  if (param == 1)
+  {
+    return std::count_if(polygons.cbegin(), polygons.cend(), [](const Polygon& a)
+      {
+        return a.points.size() % 2 != 0;
+      });
+  }
+  else if (param == 2)
+  {
+    return std::count_if(polygons.cbegin(), polygons.cend(), [](const Polygon& a)
+      {
+        return a.points.size() % 2 == 0;
+      });
+  }
+  std::function<std::size_t(const Polygon&)> UOp = std::bind([](const Polygon& a, std::size_t param)
+    {
+      return a.points.size() == param;
+    },
+    std::placeholders::_1,
+    param);
+  return std::count_if(polygons.cbegin(), polygons.cend(), UOp);
+}
