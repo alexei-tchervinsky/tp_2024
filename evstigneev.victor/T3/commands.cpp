@@ -175,7 +175,7 @@ void evstigneev::lessArea(const std::vector<evstigneev::Polygon>& poly, std::ist
   }
   auto lss = [&p1](const Polygon& p2)
   {
-    bool r = p1.getArea() > p2.getArea()
+    bool r = p1.getArea() > p2.getArea();
     return r;
   };
   out << std::count_if(poly.begin(), poly.end(), lss) << '\n';
