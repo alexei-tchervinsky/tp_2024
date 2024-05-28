@@ -38,10 +38,10 @@ void evstigneev::create(dictionary& dict, std::istream& in, std::ostream& out)
   {
     std::istringstream iss(str);
     std::string t;
-    while (std::getline(iss, t, DelimiterIO{ ',' }) ||
-      std::getline(iss, t, DelimiterIO{ '.' }) ||
-      std::getline(iss, t, DelimiterIO{ ';' }) ||
-      std::getline(iss, t, DelimiterIO{ '!' }))
+    while (std::getline(iss, t, ',') ||
+      std::getline(iss, t, '.') ||
+      std::getline(iss, t, '!') ||
+      std::getline(iss, t, ';'))
     {
       std::transform(t.begin(), t.end(), t.begin(), [](char c)
         {
@@ -119,10 +119,10 @@ void evstigneev::merge(dictionary& dict, std::istream& in, std::ostream& out)
   {
     std::istringstream iss(str);
     std::string t;
-    while (std::getline(iss, t, DelimiterIO{ ',' }) ||
-      std::getline(iss, t, DelimiterIO{ '.' }) ||
-      std::getline(iss, t, DelimiterIO{ ';' }) ||
-      std::getline(iss, t, DelimiterIO{ '!' }))
+    while (std::getline(iss, t, ',') ||
+      std::getline(iss, t, '.') ||
+      std::getline(iss, t, '!') ||
+      std::getline(iss, t, ';'))
     {
       std::transform(t.begin(), t.end(), t.begin(), [](char c)
         {
