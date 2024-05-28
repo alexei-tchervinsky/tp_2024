@@ -4,11 +4,11 @@
 #include <iostream>
 
 namespace shapes {
-    struct DelimiterIO {
-        char exp;
-    };
+  struct DelimiterIO {
+      char exp;
+  };
 
-    std::istream & operator>>(std::istream & is, DelimiterIO && d);
+  std::istream & operator>>(std::istream & is, DelimiterIO && d);
 }
 
 

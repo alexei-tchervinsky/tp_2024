@@ -208,15 +208,9 @@ namespace commands {
       throw std::invalid_argument("<INVALID POLYGON>");
     }
 
-    std::size_t originalSize = polygons.size();
     int inserted = createDuplicates(requiredPolygon, polygons);
-    std::size_t diffOfSize = polygons.size() - originalSize;
 
-    if (inserted != diffOfSize) {
-      throw std::logic_error("<ERROR WHILE INSERTING DUPLICATES>");
-    }
-
-    os << diffOfSize << "\n";
+    os << inserted << "\n";
     return os;
   }
 
