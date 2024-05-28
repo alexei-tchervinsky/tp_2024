@@ -10,10 +10,8 @@ namespace kladkovoj
   {
   public:
     Knapsack(int numItems, int maxWeight);
-
     void addItem(int weight, int value);
     void writeToFile(const std::string& filename) const;
-
     int knapsackDP() const;
     int knapsackBacktracking() const;
     int knapsackBranchAndBound() const;

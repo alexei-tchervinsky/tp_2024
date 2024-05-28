@@ -42,7 +42,9 @@ void command::create(const std::string& filename)
   std::cin >> capacity >> numItems;
 
   if (std::cin.fail())
+  {
     throw std::runtime_error("Invalid input.");
+  }
 
   file << capacity << ' ' << numItems << '\n';
   for (int i = 0; i < numItems; ++i)
@@ -56,11 +58,14 @@ void command::create(const std::string& filename)
 void command::show(const std::vector<std::string>& tokens)
 {
   if (tokens.size() != 2)
+  {
     throw std::invalid_argument("SHOW requires a filename.");
-
+  }
   std::ifstream file(tokens[1]);
   if (!file)
+  {
     throw std::runtime_error("Could not open file.");
+  }
 
   std::string firstLine;
   if (std::getline(file, firstLine))
@@ -68,9 +73,13 @@ void command::show(const std::vector<std::string>& tokens)
     std::istringstream iss(firstLine);
     std::size_t capacity, numItems;
     if (iss >> capacity >> numItems)
+    {
       std::cout << "capacity: " << capacity << " number of items: " << numItems << '\n';
+    }
     else
+    {
       throw std::runtime_error("Invalid format.");
+    }
   }
 
   std::size_t num = 1;
@@ -86,7 +95,9 @@ void command::solveDP(const std::string& filename)
 {
   std::ifstream file(filename);
   if (!file)
+  {
     throw std::runtime_error("Could not open file.");
+  }
 
   int capacity, numItems;
   file >> capacity >> numItems;
@@ -107,7 +118,9 @@ void command::solveBT(const std::string& filename)
 {
   std::ifstream file(filename);
   if (!file)
+  {
     throw std::runtime_error("Could not open file.");
+  }
 
   int capacity, numItems;
   file >> capacity >> numItems;
@@ -128,7 +141,9 @@ void command::solveBB(const std::string& filename)
 {
   std::ifstream file(filename);
   if (!file)
+  {
     throw std::runtime_error("Could not open file.");
+  }
 
   int capacity, numItems;
   file >> capacity >> numItems;
@@ -149,7 +164,9 @@ void command::solveBF(const std::string& filename)
 {
   std::ifstream file(filename);
   if (!file)
+  {
     throw std::runtime_error("Could not open file.");
+  }
 
   int capacity, numItems;
   file >> capacity >> numItems;
