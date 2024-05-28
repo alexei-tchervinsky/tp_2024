@@ -73,7 +73,7 @@ namespace bekhova
       }
       else if (curr == "key2")
       {
-        in >> ref{input.key2 } >> sep{ ':' };
+        in >> ref{ input.key2 } >> sep{ ':' };
       }
       else if (curr == "key3")
       {
