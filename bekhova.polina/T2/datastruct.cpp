@@ -100,8 +100,8 @@ namespace bekhova
       return out;
     }
     iofmtguard fmtguard(out);
-    out << "(:key1 0" << std::oct << d.key1 << ":key2 '" << dest.key2 <<
-      "':key3 \"" << dest.key3 << "\":)";
+    out << "(:key1 0" << std::oct << d.key1 << ":key2 '" << d.key2 <<
+      "':key3 \"" << d.key3 << "\":)";
     return out;
   }
 

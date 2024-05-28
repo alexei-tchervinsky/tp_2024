@@ -14,7 +14,7 @@ namespace bekhova
 
   struct ULLOctIO
   {
-  h  unsigned long long& ull;
+    unsigned long long& ull;
   };
   struct ULLHexIO
   {
