@@ -38,9 +38,12 @@ void evstigneev::create(dictionary& dict, std::istream& in, std::ostream& out)
   {
     std::istringstream iss(str);
     std::string t;
-    while (std::getline(iss, t, DelimiterIO{ ',;.!' }))
+    while (std::getline(iss, t, DelimiterIO{ ',', '.', '!', ';' }))
     {
-      std::transform(t.begin(), t.end(), t.begin(), std::tolower);
+      std::transform(t.begin(), t.end(), t.begin(), [](char c)
+        {
+          return std::tolower(c);
+        });
       dict[t]++;
     }
   }
@@ -113,9 +116,12 @@ void evstigneev::merge(dictionary& dict, std::istream& in, std::ostream& out)
   {
     std::istringstream iss(str);
     std::string t;
-    while (std::getline(iss, t, evstigneev::DelimiterIO{",;.!"}))
+    while (std::getline(iss, t, DelimiterIO{ ',', '.', '!', ';' }))
     {
-      std::transform(t.begin(), t.end(), t.begin(), std::tolower);
+      std::transform(t.begin(), t.end(), t.begin(), [](char c)
+        {
+          return std::tolower(c);
+        });
       dict[t]++;
     }
   }
