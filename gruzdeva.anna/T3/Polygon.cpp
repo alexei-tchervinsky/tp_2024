@@ -26,6 +26,18 @@ namespace shapes {
     return is;
   }
 
+  bool operator==(const Point &lhs, const Point &rhs) {
+    return (lhs.x == rhs.x && lhs.y == rhs.y);
+  }
+
+  int getX(const Point &point) {
+    return point.x;
+  }
+
+  int getY(const Point &point) {
+    return point.y;
+  }
+
   std::istream &operator>>(std::istream &is, Polygon &poly) {
     std::istream::sentry s(is);
     if (!s)
@@ -53,8 +65,8 @@ namespace shapes {
       }
     }
 
-    if (points.size() == pointsCount && is.get() == '\n') {
-      poly = Polygon{points};  // #TODO: probably poly.points = points;
+    if (points.size() == pointsCount) {
+      poly = Polygon{points};
     } else {
       is.setstate(std::istream::failbit);
     }
@@ -76,14 +88,22 @@ namespace shapes {
     double area = 0.0;
     std::vector<int> diffOfCoords(poly.points.size());
     std::transform(
-        poly.points.cbegin(),
+        ++poly.points.cbegin(),
         poly.points.cend(),
         poly.points.cbegin(),
         diffOfCoords.begin(),
         [](const Point & p1, const Point & p2) { return p1.x * p2.y - p1.y * p2.x; }
         );
+    diffOfCoords.push_back(poly.points.front().x * poly.points.back().y - poly.points.front().y * poly.points.back().x);
     area = std::accumulate(diffOfCoords.cbegin(), diffOfCoords.cend(), 0.0);
-    area /= 2.0;
+    area = std::abs(area) / 2.0;
     return area;
+  }
+
+  bool operator==(const Polygon& lhs, const Polygon& rhs) {
+    return std::equal(
+        std::begin(lhs.points), std::end(lhs.points),
+        std::begin(rhs.points), std::end(rhs.points)
+        );
   }
 }

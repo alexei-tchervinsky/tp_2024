@@ -28,10 +28,17 @@ namespace commands {
   std::size_t countOddVerts(const std::vector<shapes::Polygon>& polygons);
   std::size_t countShapesOfVertsNum(const std::vector<shapes::Polygon>& polygons, std::size_t vertsNum);
 
-  std::ostream& echo(const shapes::Polygon& poly, std::istream& is, std::ostream& os);
+  std::ostream& echo(std::vector<shapes::Polygon>& polygons, std::istream& is, std::ostream& os);
+  int createDuplicates(const shapes::Polygon& requiredPolygon, std::vector<shapes::Polygon>& polygons);
 
-  std::ostream& inframe(const shapes::Polygon& poly, const std::vector<shapes::Polygon>& polygons,
-                       std::istream& is, std::ostream& os);
+  std::ostream& inFrame(const std::vector<shapes::Polygon>& polygons, std::istream& is, std::ostream& os);
+  shapes::Polygon getFrame(const std::vector<shapes::Polygon>& polygons);
+  int getMaxX(const shapes::Polygon& poly);
+  int getMaxY(const shapes::Polygon& poly);
+  int getMinX(const shapes::Polygon& poly);
+  int getMinY(const shapes::Polygon& poly);
+
+  std::ostream& outError(std::ostream& os, const std::string& message);
 }
 
 #endif //COMMANDS_HPP

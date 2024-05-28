@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <numeric>
+#include <iterator>
 
 bool isNumber(const std::string& s)
 {
@@ -76,7 +77,7 @@ namespace commands {
 
     if (specifier == "AREA") {
       os << getMaxArea(polygons) << "\n";
-    } else if (specifier == "VERTS") {
+    } else if (specifier == "VERTEXES") {
       os << getMaxVerts(polygons) << "\n";
     } else {
       throw std::invalid_argument("<INVALID COMMAND>");
@@ -118,7 +119,7 @@ namespace commands {
 
     if (specifier == "AREA") {
       os << getMinArea(polygons) << "\n";
-    } else if (specifier == "VERTS") {
+    } else if (specifier == "VERTEXES") {
       os << getMinVerts(polygons) << "\n";
     } else {
       throw std::invalid_argument("<INVALID COMMAND>");
@@ -194,5 +195,183 @@ namespace commands {
                                       [vertsNum](const shapes::Polygon& poly) {return poly.points.size() == vertsNum;
                                       });
     return count;
+  }
+
+
+  std::ostream& echo(std::vector<shapes::Polygon>& polygons, std::istream& is, std::ostream& os) {
+    if (polygons.empty()) {
+      throw std::logic_error("<EMPTY POLYGON LIST>");
+    }
+
+    shapes::Polygon requiredPolygon;
+    if (!(is >> requiredPolygon)) {
+      throw std::invalid_argument("<INVALID POLYGON>");
+    }
+
+    std::size_t originalSize = polygons.size();
+    int inserted = createDuplicates(requiredPolygon, polygons);
+    std::size_t diffOfSize = polygons.size() - originalSize;
+
+    if (inserted != diffOfSize) {
+      throw std::logic_error("<ERROR WHILE INSERTING DUPLICATES>");
+    }
+
+    os << diffOfSize << "\n";
+    return os;
+  }
+
+  int createDuplicates(const shapes::Polygon& requiredPolygon, std::vector<shapes::Polygon>& polygons) {
+    std::vector<std::size_t> indexes;
+    int ind = 0;
+    std::transform(polygons.begin(), polygons.end(), std::back_inserter(indexes),
+                   [&requiredPolygon, &ind](const shapes::Polygon& poly) {
+                    if (poly == requiredPolygon) {
+                      return ind++;
+                    } else {
+                      ++ind;
+                      return -1;
+                    }
+                   });
+    indexes.erase(std::remove(indexes.begin(), indexes.end(), -1), indexes.end());
+
+    int inserted = 0;
+    std::vector<int> dummy;
+    std::transform(indexes.begin(), indexes.end(), std::back_inserter(dummy),
+                   [&polygons, &requiredPolygon, &inserted](std::size_t index) {
+                       polygons.insert(polygons.begin() + index + inserted, requiredPolygon);
+                        ++inserted;
+                       return 0; // return value is not used
+                   });
+    return inserted;
+  }
+
+
+  std::ostream& inFrame(const std::vector<shapes::Polygon>& polygons, std::istream& is, std::ostream& os) {
+    if (polygons.empty()) {
+      throw std::logic_error("<EMPTY POLYGON LIST>");
+    }
+
+    shapes::Polygon poly;
+    if (!(is >> poly)) {
+      throw std::invalid_argument("<INVALID POLYGON>");
+    }
+
+    shapes::Polygon frame = getFrame(polygons);
+    bool inFrame = std::all_of(poly.points.cbegin(), poly.points.cend(),
+                               [&frame](const shapes::Point& point) {
+                                 return point.x >= frame.points[0].x && point.x <= frame.points[2].x &&
+                                        point.y >= frame.points[0].y && point.y <= frame.points[2].y;
+                               });
+
+    if (inFrame) {
+      os << "<TRUE>\n";
+    }
+    else {
+      os << "<FALSE>\n";
+    }
+
+    return  os;
+  }
+
+  shapes::Polygon getFrame(const std::vector<shapes::Polygon>& polygons) {
+    std::vector<int> vecMaxX(polygons.size());
+    std::transform(
+        polygons.begin(),
+        polygons.end(),
+        vecMaxX.begin(),
+        getMaxX
+    );
+    int maxX = *(std::max_element(vecMaxX.cbegin(), vecMaxX.cend()));
+
+    std::vector<int> vecMaxY(polygons.size());
+    std::transform(
+        polygons.begin(),
+        polygons.end(),
+        vecMaxY.begin(),
+        getMaxY
+    );
+    int maxY = *(std::max_element(vecMaxY.cbegin(), vecMaxY.cend()));
+
+    std::vector<int> vecMinX(polygons.size());
+    std::transform(
+        polygons.begin(),
+        polygons.end(),
+        vecMinX.begin(),
+        getMinX
+    );
+    int minX = *(std::min_element(vecMinX.cbegin(), vecMinX.cend()));
+
+    std::vector<int> vecMinY(polygons.size());
+    std::transform(
+        polygons.begin(),
+        polygons.end(),
+        vecMinY.begin(),
+        getMinY
+    );
+    int minY = *(std::min_element(vecMinY.cbegin(), vecMinY.cend()));
+
+    shapes::Polygon frame = {
+        {
+            {minX, minY},
+            {maxX, minY},
+            {maxX, maxY},
+            {minX, maxY}
+        }
+    };
+
+    return frame;
+  }
+
+  int getMaxX(const shapes::Polygon& shape) {
+    std::vector< int > vecPointX(shape.points.size());
+    std::transform(
+        shape.points.cbegin(),
+        shape.points.cend(),
+        vecPointX.begin(),
+        shapes::getX
+    );
+    int maxPointX = *(std::max_element(vecPointX.cbegin(), vecPointX.cend()));
+    return maxPointX;
+  }
+
+  int getMaxY(const shapes::Polygon& shape) {
+    std::vector< int > vecPointY(shape.points.size());
+    std::transform(
+        shape.points.cbegin(),
+        shape.points.cend(),
+        vecPointY.begin(),
+        shapes::getY
+    );
+    int maxPointY = *(std::max_element(vecPointY.cbegin(), vecPointY.cend()));
+    return maxPointY;
+  }
+
+  int getMinX(const shapes::Polygon& shape) {
+    std::vector< int > vecPointX(shape.points.size());
+    std::transform(
+        shape.points.cbegin(),
+        shape.points.cend(),
+        vecPointX.begin(),
+        shapes::getX
+    );
+    int minPointX = *(std::min_element(vecPointX.cbegin(), vecPointX.cend()));
+    return minPointX;
+  }
+
+  int getMinY(const shapes::Polygon& shape) {
+    std::vector< int > vecPointY(shape.points.size());
+    std::transform(
+        shape.points.cbegin(),
+        shape.points.cend(),
+        vecPointY.begin(),
+        shapes::getY
+    );
+    int minPointY = *(std::min_element(vecPointY.cbegin(), vecPointY.cend()));
+    return minPointY;
+  }
+
+  std::ostream& outError(std::ostream& os, const std::string& message) {
+    os << message << "\n";
+    return os;
   }
 }

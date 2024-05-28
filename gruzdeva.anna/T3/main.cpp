@@ -34,22 +34,31 @@ int main(int argc, char* argv[]) {
     }
   }
 
-  // testing testing
-  std::cout << "Polygons:\n";
-  std::cout << "size: " << polygons.size() << '\n';
-  std::cout << "====================\n";
-  std::copy(
-      polygons.begin(),
-      polygons.end(),
-      std::ostream_iterator<shapes::Polygon>{std::cout, ""}
-  );
-
-  std::map<std::string, std::function<std::ostream&(const std::vector<shapes::Polygon>&, std::istream &, std::ostream &)> > cmds;
+  std::map<std::string, std::function<std::ostream&(std::vector<shapes::Polygon>&, std::istream &, std::ostream &)> > cmds;
   {
     cmds["AREA"] = std::bind(commands::getArea, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
     cmds["MAX"] = std::bind(commands::getMax, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
     cmds["MIN"] = std::bind(commands::getMin, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
     cmds["COUNT"] = std::bind(commands::countShapes, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+    cmds["ECHO"] = std::bind(commands::echo, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+    cmds["INFRAME"] = std::bind(commands::inFrame, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+  }
+
+  std::string cmd = "";
+  while (std::cin >> cmd) {
+    try {
+      cmds.at(cmd)(polygons, std::cin, std::cout);
+    }
+    catch (const std::invalid_argument& ex) {
+      commands::outError(std::cout, "<INVALID COMMAND>");
+      std::cin.clear();
+      std::cin.ignore(std::numeric_limits< std::streamsize >::max(), '\n');
+    }
+    catch (const std::logic_error& ex) {
+      commands::outError(std::cout, "<INVALID COMMAND>");
+      std::cin.clear();
+      std::cin.ignore(std::numeric_limits< std::streamsize >::max(), '\n');
+    }
   }
 
   return 0;
