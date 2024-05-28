@@ -70,7 +70,6 @@ namespace shapes {
     }
 
     if (points.size() == pointsCount) {
-      std::cout << points.size() << " " << pointsCount << "\n";
       poly = Polygon{points};
     } else {
       is.setstate(std::istream::failbit);
