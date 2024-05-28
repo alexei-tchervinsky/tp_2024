@@ -10,7 +10,8 @@ namespace vdovin
   };
   std::istream& operator>>(std::istream& in, Delimiter&& exp);
 }
-#endif 
+#endif
+
 
 
 
