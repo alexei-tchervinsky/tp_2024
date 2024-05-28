@@ -10,7 +10,7 @@
 
 using namespace kladkovoj;
 
-int main(int argC, char *argV[])
+int main()
 {
   std::map<std::string, std::function<void(const std::vector<std::string>&)>> commandMap =
   {
