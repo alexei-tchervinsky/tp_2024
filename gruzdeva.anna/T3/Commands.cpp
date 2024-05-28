@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <numeric>
 #include <iterator>
+#include <iomanip>
 
 bool isNumber(const std::string& s)
 {
@@ -15,6 +16,7 @@ namespace commands {
     std::string specifier;
     is >> specifier;
 
+    os << std::setprecision(1) << std::fixed;
     if (specifier == "EVEN") {
       os << getEvenAreaSum(polygons) << "\n";
     } else if (specifier == "ODD") {
