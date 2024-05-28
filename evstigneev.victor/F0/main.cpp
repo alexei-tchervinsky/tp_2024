@@ -19,7 +19,7 @@ int main()
     std::placeholders::_3);
   cmd["MERGE"] = std::bind(evstigneev::merge, std::placeholders::_1, std::placeholders::_2,
     std::placeholders::_3);
-  cmd["REMOVE"] = std::bind(evstigneev::remove, std::placeholders::_3);
+  cmd["REMOVE"] = std::bind(evstigneev::remove, std::placeholders::_1, std::placeholders::_3);
   std::string command = "";
   while (std::cin >> command)
   {

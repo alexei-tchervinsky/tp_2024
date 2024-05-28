@@ -2,6 +2,7 @@
 #include <iostream>
 #include <algorithm>
 #include <unordered_map>
+#include "delimiter.hpp"
 #include <exception>
 #include <vector>
 #include <sstream>
@@ -27,7 +28,6 @@ void evstigneev::create(dictionary& dict, std::istream& in, std::ostream& out)
   {
     throw std::runtime_error("<INVALID COMMAND>");
   }
-
   std::string str = "";
   std::ifstream inp(name);
   if (!inp.is_open())
@@ -38,7 +38,7 @@ void evstigneev::create(dictionary& dict, std::istream& in, std::ostream& out)
   {
     std::istringstream iss(str);
     std::string t;
-    while (std::getline(iss, t, evstigneev::DelimiterIO{",;.!"}))
+    while (std::getline(iss, t, DelimiterIO{ ',;.!' }))
     {
       std::transform(t.begin(), t.end(), t.begin(), std::tolower);
       dict[t]++;
@@ -81,11 +81,11 @@ void evstigneev::find(dictionary& dict, std::istream& in, std::ostream& out)
   {
     throw std::runtime_error("<INVALID COMMAND>");
   }
-  for (std::pair<std::string, std::size_t>& word : words)
+  for (std::pair<std::string, std::size_t>& word : dict)
   {
     if (word.first == cmd)
     {
-      out << cmd << ": " << word.second << '\n'
+      out << cmd << ": " << word.second << '\n';
     }
     else
     {
