@@ -78,6 +78,7 @@ namespace commands {
     is >> specifier;
 
     if (specifier == "AREA") {
+      os << std::setprecision(1) << std::fixed;
       os << getMaxArea(polygons) << "\n";
     } else if (specifier == "VERTEXES") {
       os << getMaxVerts(polygons) << "\n";
@@ -120,6 +121,7 @@ namespace commands {
     is >> specifier;
 
     if (specifier == "AREA") {
+      os << std::setprecision(1) << std::fixed;
       os << getMinArea(polygons) << "\n";
     } else if (specifier == "VERTEXES") {
       os << getMinVerts(polygons) << "\n";
@@ -230,6 +232,10 @@ namespace commands {
                    });
     indexes.erase(std::remove(indexes.begin(), indexes.end(), -1), indexes.end());
 
+    if (indexes.empty()) {
+      throw std::invalid_argument("<NO POLYGON TO DUPLICATE>");
+    }
+
     int inserted = 0;
     std::vector<int> dummy;
     std::transform(indexes.begin(), indexes.end(), std::back_inserter(dummy),
@@ -238,6 +244,7 @@ namespace commands {
                         ++inserted;
                        return 0; // return value is not used
                    });
+
     return inserted;
   }
 
@@ -249,6 +256,9 @@ namespace commands {
 
     shapes::Polygon poly;
     if (!(is >> poly)) {
+      throw std::invalid_argument("<INVALID POLYGON>");
+    }
+    if (!is) {
       throw std::invalid_argument("<INVALID POLYGON>");
     }
 
