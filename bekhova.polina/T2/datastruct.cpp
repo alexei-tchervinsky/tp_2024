@@ -3,7 +3,7 @@
 
 namespace bekhova
 {
-  std::istream& operator>>(std::istream& in, DelimiterIO&& d)
+  std::istream& operator>>(std::istream& in, DelimiterIO&& dest)
   {
     std::istream::sentry sentry(in);
     if (!sentry)
@@ -12,41 +12,41 @@ namespace bekhova
     }
     char c = 0;
     in >> c;
-    if (c != d.delimiter)
+    if (c != dest.delimiter)
     {
       in.setstate(std::ios::failbit);
     }
     return in;
   }
 
-  std::istream& operator>>(std::istream& in, ULLOctIO&& d)
+  std::istream& operator>>(std::istream& in, ULLOctIO&& dest)
   {
     std::istream::sentry sentry(in);
     if (!sentry)
     {
       return in;
     }
-    return in >> DelimiterIO{ '0' } >> std::oct >> d.ull;
+    return in >> DelimiterIO{ '0' } >> std::oct >> dest.ull;
   }
 
-  std::istream& operator>>(std::istream& in, ULLHexIO&& d)
+  std::istream& operator>>(std::istream& in, StringIO&& dest)
   {
     std::istream::sentry sentry(in);
     if (!sentry)
     {
       return in;
     }
-    return in >> DelimiterIO{ '0' } >> std::hex >> d.ref;
+    return std::getline(in >> DelimiterIO{ '"' }, dest.str, '"');
   }
 
-  std::istream& operator>>(std::istream& in, StringIO&& d)
+  std::istream& operator>>(std::istream& in, ULLHexIO&& dest)
   {
     std::istream::sentry sentry(in);
     if (!sentry)
     {
       return in;
     }
-    return std::getline(in >> DelimiterIO{ '"' }, d.str, '"');
+    return in >> DelimiterIO{ '0' } >> std::hex >> dest.ullo;
   }
 
   std::istream& operator>>(std::istream& in, DataStruct& dest)
@@ -61,7 +61,7 @@ namespace bekhova
     using sep = DelimiterIO;
     using str = StringIO;
     using ull = ULLOctIO;
-    using ref = ULLHexIO;
+    using ullo = ULLHexIO;
     std::string curr = "";
     in >> sep{ '(' } >> sep{ ':' };
     for (size_t i = 0; i < 3; i++)
@@ -73,7 +73,7 @@ namespace bekhova
       }
       else if (curr == "key2")
       {
-        in >> ref{ input.key2 } >> sep{ ':' };
+        in >> ullo{ input.key2 } >> sep{ ':' };
       }
       else if (curr == "key3")
       {
@@ -92,7 +92,7 @@ namespace bekhova
     return in;
   }
 
-  std::ostream& operator<<(std::ostream& out, const DataStruct& d)
+  std::ostream& operator<<(std::ostream& out, const DataStruct& dest)
   {
     std::ostream::sentry sentry(out);
     if (!sentry)
@@ -100,8 +100,8 @@ namespace bekhova
       return out;
     }
     iofmtguard fmtguard(out);
-    out << "(:key1 0" << std::oct << d.key1 << ":key2 '" << d.key2 <<
-      "':key3 \"" << d.key3 << "\":)";
+    out << "(:key1 0" << std::oct << dest.key1 << ":key2 '" << dest.key2 <<
+      "':key3 \"" << dest.key3 << "\":)";
     return out;
   }
 

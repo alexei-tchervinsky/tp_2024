@@ -18,7 +18,7 @@ namespace bekhova
   };
   struct ULLHexIO
   {
-    unsigned long long& ref;
+    unsigned long long& ullo;
   };
   struct DelimiterIO
   {
