@@ -132,4 +132,3 @@ namespace bekhova
     s_.flags(fmt_);
   }
 }
-
