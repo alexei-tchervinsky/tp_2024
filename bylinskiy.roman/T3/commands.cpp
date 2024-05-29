@@ -35,7 +35,7 @@ void bylinskiy::same(std::istream & in, std::ostream & out, const std::vector< P
     throw std::logic_error("<INVALID COMMAND>\n");
   }
   using namespace std::placeholders;
-  out << std::count_if(polygons.cbegin(), polygons.cend(), std::bind(isSame, _1, context)) << std::endl;
+  out << std::count_if(polygons.cbegin(), polygons.cend(), std::bind(isSame, _1, context)) << "\n";
 }
 
 bool isAreaLess(bylinskiy::Polygon polygon, double area)
