@@ -2,15 +2,15 @@
 #define _DATASTRUCT_H
 
 #include <iostream>
-#include <iomanip>
 #include <string>
 #include <sstream>
 #include <regex>
+#include <iomanip>
 
 namespace bekhova
 {
-  bool is_ULL_OCT(const std::string& str);
-  bool is_ULL_HEX(const std::string& str);
+  bool isULL_OCT(const std::string& str);
+  bool isULL_HEX(const std::string& str);
   bool isString(const std::string& str);
 
   struct DataStruct

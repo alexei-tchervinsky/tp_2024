@@ -34,7 +34,7 @@ std::istream& bekhova::operator>>(std::istream& in, bekhova::DataStruct& ds)
     std::pair<std::string, std::string> pair = bekhova::getNextPair(token);
     if (pair.first == "key1")
     {
-      if (!bekhova::is_ULL_OCT(pair.second))
+      if (!bekhova::isULL_OCT(pair.second))
       {
         in.setstate(std::ios::badbit);
         return in;
@@ -43,7 +43,7 @@ std::istream& bekhova::operator>>(std::istream& in, bekhova::DataStruct& ds)
     }
     else if (pair.first == "key2")
     {
-      if (!bekhova::is_ULL_HEX(pair.second)) {
+      if (!bekhova::isULL_HEX(pair.second)) {
         in.setstate(std::ios::badbit);
         return in;
       }
@@ -74,12 +74,12 @@ std::ostream& bekhova::operator<<(std::ostream& out, const bekhova::DataStruct& 
   return out;
 }
 
-bool bekhova::is_ULL_OCT(const std::string& str)
+bool bekhova::isULL_OCT(const std::string& str)
 {
   const std::regex regular("^0[0-7]+$");
   return std::regex_match(str, regular);
 }
-bool bekhova::is_ULL_HEX(const std::string& str)
+bool bekhova::isULL_HEX(const std::string& str)
 {
   const std::regex regular("^0[xX][0-9A-Fa-f]+$");
   return std::regex_match(str, regular);
@@ -89,7 +89,7 @@ bool bekhova::isString(const std::string& str)
   const std::regex regular("\".*\"");
   return std::regex_match(str, regular);
 }
-bekhova::iofmtguard::iofmtguard(std::basic_ios< char >& s):
+bekhova::iofmtguard::iofmtguard(std::basic_ios< char >& s) :
   s_(s),
   fill_(s.fill()),
   precision_(s.precision()),
