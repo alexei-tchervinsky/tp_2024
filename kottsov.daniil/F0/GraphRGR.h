@@ -27,7 +27,7 @@ class Graph
     Graph<Node,Weight>& operator=(const Graph<Node,Weight>& other);
     Graph(Graph<Node,Weight>&& other);
     bool existsNode(const Node& value);
-    bool existsBranch(const Node& first, const Node& second); 
+    bool existsBranch(const Node& first, const Node& second);
     void insertNode(const Node& value);
     void insertBranch(const Node& first, const Node& second);
     void removeBranch(const Node& first, const Node& second);
@@ -35,7 +35,7 @@ class Graph
     void print(std::ostream& out);
     Weight totalDegree(const Node& node);
     Weight inDegree(const Node& node);
-    Weight outDegree(const Node& node); 
+    Weight outDegree(const Node& node);
     std::pair<Node,Weight> maxDegree(short int param);
     void removeCycles();
     void sources(std::ostream& out);

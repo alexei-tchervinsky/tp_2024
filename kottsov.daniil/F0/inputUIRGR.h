@@ -75,20 +75,23 @@ bool inputUI(Graph<Node, Weight>& graph, std::ostream& out, std::istream& in)
       std::cerr << "INVALID CMD\n";
       return 0;
     }
-    out <<
-      "GET_GRAPH: " << "print graph to standart output\n" <<
-      "ADD_NODE %NAME%: " << "insert a new node with a name %NAME%\n" <<
-      "ADD_BRANCH %NODE_START% %NODE_END%: " << "insert a branch from %NODE_START% to %NODE_END%\n" <<
-      "REM_NODE %NAME%: " << "remove the node with %NAME% name\n" <<
-      "REM_BRANCH %NODE_START% %NODE_END%: " << "remove a branch from %NODE_START% to %NODE_END%\n" <<
-      "EXISTS_NODE %NAME%: " << "returns whether a node with %NAME% name exists\n" <<
-      "EXISTS_BRANCH %NODE_START% %NODE_END%: " << "returns whether a branch exists from %NODE_START% to %NODE_END%\n" <<
-      "REMOVE_CYCLES: " << "removes cycles and parallel branches from the graph\n" <<
-      "GET_DEGREES %NAME%: " << "prints all 3 degrees of the node with %NAME% name\n" <<
-      "GET_MAX_DEG: " << "returns all 3 max degrees in the graph (if 2 or more have the biggest degree returns first occurence)\n" <<
-      "GET_DELTAS: " << "returns nodes that have only incoming branches\n" <<
-      "GET_SOURCES: " << "returns nodes that have only outcoming branches\n" <<
-      "HELP: " << "shows this info\n";
+    out << "GET_GRAPH: " << "print graph to standart output\n"
+      << "ADD_NODE %NAME%: " << "insert a new node with a name %NAME%\n"
+      << "ADD_BRANCH %NODE_START% %NODE_END%: "
+      << "insert a branch from %NODE_START% to %NODE_END%\n"
+      << "REM_NODE %NAME%: " << "remove the node with %NAME% name\n"
+      << "REM_BRANCH %NODE_START% %NODE_END%: "
+      << "remove a branch from %NODE_START% to %NODE_END%\n"
+      << "EXISTS_NODE %NAME%: " << "returns whether a node with %NAME% name exists\n"
+      << "EXISTS_BRANCH %NODE_START% %NODE_END%: "
+      << "returns whether a branch exists from %NODE_START% to %NODE_END%\n"
+      << "REMOVE_CYCLES: " << "removes cycles and parallel branches from the graph\n"
+      << "GET_DEGREES %NAME%: " << "prints all 3 degrees of the node with %NAME% name\n"
+      << "GET_MAX_DEG: " << "returns all 3 max degrees in the graph"
+      << "(if 2 or more have the biggest degree returns first occurence)\n"
+      << "GET_DELTAS: " << "returns nodes that have only incoming branches\n"
+      << "GET_SOURCES: " << "returns nodes that have only outcoming branches\n"
+      << "HELP: " << "shows this info\n";
     out << "DONE\n";
     return 0;
   }
@@ -540,5 +543,4 @@ bool inputUI(Graph<Node, Weight>& graph, std::ostream& out, std::istream& in)
   out << "DONE\n";
   return 0;
 }
-
 #endif
