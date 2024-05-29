@@ -19,7 +19,7 @@ int main() {
     cmds["LIST"] = std::bind(commands::getAllDictionaries, std::placeholders::_1, std::placeholders::_4);
     cmds["CREATE"] = std::bind(commands::create, std::placeholders::_1, std::placeholders::_2,
                                std::placeholders::_3, std::placeholders::_4);
-    cmds["RENAME"] = std::bind(commands::rename, std::placeholders::_1, std::placeholders::_2
+    cmds["RENAME"] = std::bind(commands::rename, std::placeholders::_1, std::placeholders::_2,
                                std::placeholders::_3, std::placeholders::_4);
     cmds["DELETE"] = std::bind(commands::del, std::placeholders::_1, std::placeholders::_3, std::placeholders::_4);
     cmds["USE"] = std::bind(commands::changeCurrentDictionary, std::placeholders::_1, std::placeholders::_2,
