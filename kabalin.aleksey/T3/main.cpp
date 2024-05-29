@@ -10,28 +10,26 @@
 
 int main(int argc, char *argv[]) {
   using inputType = kabalin::Polygon;
-
   if (argc != 2) {
-    std::cerr << "invalid arguments\n";
+    std::cerr << "Invalid arguments\n";
     return 1;
   }
-
-  std::ifstream input(argv[1]);
+  std::ifstream input(
+      argv[1]); // Убедимся, что файл успешно открыт перед его использованием
   if (!input) {
-    std::cerr << "ifstream failure\n";
+    std::cerr << "Failed to open input file\n";
     return 1;
   }
-
   std::vector<inputType> vector;
-  while (!input.eof()) {
-    std::copy(std::istream_iterator<inputType>(input),
-              std::istream_iterator<inputType>(), std::back_inserter(vector));
-    if (!input && !input.eof()) {
-      input.clear();
-      input.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+  while (input) { // Проверим наличие ошибок при чтении из файла перед
+                  // использованием данных
+    inputType polygon;
+    if (input >> polygon) {
+      vector.push_back(polygon);
+    } else {
+      break;
     }
   }
-
   while (!std::cin.eof()) {
     try {
       ioUI(vector, std::cin, std::cout);
@@ -45,6 +43,5 @@ int main(int argc, char *argv[]) {
       std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
   }
-
   return 0;
 }
