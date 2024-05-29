@@ -1,14 +1,10 @@
+#include "Commands.hpp"
 #include "Polygon.hpp"
 #include <fstream>
 #include <iostream>
 #include <limits>
 #include <string>
 #include <vector>
-
-void ioUI(const std::vector<kabalin::Polygon> &, std::istream &,
-          std::ostream &) {
-  // Здесь реализация функции ioUI
-}
 
 int main(int argc, char *argv[]) {
   using inputType = kabalin::Polygon;
