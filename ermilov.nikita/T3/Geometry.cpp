@@ -63,6 +63,7 @@ namespace ermilov {
     if (!(in >> vertexes) || vertexes < 3)
     {
       in.setstate(std::ios::failbit);
+      return in;
     }
     using inputItr = std::istream_iterator< Point >;
     std::vector< Point > points;
@@ -71,7 +72,7 @@ namespace ermilov {
     {
       poly.points_ = std::move(points);
     }
-    if (in && vertexes == poly.points_.size())
+    if (in && vertexes == poly.points_.size() && in.peek() == '\n')
     {
       polygon = poly;
     }
