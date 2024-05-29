@@ -20,12 +20,7 @@ namespace ermilov
     {
       return out;
     }
-
-    if (polygons.empty())
-    {
-      throw std::logic_error("BAD POLYGONS");
-    }
-
+    
     std::string commandType, option;
     in >> commandType >> option;
 
@@ -45,7 +40,7 @@ namespace ermilov
       }
       catch (const std::out_of_range& e)
       {
-        if (std::isdigit(option[0]) > 2)
+        if (std::isdigit(option[0]) && std::stoi(option) > 2)
         {
           out << areaNum(std::stoi(option), polygons) << "\n";
         }
@@ -106,13 +101,13 @@ namespace ermilov
       }
       catch (const std::out_of_range& e)
       {
-        if (std::isdigit(option[0]) > 2)
+        if (std::isdigit(option[0]) && std::stoi(option) > 2)
         {
           out << countNum(std::stoi(option), polygons) << "\n";
         }
         else
         {
-          throw std::logic_error("BAD COMMAND TYPE");
+          throw std::logic_error("<INVALID COMMAND>");
         }
       }
     }
@@ -195,6 +190,11 @@ namespace ermilov
 
   double countEven(const std::vector<Polygon>& polygons)
   {
+    if (polygons.empty())
+    {
+      return 0;
+    }
+
     int amount = std::count_if (
       polygons.begin(), polygons.end(),
       [](const Polygon& temp) { return temp.points_.size() % 2 == 0; }
@@ -204,6 +204,11 @@ namespace ermilov
 
   double countOdd(const std::vector<Polygon>& polygons)
   {
+    if (polygons.empty())
+    {
+      return 0;
+    }
+
     int amount = std::count_if(
       polygons.begin(), polygons.end(),
       [](const Polygon& temp) { return temp.points_.size() % 2 != 0; }
@@ -213,6 +218,11 @@ namespace ermilov
 
   double countNum(size_t vertNum, const std::vector<Polygon>& polygons)
   {
+    if (polygons.empty())
+    {
+      return 0;
+    }
+
     int amount = std::count_if(
       polygons.begin(), polygons.end(),
       [vertNum](const Polygon& temp) { return temp.points_.size() == vertNum; }
