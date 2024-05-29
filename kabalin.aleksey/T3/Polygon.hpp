@@ -14,9 +14,10 @@ struct Point {
 class Polygon {
 public:
   std::vector<Point> points;
-
-  friend std::istream &operator>>(std::istream &is, Polygon &polygon);
 };
-} // namespace kabalin
+
+std::istream &operator>>(std::istream &in, Polygon &polygon);
+
+}; // namespace kabalin
 
 #endif // POLYGON_HPP

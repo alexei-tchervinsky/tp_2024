@@ -1,12 +1,14 @@
-#include "Commands.hpp"
 #include "Polygon.hpp"
-#include <algorithm>
 #include <fstream>
 #include <iostream>
-#include <iterator>
 #include <limits>
-#include <stdexcept>
+#include <string>
 #include <vector>
+
+void ioUI(const std::vector<kabalin::Polygon> &, std::istream &,
+          std::ostream &) {
+  // Здесь реализация функции ioUI
+}
 
 int main(int argc, char *argv[]) {
   using inputType = kabalin::Polygon;
@@ -36,7 +38,7 @@ int main(int argc, char *argv[]) {
     } catch (const std::logic_error &ex) {
       if (std::string(ex.what()) == std::string("istream failure")) {
         return 0;
-      } else if (std::string(ex.what()) == std::string("invalid cmd")) {
+      } else {
         std::cout << "<INVALID COMMAND>" << '\n';
       }
       std::cin.clear();
