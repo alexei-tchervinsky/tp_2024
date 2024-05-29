@@ -28,7 +28,8 @@ namespace commands {
     os << "===============================================================\n\n";
   }
 
-  void getAllDictionaries(const std::map<std::string, std::shared_ptr<std::map<std::string, std::list<int>>>>& dictionaries, std::ostream& os) {
+  void getAllDictionaries(const std::map<std::string, std::shared_ptr<std::map<std::string,
+                          std::list<int>>>>& dictionaries, std::ostream& os) {
     if (dictionaries.empty()) {
       os << "No dictionaries found.\n";
       return;
@@ -36,13 +37,16 @@ namespace commands {
 
     os << "===============================================================\n";
     os << "List of all dictionaries:\n";
-    std::transform(dictionaries.begin(), dictionaries.end(), std::ostream_iterator<std::string>(os, "\n"),
-      [](const std::pair<std::string, std::shared_ptr<std::map<std::string, std::list<int>>>>& pair) {
-        return pair.first;
-      });
+    std::transform(dictionaries.begin(), dictionaries.end(),
+                   std::ostream_iterator<std::string>(os, "\n"),
+                   [](const std::pair<std::string, std::shared_ptr<std::map<std::string,
+                       std::list<int>>>>& pair){
+                    return pair.first;
+                    });
   }
 
-  void create(std::map<std::string, std::shared_ptr<std::map<std::string, std::list<int>>>>& dictionaries, std::string& currentDict, std::istream& is, std::ostream& os) {
+  void create(std::map<std::string, std::shared_ptr<std::map<std::string, std::list<int>>>>& dictionaries,
+              std::string& currentDict, std::istream& is, std::ostream& os) {
     std::map<std::string, std::list<int>> dictionary;
     std::string filename;
     is >> filename;
@@ -77,13 +81,15 @@ namespace commands {
       ++lineNum;
     }
 
-    std::shared_ptr<std::map<std::string, std::list<int>>> dictionaryPtr = std::make_shared<std::map<std::string, std::list<int>>>(dictionary);
+    std::shared_ptr<std::map<std::string, std::list<int>>> dictionaryPtr = std::make_shared<std::map<std::string,
+    std::list<int>>>(dictionary);
     dictionaries[filename] = dictionaryPtr;
     currentDict = filename;
     os << "\nDictionary has been created.\n";
   }
 
-  void rename(std::map<std::string, std::shared_ptr<std::map<std::string, std::list<int>>>>& dictionaries, std::istream& is, std::ostream& os) {
+  void rename(std::map<std::string, std::shared_ptr<std::map<std::string, std::list<int>>>>& dictionaries,
+              std::istream& is, std::ostream& os) {
     std::string newname, oldname;
     is >> newname >> oldname;
     if (newname.empty() || oldname.empty() || is.get() != '\n') {
@@ -102,7 +108,8 @@ namespace commands {
     }
   }
 
-  void del(std::map<std::string, std::shared_ptr<std::map<std::string, std::list<int>>>>& dictionaries, std::istream& is, std::ostream& os) {
+  void del(std::map<std::string, std::shared_ptr<std::map<std::string, std::list<int>>>>& dictionaries,
+           std::istream& is, std::ostream& os) {
     std::string dictname;
     is >> dictname;
     if (dictname.empty() || is.get() != '\n') {
@@ -120,7 +127,9 @@ namespace commands {
     }
   }
 
-  void changeCurrentDictionary(std::map<std::string, std::shared_ptr<std::map<std::string, std::list<int>>>>& dictionaries, std::string& currentDict, std::istream& is, std::ostream& os) {
+  void changeCurrentDictionary(
+      std::map<std::string, std::shared_ptr<std::map<std::string, std::list<int>>>>& dictionaries,
+      std::string& currentDict, std::istream& is, std::ostream& os) {
     std::string dictname;
     is >> dictname;
     if (dictname.empty() || is.get() != '\n') {
@@ -137,12 +146,14 @@ namespace commands {
     }
   }
 
-  void count(std::map<std::string, std::shared_ptr<std::map<std::string, std::list<int>>>>& dictionaries, const std::string& currentDict, std::ostream& os) {
+  void count(std::map<std::string, std::shared_ptr<std::map<std::string, std::list<int>>>>& dictionaries,
+             const std::string& currentDict, std::ostream& os) {
     auto dictionary = *dictionaries.find(currentDict)->second;
     os << "Number of words in the dictionary: " << dictionary.size() << "\n";
   }
 
-  void search(std::map<std::string, std::shared_ptr<std::map<std::string, std::list<int>>>>& dictionaries, const std::string& currentDict, std::istream& is, std::ostream& os) {
+  void search(std::map<std::string, std::shared_ptr<std::map<std::string, std::list<int>>>>& dictionaries,
+              const std::string& currentDict, std::istream& is, std::ostream& os) {
     std::string word;
     is >> word;
     if (word.empty() || is.get() != '\n') {
@@ -162,23 +173,27 @@ namespace commands {
     }
   }
 
-  void print(std::map<std::string, std::shared_ptr<std::map<std::string, std::list<int>>>>& dictionaries, const std::string& currentDict, std::ostream& os) {
+  void print(std::map<std::string, std::shared_ptr<std::map<std::string, std::list<int>>>>& dictionaries,
+             const std::string& currentDict, std::ostream& os) {
     auto dictionary = *dictionaries.find(currentDict)->second;
     if (dictionary.empty()) {
       throw std::logic_error("Error: dictionary is empty.");
     }
 
     os << "Dictionary format: <word> : <line numbers>\n";
-    std::transform(dictionary.begin(), dictionary.end(), std::ostream_iterator<std::string>(os, "\n"),
+    std::transform(dictionary.begin(), dictionary.end(),
+                   std::ostream_iterator<std::string>(os, "\n"),
                    [](const std::pair<std::string, std::list<int>>& pair) {
                        std::ostringstream oss;
                        oss << pair.first << " : ";
-                       std::copy(pair.second.begin(), pair.second.end(), std::ostream_iterator<int>(oss, " "));
+                       std::copy(pair.second.begin(), pair.second.end(),
+                                 std::ostream_iterator<int>(oss, " "));
                        return oss.str();
                    });
   }
 
-  void remove(std::map<std::string, std::shared_ptr<std::map<std::string, std::list<int>>>>& dictionaries, std::string& currentDict, std::istream& is, std::ostream& os) {
+  void remove(std::map<std::string, std::shared_ptr<std::map<std::string, std::list<int>>>>& dictionaries,
+              std::string& currentDict, std::istream& is, std::ostream& os) {
     std::string word;
     is >> word;
     if (word.empty() || is.get() != '\n') {
@@ -197,7 +212,8 @@ namespace commands {
     }
   }
 
-  void save(std::map<std::string, std::shared_ptr<std::map<std::string, std::list<int>>>>& dictionaries, const std::string& currentDict, std::istream& is, std::ostream& os) {
+  void save(std::map<std::string, std::shared_ptr<std::map<std::string, std::list<int>>>>& dictionaries,
+            const std::string& currentDict, std::istream& is, std::ostream& os) {
     std::string filename;
     is >> filename;
     if (filename.empty() || is.get() != '\n') {
@@ -210,13 +226,15 @@ namespace commands {
     }
 
     auto dictionary = *dictionaries.find(currentDict)->second;
-    std::transform(dictionary.begin(), dictionary.end(), std::ostream_iterator<std::string>(file, "\n"),
-      [](const std::pair<std::string, std::list<int>>& pair) {
-        std::ostringstream oss;
-        oss << pair.first << " : ";
-        std::copy(pair.second.begin(), pair.second.end(), std::ostream_iterator<int>(oss, " "));
-        return oss.str();
-      });
+    std::transform(dictionary.begin(), dictionary.end(),
+                   std::ostream_iterator<std::string>(file, "\n"),
+                   [](const std::pair<std::string, std::list<int>>& pair) {
+                    std::ostringstream oss;
+                    oss << pair.first << " : ";
+                    std::copy(pair.second.begin(), pair.second.end(),
+                              std::ostream_iterator<int>(oss, " "));
+                    return oss.str();
+                    });
     os << "Dictionary has been saved to the file:\"" << filename << "\".\n";
   }
 

@@ -7,7 +7,8 @@
 
 #include "Commands.hpp"
 
-using cmdFunc = std::function<void(std::map<std::string, std::shared_ptr<std::map<std::string, std::list<int>>>>&, std::string&, std::istream&, std::ostream&)>;
+using cmdFunc = std::function<void(std::map<std::string, std::shared_ptr<std::map<std::string, std::list<int>>>>&,
+    std::string&, std::istream&, std::ostream&)>;
 
 int main() {
   std::map<std::string, std::shared_ptr<std::map<std::string, std::list<int>>>> dictionaries;
@@ -16,15 +17,21 @@ int main() {
   {
     cmds["HELP"] = std::bind(commands::help, std::placeholders::_4);
     cmds["LIST"] = std::bind(commands::getAllDictionaries, std::placeholders::_1, std::placeholders::_4);
-    cmds["CREATE"] = std::bind(commands::create, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4);
-    cmds["RENAME"] = std::bind(commands::rename, std::placeholders::_1, std::placeholders::_3, std::placeholders::_4);
+    cmds["CREATE"] = std::bind(commands::create, std::placeholders::_1, std::placeholders::_2,
+                               std::placeholders::_3, std::placeholders::_4);
+    cmds["RENAME"] = std::bind(commands::rename, std::placeholders::_1, std::placeholders::_3,
+                               std::placeholders::_4);
     cmds["DELETE"] = std::bind(commands::del, std::placeholders::_1, std::placeholders::_3, std::placeholders::_4);
-    cmds["USE"] = std::bind(commands::changeCurrentDictionary, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4);
+    cmds["USE"] = std::bind(commands::changeCurrentDictionary, std::placeholders::_1, std::placeholders::_2,
+                            std::placeholders::_3, std::placeholders::_4);
     cmds["COUNT"] = std::bind(commands::count, std::placeholders::_1, std::placeholders::_2, std::placeholders::_4);
     cmds["PRINT"] = std::bind(commands::print, std::placeholders::_1, std::placeholders::_2, std::placeholders::_4);
-    cmds["SEARCH"] = std::bind(commands::search, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4);
-    cmds["REMOVE"] = std::bind(commands::remove, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4);
-    cmds["SAVE"] = std::bind(commands::save, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4);
+    cmds["SEARCH"] = std::bind(commands::search, std::placeholders::_1, std::placeholders::_2,
+                               std::placeholders::_3, std::placeholders::_4);
+    cmds["REMOVE"] = std::bind(commands::remove, std::placeholders::_1, std::placeholders::_2,
+                               std::placeholders::_3, std::placeholders::_4);
+    cmds["SAVE"] = std::bind(commands::save, std::placeholders::_1, std::placeholders::_2,
+                             std::placeholders::_3, std::placeholders::_4);
   }
 
   std::string cmd;
