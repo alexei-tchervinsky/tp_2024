@@ -3,7 +3,7 @@
 #include <vector>
 #include "datastruct.h"
 
-namespace bekhova;
+using namespace bekhova;
 
 int main(void)
 {
