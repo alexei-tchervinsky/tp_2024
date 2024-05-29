@@ -2,7 +2,6 @@
 #include "Utilities.hpp"
 #include <algorithm>
 #include <iomanip>
-#include <limits>
 #include <stdexcept>
 
 void less_area_command(const std::vector<kabalin::Polygon> &polygons,
