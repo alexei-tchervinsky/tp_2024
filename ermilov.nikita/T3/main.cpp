@@ -33,7 +33,7 @@ int main(int argc, char **argv)
     else
     {
       input.clear();
-      input.ignore(std::numeric_limits< std::streamsize >::max(), '\n');
+      input.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
   }
 
@@ -46,6 +46,8 @@ int main(int argc, char **argv)
     catch (std::exception& e)
     {
       std::cerr << e.what() << '\n';
+      std::cin.clear();
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
   }
 }

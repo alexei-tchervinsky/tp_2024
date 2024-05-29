@@ -46,12 +46,17 @@ namespace ermilov
         }
         else
         {
-          throw std::logic_error("BAD COMMAND TYPE");
+          throw std::logic_error("<INVALID COMMAND>");
         }
       }
     }
     else if (commandType == "MAX")
     {
+      if (polygons.size() == 0)
+      {
+        throw std::logic_error("<INVALID COMMAND>");
+      }
+
       std::map< std::string, std::function< double(const std::vector< Polygon >& data) > > commands;
       {
         commands["AREA"] = maxArea;
@@ -69,8 +74,9 @@ namespace ermilov
       }
       catch (const std::out_of_range& e)
       {
-        throw std::logic_error("BAD COMMAND TYPE");
+        throw std::logic_error("<INVALID COMMAND>");
       }
+      out.unsetf(std::ios_base::fixed);
     }
     else if (commandType == "MIN")
     {
@@ -93,6 +99,7 @@ namespace ermilov
       {
         throw std::logic_error("<INVALID COMMAND>");
       }
+      out.unsetf(std::ios_base::fixed);
     }
     else if (commandType == "COUNT")
     {
