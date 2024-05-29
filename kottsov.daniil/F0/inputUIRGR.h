@@ -75,7 +75,22 @@ namespace rgr
         std::cerr<<"INVALID_CMD\n";
         return 0;
       }
-      out << "Read Documentation because I hate git\n";
+      out << "Read Documentation, seriously\n";
+      out << "HELP : shows this info\n";
+      out << "GET_GRAPH : prints graph to ostream\n";
+      out << "EXISTS_NODE NODE : returns wherther a node exists\n";
+      out << "EXISTS_BRANCH NODE1 NODE2 : returns whether a branch between nodes eists\n";
+      out << "ADD_NODE NODE : adds a node to the graph\n";
+      out << "ADD_BRANCH NODE1 NODE2 : adds a branch from node 1 to node 2\n";
+      out << "REM_NODE NODE : removes a node from the graph\n";
+      out << "REM_BRANCH NODE1 NODE2 : removes a branch from node 1 to node 2\n";
+      out << "GET_DEGREES NODE : prints all of the degrees for the node\n";
+      out << "GET_MAX_DEG : prints highest of all 3 dergees throughtout the graph\n";
+      out << "REMOVE_CYCLES : removes cycles multibranches\n";
+      out << "GET_SOURCES : prints all of the nodes that have only outcoming branches\n";
+      out << "GET_DELTAS : prints all of the nodes that have only incoming branches\n";
+      out << "DONE\n";
+      return 0;
     }
     else if(command=="GET_GRAPH")
     {
@@ -398,7 +413,7 @@ namespace rgr
     {
       if(in.peek()=='\n')
       {
-        std::cerr<<"NOTENOUGHARGUMENTS\n";
+        std::cerr<<"NOT ENOUGH ARGUMENTS\n";
         return 0;
       }
       Node node;
@@ -406,7 +421,7 @@ namespace rgr
       if(!in)
       {
         std::cin.setstate(std::ios::failbit);
-        std::cerr<<"ERR.INVALIDARGUMENT\n";
+        std::cerr<<"ERR.INVALID ARGUMENT\n";
         return 0;
       }
       if(in.peek()!='\n')
@@ -419,8 +434,8 @@ namespace rgr
         try
         {
           out<<"total:"<<graph.totalDegree(node);
-          out<<"in:"<<graph.inDegree(node);
-          out<<"out:"<<graph.outDegree(node);
+          out<<" in:"<<graph.inDegree(node);
+          out<<" out:"<<graph.outDegree(node);
           out<<"\nDONE\n";
         }
         catch(const std::invalid_argument &ex)
@@ -453,8 +468,8 @@ namespace rgr
           auto b=graph.maxDegree(-1);
           auto c=graph.maxDegree(1);
           out<<"total:"<<std::get<0>(a)<<':'<<std::get<1>(a);
-          out<<"in:"<<std::get<0>(b)<<':'<<std::get<1>(b);
-          out<<"out:"<<std::get<0>(c)<<':'<<std::get<1>(c);
+          out<<" in:"<<std::get<0>(b)<<':'<<std::get<1>(b);
+          out<<" out:"<<std::get<0>(c)<<':'<<std::get<1>(c);
           out<<"\nDONE\n";
         }
         catch(const std::invalid_argument &ex)
@@ -481,7 +496,7 @@ namespace rgr
       }
       try
       {
-        out<<"Deltas:";
+        out<<"Deltas: ";
         graph.deltas(out);
         out<<'\n';
         out<<"DONE\n";
@@ -503,7 +518,7 @@ namespace rgr
       }
       try
       {
-        out<<"Sources:";
+        out<<"Sources: ";
         graph.sources(out);
         out<<'\n';
         out<<"DONE\n";

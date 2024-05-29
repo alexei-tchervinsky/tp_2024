@@ -13,35 +13,37 @@
 #define GRAPH
 namespace rgr
 {
-template <typename Node, typename Weight = int>
-class Graph
-{
-  private:
-    std::vector<std::vector<std::pair<Weight,Weight>>> array_;
-    std::vector<Node> nodes_;
-    size_t nodesCount_;
-    size_t index(const Node& node);
-    void DFSR(size_t startingIndex, size_t currentIndex);
-  public:
-    Graph();
-    Graph(const Graph<Node,Weight>& other);
-    Graph<Node,Weight>& operator=(const Graph<Node,Weight>& other);
-    Graph(Graph<Node,Weight>&& other);
-    bool existsNode(const Node& value);
-    bool existsBranch(const Node& first, const Node& second);
-    void insertNode(const Node& value);
-    void insertBranch(const Node& first, const Node& second);
-    void removeBranch(const Node& first, const Node& second);
-    void removeNode(const Node& node);
-    void print(std::ostream& out);
-    Weight totalDegree(const Node& node);
-    Weight inDegree(const Node& node);
-    Weight outDegree(const Node& node);
-    std::pair<Node,Weight> maxDegree(short int param);
-    void removeCycles();
-    void sources(std::ostream& out);
-    void deltas(std::ostream& out);
-};
+  template <typename Node, typename Weight = int>
+  class Graph
+  {
+    private:
+      std::vector<std::vector<std::pair<Weight,Weight>>> array_;
+      std::vector<Node> nodes_;
+      size_t nodesCount_;
+      size_t index(const Node& node);
+      void DFSR(size_t startingIndex, size_t currentIndex);
+    public:
+      Graph();
+      Graph(const Graph<Node,Weight>& other);
+      Graph<Node,Weight>& operator=(const Graph<Node,Weight>& other);
+      Graph(Graph<Node,Weight>&& other);
+      bool existsNode(const Node& value);
+      bool existsBranch(const Node& first, const Node& second);
+      void insertNode(const Node& value);
+      void insertBranch(const Node& first, const Node& second);
+      void removeBranch(const Node& first, const Node& second);
+      void removeNode(const Node& node);
+      void print(std::ostream& out);
+      Weight totalDegree(const Node& node);
+      Weight inDegree(const Node& node);
+      Weight outDegree(const Node& node);
+      std::pair<Node,Weight> maxDegree(short int param);
+      void removeCycles();
+      void sources(std::ostream& out);
+      void deltas(std::ostream& out);
+  };
+}
+using namespace rgr;
 template <typename Node, typename Weight>
 Graph<Node,Weight>::Graph()
 {
@@ -590,6 +592,5 @@ void Graph<Node,Weight>::deltas(std::ostream& out)
     }
   }
   out << '\n';
-}
 }
 #endif
