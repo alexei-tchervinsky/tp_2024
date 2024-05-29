@@ -370,15 +370,15 @@ namespace ermilov
 
   Point getMaxPoint(const Polygon& polygon) {
     Point result;
-    result.x_ = (*std::max_element(polygon.points_.begin(), polygon.points_.end())).x_;
-    result.y_ = (*std::max_element(polygon.points_.begin(), polygon.points_.end())).y_;
+    result.x_ = (*std::max_element(polygon.points_.begin(), polygon.points_.end(), isBiggerX)).x_;
+    result.y_ = (*std::max_element(polygon.points_.begin(), polygon.points_.end(), isBiggerY)).y_;
     return result;
   }
 
   Point getMinPoint(const Polygon& polygon) {
     Point result;
-    result.x_ = (*std::min_element(polygon.points_.begin(), polygon.points_.end())).x_;
-    result.y_ = (*std::min_element(polygon.points_.begin(), polygon.points_.end())).y_;
+    result.x_ = (*std::min_element(polygon.points_.begin(), polygon.points_.end(), isSmallerX)).x_;
+    result.y_ = (*std::min_element(polygon.points_.begin(), polygon.points_.end(), isSmallerY)).y_;
     return result;
   }
 
