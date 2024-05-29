@@ -20,7 +20,7 @@ int main(int argc, char* argv[])
     return 2;
   }
   using namespace vdovin;
-  std::vector<Polygon> polygons; 
+  std::vector<Polygon> polygons;
   using input_it_t = std::istream_iterator<Polygon>;
   while (!in.eof())
   {
@@ -32,7 +32,7 @@ int main(int argc, char* argv[])
   cmds["AREA"] = cmdArea;
   cmds["MIN"] = cmdMin;
   cmds["MAX"] = cmdMax;
-  cmds["COUNT"] = cmdCount; 
+  cmds["COUNT"] = cmdCount;
   cmds["LESSAREA"] = cmdLessArea;
   cmds["INTERSECTIONS"] = cmdIntersections;
   std::string name = "";

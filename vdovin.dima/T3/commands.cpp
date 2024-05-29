@@ -192,7 +192,7 @@ void vdovin::cmdLessArea(std::istream& in, std::ostream& out, const std::vector<
   checkPol(in);
   out << std::count_if(pol.begin(), pol.end(), std::bind(less, std::placeholders::_1, p));
 }
- 
+
 bool interPred(const vdovin::Polygon& p1, const vdovin::Polygon& p2)
 {
   auto pairP1 = std::minmax_element(p1.points.cbegin(), p1.points.cend());

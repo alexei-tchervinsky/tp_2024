@@ -45,14 +45,14 @@ std::istream& vdovin::operator>>(std::istream& in, Polygon& pol)
   in >> countAngles;
   const size_t minAngles = 3;
   if (countAngles < minAngles)
-  { 
+  {
     in.setstate(std::ios::failbit);
     return in;
   }
   using input_it_t = std::istream_iterator<Point>;
   std::vector<Point> temp(countAngles, Point{0, 0});
   std::copy_n(input_it_t{in}, countAngles, temp.begin());
-  if (countAngles == temp.size())
+  if (in && countAngles == temp.size())
   {
     pol.points = temp;
   }
