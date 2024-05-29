@@ -1,5 +1,5 @@
-#ifndef DELIMITERIO_HPP
-#define DELIMITERIO_HPP
+#ifndef DELIMITERIO_H
+#define DELIMITERIO_H
 
 namespace bylinskiy {
     struct DelimiterIO {
