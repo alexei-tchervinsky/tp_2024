@@ -1,7 +1,6 @@
 #include<iostream>
 #include"GraphRGR.h"
 #include<string>
-
 #ifndef UI
 #define UI
 namespace rgr
@@ -76,8 +75,7 @@ namespace rgr
         std::cerr<<"INVALID_CMD\n";
         return 0;
       }
-      out << "Read Documentation because I hate git and it keeps\n";
-      out << "telling me about non-existent whitespaces\n";
+      out << "Read Documentation because I hate git\n";
     }
     else if(command=="GET_GRAPH")
     {
