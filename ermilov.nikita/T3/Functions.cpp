@@ -382,8 +382,23 @@ namespace ermilov
     return result;
   }
 
-  void errorMessage(std::ostream& out, const std::string& message)
+  bool isBiggerX(const Point& first, const Point& second)
   {
-    out << message;
+    return (first.x_ < second.x_);
+  }
+
+  bool isBiggerY(const Point& first, const Point& second)
+  {
+    return (first.y_ < second.y_);
+  }
+
+  bool isSmallerX(const Point& first, const Point& second)
+  {
+    return (first.x_ < second.x_);
+  }
+
+  bool isSmallerY(const Point& first, const Point& second)
+  {
+    return (first.y_ < second.y_);
   }
 }

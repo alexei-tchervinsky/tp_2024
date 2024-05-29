@@ -21,7 +21,10 @@ namespace ermilov
   Point getMaxPoint(const Polygon& polygon);
   Point getMinPoint(const Polygon& polygon);
 
-  void errorMessage(std::ostream& out, const std::string& message);
+  bool isBiggerX(const Point& first, const Point& second);
+  bool isBiggerY(const Point& first, const Point& second);
+  bool isSmallerX(const Point& first, const Point& second);
+  bool isSmallerY(const Point& first, const Point& second);
 
   //commands
   std::ostream& chooseCommand(std::istream& in, std::ostream& out, std::vector<Polygon>& polygons);
