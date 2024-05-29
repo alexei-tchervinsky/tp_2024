@@ -7,7 +7,7 @@
 int main(int argc, char **argv)
 {
   using namespace ermilov;
-  
+
   std::string file = argv[1];
   std::ifstream input(file);
   Polygon polygon;
@@ -22,10 +22,12 @@ int main(int argc, char **argv)
   while (!input.eof())
   {
     input >> polygon;
-    if (!input.fail()) {
+    if (!input.fail())
+    {
       polygons.push_back(polygon);
     }
-    else {
+    else
+    {
       input.clear();
       input.ignore(std::numeric_limits< std::streamsize >::max(), '\n');
     }

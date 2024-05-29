@@ -221,7 +221,8 @@ namespace ermilov
 
   int rmecho(const std::vector<Polygon>& polygons, std::istream& in)
   {
-    if (polygons.size() == 0) {
+    if (polygons.size() == 0)
+    {
       return 0;
     }
 
@@ -357,10 +358,13 @@ namespace ermilov
     Point secondMax = getMaxPoint(second);
     Point secondMin = getMinPoint(second);
 
-    bool intersection = ((firstMax.x_ >= secondMin.x_) && (firstMax.y_ >= secondMin.y_) && (firstMin.x_ <= secondMax.x_) && (firstMin.y_ <= secondMax.y_));
+    bool intersection = ((firstMax.x_ >= secondMin.x_) &&
+      (firstMax.y_ >= secondMin.y_) &&
+      (firstMin.x_ <= secondMax.x_) &&
+      (firstMin.y_ <= secondMax.y_));
     return intersection;
   }
-  
+
   Point getMaxPoint(const Polygon& polygon) {
     Point result;
     result.x_ = (*std::max_element(polygon.points_.begin(), polygon.points_.end())).x_;
