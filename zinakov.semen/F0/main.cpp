@@ -4,17 +4,15 @@
 #include <functional>
 #include "commands.hpp"
 
-using namespace std::placeholders;
-
 int main()
 {
   std::cout << "--------- Frequency Dictionary ---------\n";
   std::cout << "Type 'commands' to view list of available commands.\n";
 
+  using namespace std::placeholders;
   std::unordered_map<std::string, std::size_t> frequencyDict;
 
-  std::unordered_map<std::string, std::function<void(std::unordered_map<std::string,\
-  std::size_t> &, std::istream &, std::ostream &)>> commands;
+  std::unordered_map<std::string, std::function<void(std::unordered_map<std::string, std::size_t> &, std::istream &, std::ostream &)>> commands;
   commands["commands"] = std::bind(semzin::commands, _3);
   commands["make"] = std::bind(semzin::make, _1, _2, _3);
   commands["sortMtoL"] = std::bind(semzin::sortMtoL, _1, _2, _3);
