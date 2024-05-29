@@ -12,7 +12,7 @@ void area(std::vector<kabalin::Polygon> &data, std::string &str);
 void max(std::vector<kabalin::Polygon> &data, std::string &str);
 void min(std::vector<kabalin::Polygon> &data, std::string &str);
 void count(std::vector<kabalin::Polygon> &data, std::string &str);
-void maxSeq(std::vector<kabalin::Polygon> &data);
+void same(std::vector<kabalin::Polygon> &data);
 void lessArea(std::vector<kabalin::Polygon> &data);
 
 #endif

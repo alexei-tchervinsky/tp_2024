@@ -1,4 +1,4 @@
-﻿#include "Commands.hpp"
+#include "Commands.hpp"
 #include "Structs.hpp"
 #include <algorithm>
 #include <fstream>
@@ -56,7 +56,7 @@ int main(int argc, char *argv[]) {
           count(data, parametr);
         } else if (cmd == "SAME") {
           std::istringstream str(parametr);
-          maxSeq(data);
+          same(data);
         } else if (cmd == "LESSAREA") {
           std::istringstream str(parametr);
           lessArea(data);

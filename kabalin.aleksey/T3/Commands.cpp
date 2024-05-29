@@ -132,17 +132,31 @@ void count(std::vector<kabalin::Polygon> &data, std::string &str) {
     throw ERROR_OF_COMMAND;
 }
 
-void same(std::vector<kabalin::Polygon> &data, kabalin::Polygon &target) {
-  int count = 0;
+void same(std::vector<kabalin::Polygon> &data) {
+  if (data.empty())
+    throw ERROR_OF_COMMAND;
 
-  for (const auto &polygon : data) {
-    if (polygon.isSame(target)) {
-      ++count;
+  kabalin::Polygon newPoly;
+
+  std::cin >> newPoly;
+  int el = std::cin.get();
+
+  while (el != int('\n') && el != std::cin.eof()) {
+    if (!isspace(el)) {
+      std::cin.setstate(std::istream::failbit);
+      break;
     }
+    el = std::cin.get();
+  }
+  if (std::cin.fail()) {
+    std::cin.clear();
+    throw ERROR_OF_COMMAND;
   }
 
-  std::cout << count << std::endl;
+  auto cnt = [&newPoly](kabalin::Polygon el) { return newPoly.isSame(el); };
+  std::cout << std::count_if(data.begin(), data.end(), cnt) << std::endl;
 }
+
 void lessArea(std::vector<kabalin::Polygon> &data) {
   if (data.empty())
     throw ERROR_OF_COMMAND;
