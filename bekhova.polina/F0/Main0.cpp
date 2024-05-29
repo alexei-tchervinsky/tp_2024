@@ -3,6 +3,7 @@
 #include <string>
 #include <exception>
 #include <functional>
+#include <limits>
 #include "commands.h"
 
 int main()
