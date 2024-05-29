@@ -1,7 +1,7 @@
 #include "commands.h"
 #include <iostream>
 #include <algorithm>
-#include <map> 
+#include <map>
 #include "delimiter.h"
 #include <exception>
 #include <vector>

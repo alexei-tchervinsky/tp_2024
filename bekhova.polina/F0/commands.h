@@ -1,7 +1,7 @@
 #ifndef COMMANDS_HPP
 #define COMMAND_HPP
 #include <iostream>
-#include <map> 
+#include <map>
 
 namespace bekhova
 {
