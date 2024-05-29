@@ -11,11 +11,7 @@ int main(void)
   while (!std::cin.eof())
   {
     std::cin.clear();
-    std::copy(
-      std::istream_iterator<DataStruct>(std::cin),
-      std::istream_iterator<DataStruct>(),
-      std::back_inserter(vec)
-    );
+    std::copy(std::istream_iterator<DataStruct>(std::cin),std::istream_iterator<DataStruct>(),std::back_inserter(vec));
   }
   std::sort(
     vec.begin(),
