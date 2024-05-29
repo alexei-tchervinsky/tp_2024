@@ -124,6 +124,7 @@ namespace ermilov
     {
       out << intersections(polygons, in);
     }
+    return out;
   }
 
   double areaEven(const std::vector<Polygon>& polygons)
