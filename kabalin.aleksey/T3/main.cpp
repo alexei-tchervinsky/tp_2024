@@ -13,19 +13,23 @@ int main(int argc, char *argv[]) {
     return 1;
   }
   std::ifstream input(
-      argv[1]); // Убедимся, что файл успешно открыт перед его использованием
+      argv[1]); // Ensure the file is successfully opened before using it
   if (!input) {
     std::cerr << "Failed to open input file\n";
     return 1;
   }
   std::vector<inputType> vector;
-  while (input) { // Проверим наличие ошибок при чтении из файла перед
-                  // использованием данных
+  while (input) { // Check for errors while reading from the file before using
+                  // the data
     inputType polygon;
-    if (input >> polygon) {
-      vector.push_back(polygon);
-    } else {
-      break;
+    try {
+      if (input >> polygon) {
+        vector.push_back(polygon);
+      } else {
+        break;
+      }
+    } catch (const std::invalid_argument &ex) {
+      // Ignore invalid input lines and continue reading
     }
   }
   while (!std::cin.eof()) {
@@ -34,7 +38,7 @@ int main(int argc, char *argv[]) {
     } catch (const std::logic_error &ex) {
       if (std::string(ex.what()) == std::string("istream failure")) {
         return 0;
-      } else {
+      } else if (std::string(ex.what()) == std::string("invalid cmd")) {
         std::cout << "<INVALID COMMAND>" << '\n';
       }
       std::cin.clear();
