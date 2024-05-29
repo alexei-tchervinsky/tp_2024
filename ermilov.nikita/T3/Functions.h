@@ -39,9 +39,9 @@ namespace ermilov
   double minArea(const std::vector<Polygon>& polygons);
   double minVert(const std::vector<Polygon>& polygons);
 
-  double countEven(const std::vector<Polygon>& polygons);
-  double countOdd(const std::vector<Polygon>& polygons);
-  double countNum(size_t vertNum, const std::vector<Polygon>& polygons);
+  int countEven(const std::vector<Polygon>& polygons);
+  int countOdd(const std::vector<Polygon>& polygons);
+  int countNum(size_t vertNum, const std::vector<Polygon>& polygons);
 
   int rmecho(std::vector<Polygon>& polygons, std::istream& in);
   int intersections(const std::vector<Polygon>& polygons, std::istream& in);

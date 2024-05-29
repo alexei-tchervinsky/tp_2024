@@ -58,7 +58,11 @@ namespace ermilov
         commands["VERTEXES"] = maxVert;
       }
 
-      out << std::fixed << std::setprecision(1);
+      if (option == "AREA")
+      {
+        out << std::fixed << std::setprecision(1);
+      }
+
       try
       {
         out << commands.at(option)(polygons) << "\n";
@@ -76,14 +80,18 @@ namespace ermilov
         commands["VERTEXES"] = minVert;
       }
 
-      out << std::fixed << std::setprecision(1);
+      if (option == "AREA")
+      {
+        out << std::fixed << std::setprecision(1);
+      }
+      
       try
       {
         out << commands.at(option)(polygons) << "\n";
       }
       catch (const std::out_of_range& e)
       {
-        throw std::logic_error("BAD COMMAND TYPE");
+        throw std::logic_error("<INVALID COMMAND>");
       }
     }
     else if (commandType == "COUNT")
@@ -93,8 +101,6 @@ namespace ermilov
         commands["EVEN"] = countEven;
         commands["ODD"] = countOdd;
       }
-
-      out << std::fixed << std::setprecision(1);
       try
       {
         out << commands.at(option)(polygons) << "\n";
@@ -117,7 +123,15 @@ namespace ermilov
     }
     else if (commandType == "INTERSECTIONS")
     {
+      if (polygons.empty())
+      {
+        throw std::logic_error("<INVALID COMMAND>");
+      }
       out << intersections(polygons, in);
+      }
+    else
+    {
+      throw std::logic_error("<INVALID COMMAND>");
     }
     return out;
   }
@@ -136,6 +150,10 @@ namespace ermilov
 
   double areaMean(const std::vector<Polygon>& polygons)
   {
+    if (polygons.empty())
+    {
+      throw std::logic_error("<INVALID COMMAND>");
+    }
     double sumArea = std::accumulate(polygons.begin(), polygons.end(), 0.0, sumAll) / polygons.size();
     return sumArea;
   }
@@ -188,7 +206,7 @@ namespace ermilov
     return vertexList[0];
   }
 
-  double countEven(const std::vector<Polygon>& polygons)
+  int countEven(const std::vector<Polygon>& polygons)
   {
     if (polygons.empty())
     {
@@ -202,7 +220,7 @@ namespace ermilov
     return amount;
   }
 
-  double countOdd(const std::vector<Polygon>& polygons)
+  int countOdd(const std::vector<Polygon>& polygons)
   {
     if (polygons.empty())
     {
@@ -216,7 +234,7 @@ namespace ermilov
     return amount;
   }
 
-  double countNum(size_t vertNum, const std::vector<Polygon>& polygons)
+  int countNum(size_t vertNum, const std::vector<Polygon>& polygons)
   {
     if (polygons.empty())
     {
