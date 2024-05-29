@@ -5,6 +5,22 @@
 #include <limits>
 #include <stdexcept>
 
+void less_area_command(const std::vector<kabalin::Polygon> &polygons,
+                       std::istream &in, std::ostream &out) {
+  std::string param;
+  in >> param;
+  double threshold = std::stod(param);
+
+  double sumArea = 0.0;
+  for (const auto &polygon : polygons) {
+    double area = polygonArea(polygon);
+    if (area < threshold) {
+      sumArea += area;
+    }
+  }
+  out << std::setprecision(1) << sumArea << '\n';
+}
+
 void same_area_command(const std::vector<kabalin::Polygon> &polygons,
                        std::istream &in, std::ostream &out) {
   std::string polygonIndexStr;
