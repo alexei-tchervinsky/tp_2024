@@ -5,7 +5,7 @@
 
 using namespace bekhova;
 
-int main(void)  
+int main(void)
 {
   std::vector<DataStruct> vec;
   while (!std::cin.eof())
