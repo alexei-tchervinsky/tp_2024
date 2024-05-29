@@ -75,23 +75,23 @@ bool inputUI(Graph<Node, Weight>& graph, std::ostream& out, std::istream& in)
       std::cerr << "INVALID CMD\n";
       return 0;
     }
-    out << "GET_GRAPH: " << "print graph to standart output\n";
-    out << "ADD_NODE NAME: " << "insert a new node with a name NAME\n";
-    out << "ADD_BRANCH NODE_START NODE_END: ";
+    out << "GET_GRAPH:" << "print graph to standart output\n";
+    out << "ADD_NODE NAME:" << "insert a new node with a name NAME\n";
+    out << "ADD_BRANCH NODE_START NODE_END:";
     out << "insert a branch from NODE_START to NODE_END\n";
-    out << "REM_NODE NAME: " << "remove the node with NAME name\n";
-    out << "REM_BRANCH NODE_START NODE_END: ";
+    out << "REM_NODE NAME:" << "remove the node with NAME name\n";
+    out << "REM_BRANCH NODE_START NODE_END:";
     out << "remove a branch from NODE_START to NODE_END\n";
-    out << "EXISTS_NODE NAME: " << "returns whether a node with NAME name exists\n";
-    out << "EXISTS_BRANCH NODE_START NODE_END: ";
+    out << "EXISTS_NODE NAME:" << "returns whether a node with NAME name exists\n";
+    out << "EXISTS_BRANCH NODE_START NODE_END:";
     out << "returns whether a branch exists from NODE_START to NODE_END\n";
-    out << "REMOVE_CYCLES: " << "removes cycles and parallel branches from the graph\n";
-    out << "GET_DEGREES NAME: " << "prints all 3 degrees of the node with NAME name\n";
-    out << "GET_MAX_DEG: " << "returns all 3 max degrees in the graph";
+    out << "REMOVE_CYCLES:" << "removes cycles and parallel branches from the graph\n";
+    out << "GET_DEGREES NAME:" << "prints all 3 degrees of the node with NAME name\n";
+    out << "GET_MAX_DEG:" << "returns all 3 max degrees in the graph";
     out << "(if 2 or more have the biggest degree returns first occurence)\n";
-    out << "GET_DELTAS: " << "returns nodes that have only incoming branches\n";
-    out << "GET_SOURCES: " << "returns nodes that have only outcoming branches\n";
-    out << "HELP: " << "shows this info\n";
+    out << "GET_DELTAS:" << "returns nodes that have only incoming branches\n";
+    out << "GET_SOURCES:" << "returns nodes that have only outcoming branches\n";
+    out << "HELP:" << "shows this info\n";
     out << "DONE\n";
     return 0;
   }
@@ -111,7 +111,7 @@ bool inputUI(Graph<Node, Weight>& graph, std::ostream& out, std::istream& in)
       }
       catch (const std::out_of_range& ex)
       {
-        std::cerr << "ERR. " << ex.what() << '\n';
+        std::cerr << "ERR.\n" << ex.what() << '\n';
         return 0;
       }
     }
@@ -436,9 +436,9 @@ bool inputUI(Graph<Node, Weight>& graph, std::ostream& out, std::istream& in)
     {
       try
       {
-        out << "total: " << graph.totalDegree(node);
-        out << " in: " << graph.inDegree(node);
-        out << " out: " << graph.outDegree(node);
+        out << "total:" << graph.totalDegree(node);
+        out << "in:" << graph.inDegree(node);
+        out << "out:" << graph.outDegree(node);
         out << "\nDONE\n";
       }
       catch (const std::invalid_argument& ex)
@@ -470,9 +470,9 @@ bool inputUI(Graph<Node, Weight>& graph, std::ostream& out, std::istream& in)
         auto a = graph.maxDegree(0);
         auto b = graph.maxDegree(-1);
         auto c = graph.maxDegree(1);
-        out << "total: " << std::get<0>(a) << ':' << std::get<1>(a);
-        out << " in: " << std::get<0>(b) << ':' << std::get<1>(b);
-        out << " out: " << std::get<0>(c) << ':' << std::get<1>(c);
+        out << "total:" << std::get<0>(a) << ':' << std::get<1>(a);
+        out << "in:" << std::get<0>(b) << ':' << std::get<1>(b);
+        out << "out:" << std::get<0>(c) << ':' << std::get<1>(c);
         out << "\nDONE\n";
       }
       catch (const std::invalid_argument& ex)
@@ -499,7 +499,7 @@ bool inputUI(Graph<Node, Weight>& graph, std::ostream& out, std::istream& in)
     }
     try
     {
-      out << "Deltas: ";
+      out << "Deltas:";
       graph.deltas(out);
       out << '\n';
       out << "DONE\n";
@@ -521,7 +521,7 @@ bool inputUI(Graph<Node, Weight>& graph, std::ostream& out, std::istream& in)
     }
     try
     {
-      out << "Sources: ";
+      out << "Sources:";
       graph.sources(out);
       out << '\n';
       out << "DONE\n";
