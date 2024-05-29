@@ -72,7 +72,7 @@ namespace ermilov {
     {
       poly.points_ = std::move(points);
     }
-    if (in && vertexes == poly.points_.size() && in.peek() == '\n')
+    if (in && vertexes == poly.points_.size() && (in.peek() == '\n' || in.eof()))
     {
       polygon = poly;
     }
