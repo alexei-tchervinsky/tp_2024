@@ -24,7 +24,7 @@ namespace ermilov
     auto outError = std::bind(errorMessage, std::placeholders::_1, "<INVALID COMMAND>\n");
 
     std::string commandType, option;
-    in >> commandType >> option;
+    in >> commandType;
 
     if (commandType == "AREA")
     {
@@ -35,6 +35,7 @@ namespace ermilov
         commands["MEAN"] = areaMean;
       }
 
+      in >> option;
       out << std::fixed << std::setprecision(1);
       try
       {
@@ -67,6 +68,7 @@ namespace ermilov
         commands["VERTEXES"] = maxVert;
       }
 
+      in >> option;
       if (option == "AREA")
       {
         out << std::fixed << std::setprecision(1);
@@ -91,6 +93,7 @@ namespace ermilov
         commands["VERTEXES"] = minVert;
       }
 
+      in >> option;
       if (option == "AREA")
       {
         out << std::fixed << std::setprecision(1);
@@ -114,6 +117,7 @@ namespace ermilov
         commands["EVEN"] = countEven;
         commands["ODD"] = countOdd;
       }
+      in >> option;
       try
       {
         out << commands.at(option)(polygons) << "\n";
@@ -133,6 +137,7 @@ namespace ermilov
     }
     else if (commandType == "RMECHO")
     {
+      in >> option;
       out << rmecho(polygons, in);
     }
     else if (commandType == "INTERSECTIONS")
@@ -142,7 +147,7 @@ namespace ermilov
         outError(out);
         throw std::logic_error("");
       }
-      out << intersections(polygons, in);
+      out << intersections(polygons, in) << "\n";
     }
     else
     {
@@ -315,21 +320,14 @@ namespace ermilov
 
   int intersections(const std::vector<Polygon>& polygons, std::istream& in)
   {
-    if (polygons.size() == 0) {
-      return 0;
-    }
-
+    std::string test;
     Polygon intersectPolygon;
-
-    std::istream::sentry guard(in);
-    if (!guard)
-    {
-      return 0;
-    }
+    auto outError = std::bind(errorMessage, std::placeholders::_1, "<INVALID COMMAND>\n");
 
     if (!(in >> intersectPolygon))
     {
-      throw std::logic_error("BAD POLYGON");
+      outError(std::cout);
+      throw std::logic_error("");
     }
 
     int amount = std::count_if(polygons.begin(), polygons.end(),
