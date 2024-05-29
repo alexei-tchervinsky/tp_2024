@@ -84,7 +84,7 @@ namespace ermilov
       {
         out << std::fixed << std::setprecision(1);
       }
-      
+
       try
       {
         out << commands.at(option)(polygons) << "\n";
@@ -128,7 +128,7 @@ namespace ermilov
         throw std::logic_error("<INVALID COMMAND>");
       }
       out << intersections(polygons, in);
-      }
+    }
     else
     {
       throw std::logic_error("<INVALID COMMAND>");
