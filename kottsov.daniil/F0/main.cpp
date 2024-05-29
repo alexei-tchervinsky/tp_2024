@@ -1,6 +1,8 @@
 #include "GraphRGR.h"
 #include "inputUIRGR.h"
 
+using namespace rgr;
+
 int main()
 {
   using NodeType = char;

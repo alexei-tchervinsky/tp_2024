@@ -11,7 +11,8 @@
 
 #ifndef GRAPH
 #define GRAPH
-
+namespace rgr
+{
 template <typename Node, typename Weight = int>
 class Graph
 {
@@ -589,5 +590,6 @@ void Graph<Node,Weight>::deltas(std::ostream& out)
     }
   }
   out << '\n';
+}
 }
 #endif
