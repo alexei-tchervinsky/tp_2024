@@ -58,23 +58,30 @@ namespace ermilov {
     {
       return in;
     }
-    Polygon poly;
     size_t vertexes;
     if (!(in >> vertexes) || vertexes < 3)
     {
       in.setstate(std::ios::failbit);
       return in;
     }
-    using inputItr = std::istream_iterator< Point >;
+    Point point;
     std::vector< Point > points;
-    std::copy_n(inputItr{ in }, vertexes, std::back_inserter(points));
-    if (in)
-    {
-      poly.points_ = std::move(points);
+    for (std::size_t i = 0; i < vertexes; i++) {
+      if (in.get() != ' ') {
+        in.setstate(std::istream::failbit);
+        return in;
+      }
+      if (in >> point) {
+        points.push_back(point);
+      }
+      else {
+        in.setstate(std::istream::failbit);
+        return in;
+      }
     }
-    if (in && vertexes == poly.points_.size() && (in.peek() == '\n' || in.eof()))
+    if (in && vertexes == points.size() && (in.peek() == '\n' || in.eof()))
     {
-      polygon = poly;
+      polygon = Polygon{ points };
     }
     else
     {
