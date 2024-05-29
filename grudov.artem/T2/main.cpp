@@ -3,11 +3,14 @@
 int main()
 {
   std::vector<grudov::Data> data;
-  while (std::cin)
+  while (!std::cin.eof())
   {
     try
     {
       std::copy(std::istream_iterator<grudov::Data>(std::cin), std::istream_iterator<grudov::Data>(), std::back_inserter(data));
+      if(std::cin.fail()){
+        throw grudov::WrongInput();
+      }
     }
     catch (grudov::WrongInput& err)
     {
