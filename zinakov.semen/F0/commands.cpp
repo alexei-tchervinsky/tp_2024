@@ -18,9 +18,9 @@ void semzin::commands(std::ostream &out)
   out << "6)holyTrinityMost - shows 3 most popular words.\n";
   out << "7)holyTrinityLeast - shows 3 least popular words.\n";
   out << "8)find <word> - finds word in the dictionary.\n";
-  out << "8)remove <word> - deletes word from the dictionary.\n";
-  out << "9)deleteDict - deletes the dictionary.\n";
-  out << "10)save <filename> - saves dictionary to file.\n";
+  out << "9)remove <word> - deletes word from the dictionary.\n";
+  out << "10)deleteDict - deletes the dictionary.\n";
+  out << "11)save <filename> - saves dictionary to file.\n";
 
   out << "\n";
 }
