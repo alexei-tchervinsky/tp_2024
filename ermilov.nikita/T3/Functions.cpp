@@ -20,7 +20,7 @@ namespace ermilov
     {
       return out;
     }
-    
+
     std::string commandType, option;
     in >> commandType >> option;
 
@@ -195,7 +195,7 @@ namespace ermilov
       return 0;
     }
 
-    int amount = std::count_if (
+    int amount = std::count_if(
       polygons.begin(), polygons.end(),
       [](const Polygon& temp) { return temp.points_.size() % 2 == 0; }
     );
@@ -303,7 +303,7 @@ namespace ermilov
   //functions
   double getArea(const Polygon& polygon)
   {
-    std::vector< int > values(polygon.points_.size());
+    std::vector<int> values(polygon.points_.size());
 
     std::transform(++polygon.points_.cbegin(), polygon.points_.cend(),
       polygon.points_.cbegin(), values.begin(), getSubArea);
@@ -320,7 +320,7 @@ namespace ermilov
 
   int getSubArea(const Point& first, const Point& second)
   {
-    int value = first.x_ * second.y_ - first.y_ * second.x_;
+    int value = (first.x_ * second.y_) - (first.y_ * second.x_);
     return value;
   }
 

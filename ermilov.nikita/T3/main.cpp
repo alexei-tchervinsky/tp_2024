@@ -37,16 +37,15 @@ int main(int argc, char **argv)
     }
   }
 
-  try
+  while (!std::cin.eof())
   {
-    while (!std::cin.eof())
+    try
     {
       chooseCommand(std::cin, std::cout, polygons);
     }
-  }
-  catch (std::exception& e)
-  {
-    std::cerr << e.what() << '\n';
-    return 2;
+    catch (std::exception& e)
+    {
+      std::cerr << e.what() << '\n';
+    }
   }
 }
