@@ -10,7 +10,7 @@ namespace vdovin
     if (!guard)
     {
       return in;
-    } 
+    }
     char c = 0;
     in >> c;
     if (c != exp.expected)

@@ -47,14 +47,15 @@ int main(int argc, char* argv[])
     {
       std::cout << "<INVALID COMMAND>\n";
     }
-    catch (const std::logic_error& e) 
+    catch (const std::logic_error& e)
     {
       std::cout << e.what() << '\n';
     }
     if ((name != "LESSAREA" && name != "INTERSECTIONS"))
     {
-      std::cin.clear(); 
+      std::cin.clear();
       std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
   }
 }
+

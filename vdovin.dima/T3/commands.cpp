@@ -99,15 +99,15 @@ void getVertexMin(std::ostream& out, const std::vector<vdovin::Polygon>& pols)
 }
 
 void vdovin::cmdMin(std::istream& in, std::ostream& out, const std::vector<Polygon>& pols)
-{ 
-  if (pols.empty()) 
+{
+  if (pols.empty())
   {
     throw std::logic_error("<INVALID COMMAND>");
-  } 
+  }
   std::string name = "";
   in >> name;
   std::map<std::string, std::function<void(std::ostream&, const std::vector<Polygon>&)>> subcmd;
-  subcmd["AREA"] = getAreaMin; 
+  subcmd["AREA"] = getAreaMin;
   subcmd["VERTEXES"] = getVertexMin;
   subcmd.at(name)(out, pols);
 }
@@ -179,7 +179,7 @@ void checkPol(std::istream& in)
   }
   if (in.fail() || c != '\n')
   {
-    in.clear(); 
+    in.clear();
     in.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     throw std::logic_error("<INVALID COMMAND>");
   }
@@ -202,8 +202,8 @@ bool interPred(const vdovin::Polygon& p1, const vdovin::Polygon& p2)
 
 void vdovin::cmdIntersections(std::istream& in, std::ostream& out, const std::vector<Polygon>& pol)
 {
-  Polygon p; 
+  Polygon p;
   in >> p;
-  checkPol(in); 
+  checkPol(in);
   out << std::count_if(pol.begin(), pol.end(), std::bind(interPred, std::placeholders::_1, p));
 }

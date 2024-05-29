@@ -30,7 +30,7 @@ double vdovin::getAreaPol(const Polygon& pol)
 double vdovin::getArea(const std::vector<Polygon>& pols)
 {
   std::vector<double> result;
-  std::transform(pols.cbegin(), pols.cend(), std::back_inserter(result), getAreaPol); 
+  std::transform(pols.cbegin(), pols.cend(), std::back_inserter(result), getAreaPol);
   return std::accumulate(result.cbegin(), result.cend(), 0.0);
 }
 
@@ -59,7 +59,7 @@ std::istream& vdovin::operator>>(std::istream& in, Polygon& pol)
   else
   {
     in.setstate(std::ios::failbit);
-  } 
+  }
   return in;
 }
 
@@ -73,7 +73,7 @@ std::istream& vdovin::operator>>(std::istream& in, Point& p)
   Point point;
   in >> Delimiter{'('};
   in >> point.x;
-  in >> Delimiter{';'}; 
+  in >> Delimiter{';'};
   in >> point.y;
   in >> Delimiter{')'};
   p = point;
