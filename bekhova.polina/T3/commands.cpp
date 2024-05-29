@@ -1,12 +1,12 @@
 #include "commands.h"
+#include <map>
+#include <algorithm>
 #include <iostream>
-#include <cmath>
 #include <functional>
 #include <numeric>
 #include <iomanip>
-#include <map>
 #include <string>
-#include <algorithm>
+#include <cmath>
 
 void bekhova::Area(const std::vector<Polygon>& polygons, std::ostream& out, std::istream& in)
 {
@@ -14,7 +14,7 @@ void bekhova::Area(const std::vector<Polygon>& polygons, std::ostream& out, std:
   areas["EVEN"] = AreaEven;
   areas["ODD"] = AreaOdd;
   areas["MEAN"] = AreaMean;
-  auto outInvalid = std::bind(outMessage, std::placeholders::_1, "<INVALID COMMAND>\n");
+  auto outInvalid = std::bind(outMessage, std::placeholders::_1, "<COMMAND IS INVALID>\n");
   std::string parameter;
   in >> parameter;
   try
@@ -155,7 +155,7 @@ void bekhova::Max(const std::vector<Polygon>& polygons, std::ostream& out, std::
   std::map<std::string, std::function<void(const std::vector<Polygon>& polygons, std::ostream& out)>> maxes;
   maxes["AREA"] = maxArea;
   maxes["VERTEXES"] = maxVertexes;
-  auto outInvalid = std::bind(outMessage, std::placeholders::_1, "<INVALID COMMAND>\n");
+  auto outInvalid = std::bind(outMessage, std::placeholders::_1, "<COMMAND IS INVALID>\n");
   std::string parameter;
   in >> parameter;
   try
@@ -211,7 +211,7 @@ void bekhova::Min(const std::vector<Polygon>& polygons, std::ostream& out, std::
   std::map<std::string, std::function<void(const std::vector<Polygon>& polygons, std::ostream& out)>> mines;
   mines["AREA"] = minArea;
   mines["VERTEXES"] = minVertexes;
-  auto outInvalid = std::bind(outMessage, std::placeholders::_1, "<INVALID COMMAND>\n");
+  auto outInvalid = std::bind(outMessage, std::placeholders::_1, "<COMMAND IS INVALID>\n");
   std::string parameter;
   in >> parameter;
   try
@@ -267,7 +267,7 @@ void bekhova::Count(const std::vector<Polygon>& polygons, std::ostream& out, std
   std::map<std::string, std::function<void(const std::vector<Polygon>& polygons, std::ostream& out)>> counts;
   counts["EVEN"] = CountEven;
   counts["ODD"] = CountOdd;
-  auto outInvalid = std::bind(outMessage, std::placeholders::_1, "<INVALID COMMAND>\n");
+  auto outInvalid = std::bind(outMessage, std::placeholders::_1, "<COMMAND IS INVALID>\n");
   std::string parameter;
   in >> parameter;
   try
@@ -349,7 +349,7 @@ void bekhova::Perms(const std::vector<Polygon>& polygons, std::ostream& out, std
   Polygon givenPolygon;
   in >> givenPolygon;
   std::size_t givenPolygonVertexes = givenPolygon.points.size();
-  auto outInvalid = std::bind(outMessage, std::placeholders::_1, "<INVALID COMMAND>\n");
+  auto outInvalid = std::bind(outMessage, std::placeholders::_1, "<COMMAND IS INVALID>\n");
   std::vector<Polygon> nVertexes_vec;
   std::copy_if(
     polygons.begin(),

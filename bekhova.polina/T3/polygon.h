@@ -1,8 +1,7 @@
 #ifndef POLYGON_H
 #define POLYGON_H
-
-#include <iostream>
 #include <vector>
+#include <iostream>
 
 namespace bekhova
 {

@@ -2,8 +2,8 @@
 #define COMMANDS_H
 
 #include "polygon.h"
-#include <functional>
 #include <string>
+#include <functional>
 
 namespace bekhova
 {
