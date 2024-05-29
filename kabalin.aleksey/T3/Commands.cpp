@@ -98,20 +98,30 @@ void count_command(const std::vector<kabalin::Polygon> &polygons,
 
 void ioUI(const std::vector<kabalin::Polygon> &polygons, std::istream &in,
           std::ostream &out) {
-  std::string command;
-  in >> command;
-  if (command == "LESSAREA") {
-    less_area_command(polygons, in, out);
-  } else if (command == "SAME") {
-    same_area_command(polygons, in, out);
-  } else if (command == "AREA") {
-    area_command(polygons, in, out);
-  } else if (command == "MAX") {
-    max_command(polygons, in, out);
-  } else if (command == "MIN") {
-    min_command(polygons, in, out);
-  } else if (command == "COUNT") {
-    count_command(polygons, in, out);
+  std::string param;
+  in >> param;
+  if (param == "COUNT" && polygons.size() >= 1) {
+    in >> param;
+    int count = 0;
+    if (param == "ODD") {
+      count = std::count_if(
+          polygons.begin(), polygons.end(),
+          [](const kabalin::Polygon &p) { return p.points.size() % 2 != 0; });
+      out << count << '\n';
+    } else if (param == "EVEN") {
+      count = std::count_if(
+          polygons.begin(), polygons.end(),
+          [](const kabalin::Polygon &p) { return p.points.size() % 2 == 0; });
+      out << count << '\n';
+    } else {
+      int vertexCount = std::stoi(param);
+      count = std::count_if(polygons.begin(), polygons.end(),
+                            [vertexCount](const kabalin::Polygon &p) {
+                              return p.points.size() ==
+                                     static_cast<std::size_t>(vertexCount);
+                            });
+      out << count << '\n';
+    }
   } else {
     throw std::invalid_argument("<INVALID COMMAND>");
   }
