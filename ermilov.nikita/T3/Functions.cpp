@@ -13,7 +13,7 @@ using namespace std::placeholders;
 
 namespace ermilov
 {
-  std::ostream& chooseCommand(std::istream& in, std::ostream& out, const std::vector<Polygon>& polygons)
+  std::ostream& chooseCommand(std::istream& in, std::ostream& out, std::vector<Polygon>& polygons)
   {
     std::istream::sentry guard(in);
     if (!guard)
@@ -93,7 +93,7 @@ namespace ermilov
     }
     else if (commandType == "COUNT")
     {
-      std::map< std::string, std::function< double(const std::vector< Polygon >& data) > > commands;
+      std::map< std::string, std::function< double(std::vector< Polygon >& data) > > commands;
       {
         commands["EVEN"] = countEven;
         commands["ODD"] = countOdd;
@@ -210,7 +210,7 @@ namespace ermilov
     return amount;
   }
 
-  double countNum(int vertNum, const std::vector<Polygon>& polygons)
+  double countNum(size_t vertNum, const std::vector<Polygon>& polygons)
   {
     int amount = std::count_if(
       polygons.begin(), polygons.end(),
@@ -219,8 +219,9 @@ namespace ermilov
     return amount;
   }
 
-  int rmecho(const std::vector<Polygon>& polygons, std::istream& in)
+  int rmecho(std::vector<Polygon>& polygons, std::istream& in)
   {
+    size_t oldSize = polygons.size();
     if (polygons.size() == 0)
     {
       return 0;
@@ -257,6 +258,8 @@ namespace ermilov
     );
 
     polygons.erase(pos, polygons.end());
+    size_t removedAmount = oldSize - polygons.size();
+    return removedAmount;
   }
 
   int intersections(const std::vector<Polygon>& polygons, std::istream& in)
@@ -334,7 +337,7 @@ namespace ermilov
     }
   }
 
-  double sumNum(double result, const Polygon& polygon, int vertNum)
+  double sumNum(double result, const Polygon& polygon, size_t vertNum)
   {
     if (polygon.points_.size() == vertNum)
     {

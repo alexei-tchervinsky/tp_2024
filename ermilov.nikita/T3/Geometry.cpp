@@ -1,5 +1,6 @@
 #include <iostream>
 #include <algorithm>
+#include <iterator>
 #include "Geometry.h"
 #include "DataStruct.h"
 
@@ -58,7 +59,7 @@ namespace ermilov {
       return in;
     }
 
-    using iterator = std::istream_iterator<Point>;
+    using itr = std::istream_iterator<Point>;
     size_t numPoints = 0;
 
     if (!(in >> numPoints) || numPoints < 3)
@@ -68,7 +69,7 @@ namespace ermilov {
 
     if (in)
     {
-      std::copy_n(iterator{ in }, numPoints, std::back_inserter(polygon.points_));
+      std::copy_n(itr{ in }, numPoints, std::back_inserter(polygon.points_));
     }
     else {
       in.setstate(std::ios::failbit);

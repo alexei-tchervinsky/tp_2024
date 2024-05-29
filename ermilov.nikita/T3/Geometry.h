@@ -2,6 +2,7 @@
 #define GEOMETRY_H
 
 #include <vector>
+#include <istream>
 
 namespace ermilov
 {

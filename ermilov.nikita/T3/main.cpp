@@ -8,6 +8,10 @@ int main(int argc, char **argv)
 {
   using namespace ermilov;
 
+  if (argc != 2) {
+    std::cerr << "BAD PARAMETERS" << '\n';
+    return -1;
+  }
   std::string file = argv[1];
   std::ifstream input(file);
   Polygon polygon;

@@ -14,7 +14,7 @@ namespace ermilov
 
   double sumEven(double result, const Polygon& polygon);
   double sumOdd(double result, const Polygon& polygon);
-  double sumNum(double result, const Polygon& polygon, int vertNum);
+  double sumNum(double result, const Polygon& polygon, size_t vertNum);
   double sumAll(double result, const Polygon& polygon);
 
   bool areIntersect(const Polygon& first, const Polygon& second);
@@ -24,7 +24,7 @@ namespace ermilov
   void errorMessage(std::ostream& out, const std::string& message);
 
   //commands
-  std::ostream& chooseCommand(std::istream& in, std::ostream& out, const std::vector<Polygon>& polygons);
+  std::ostream& chooseCommand(std::istream& in, std::ostream& out, std::vector<Polygon>& polygons);
 
   double areaEven(const std::vector<Polygon>& polygons);
   double areaOdd(const std::vector<Polygon>& polygons);
@@ -38,9 +38,9 @@ namespace ermilov
 
   double countEven(const std::vector<Polygon>& polygons);
   double countOdd(const std::vector<Polygon>& polygons);
-  double countNum(int vertNum, const std::vector<Polygon>& polygons);
+  double countNum(size_t vertNum, const std::vector<Polygon>& polygons);
 
-  int rmecho(const std::vector<Polygon>& polygons, std::istream& in);
+  int rmecho(std::vector<Polygon>& polygons, std::istream& in);
   int intersections(const std::vector<Polygon>& polygons, std::istream& in);
 }
 
