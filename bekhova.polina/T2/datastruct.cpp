@@ -1,134 +1,103 @@
 #include "datastruct.h"
-#include <iomanip>
+#include <limits>
 
-namespace bekhova
+std::pair<std::string, std::string> bekhova::getNextPair(std::string& s)
 {
-  std::istream& operator>>(std::istream& in, DelimiterIO&& dest)
+  s.erase(0, s.find(':') + 1); 
+  std::string key = s.substr(0, 4);
+  s.erase(0, 5);
+  std::string value;
+  if (key == "key3")
   {
-    std::istream::sentry sentry(in);
-    if (!sentry)
-    {
-      return in;
-    }
-    char c = 0;
-    in >> c;
-    if (c != dest.delimiter)
-    {
-      in.setstate(std::ios::failbit);
-    }
+    value = s.substr(0, s.find('"', 1) + 1);
+    s.erase(0, value.size());
+  }
+  else
+  {
+    value = s.substr(0, s.find(':'));
+    s.erase(0, value.size());
+  }
+  return std::make_pair(key, value); 
+}
+std::istream& bekhova::operator>>(std::istream& in, bekhova::DataStruct& ds)
+{
+  std::istream::sentry sentry(in);
+  if (!sentry)
+  {
     return in;
   }
 
-  std::istream& operator>>(std::istream& in, ULLOctIO&& dest)
+  std::string token;
+  getline(in, token);
+  while (!token.empty())
   {
-    std::istream::sentry sentry(in);
-    if (!sentry)
+    std::pair<std::string, std::string> pair = bekhova::getNextPair(token);
+    if (pair.first == "key1")
     {
-      return in;
-    }
-    return in >> DelimiterIO{ '0' } >> std::oct >> dest.ull;
-  }
-
-  std::istream& operator>>(std::istream& in, StringIO&& dest)
-  {
-    std::istream::sentry sentry(in);
-    if (!sentry)
-    {
-      return in;
-    }
-    return std::getline(in >> DelimiterIO{ '"' }, dest.str, '"');
-  }
-
-  std::istream& operator>>(std::istream& in, ULLHexIO&& dest)
-  {
-    std::istream::sentry sentry(in);
-    if (!sentry)
-    {
-      return in;
-    }
-    return in >> DelimiterIO{ '0' } >> std::hex >> dest.ullo;
-  }
-
-  std::istream& operator>>(std::istream& in, DataStruct& dest)
-  {
-    std::istream::sentry sentry(in);
-    if (!sentry)
-    {
-      return in;
-    }
-    iofmtguard fguard(in);
-    DataStruct input;
-    using sep = DelimiterIO;
-    using str = StringIO;
-    using ull = ULLOctIO;
-    using ullo = ULLHexIO;
-    std::string curr = "";
-    in >> sep{ '(' } >> sep{ ':' };
-    for (size_t i = 0; i < 3; i++)
-    {
-      in >> curr;
-      if (curr == "key1")
+      if (!bekhova::is_ULL_OCT(pair.second))
       {
-        in >> ull{ input.key1 } >> sep{ ':' };
+        in.setstate(std::ios::badbit);
+        return in;
       }
-      else if (curr == "key2")
-      {
-        in >> ullo{ input.key2 } >> sep{ ':' };
-      }
-      else if (curr == "key3")
-      {
-        in >> str{ input.key3 } >> sep{ ':' };
-      }
-      else
-      {
-        in.setstate(std::ios::failbit);
-      }
+      ds.key1 = std::strtoull(pair.second.c_str(), nullptr, 8);
     }
-    in >> sep{ ')' };
-    if (in)
+    else if (pair.first == "key2")
     {
-      dest = input;
+      if (!bekhova::is_ULL_HEX(pair.second)) {
+        in.setstate(std::ios::badbit);
+        return in;
+      }
+      ds.key2 = std::strtoull(pair.second.c_str(), nullptr, 16);
     }
-    return in;
+    else if (pair.first == "key3")
+    {
+      if (!bekhova::isString(pair.second))
+      {
+        in.setstate(std::ios::badbit);
+        return in;
+      }
+      ds.key3 = pair.second.substr(1, pair.second.size() - 2);
+    }
   }
+  return in;
+}
 
-  std::ostream& operator<<(std::ostream& out, const DataStruct& dest)
+std::ostream& bekhova::operator<<(std::ostream& out, const bekhova::DataStruct& ds)
+{
+  std::ostream::sentry sentry(out);
+  if (!sentry)
   {
-    std::ostream::sentry sentry(out);
-    if (!sentry)
-    {
-      return out;
-    }
-    iofmtguard fmtguard(out);
-    out << "(:key1 0" << std::oct << dest.key1 << ":key2 '" << dest.key2 <<
-      "':key3 \"" << dest.key3 << "\":)";
     return out;
   }
+  iofmtguard fmtguard(out);
+  out << "(:key1 0" << std::oct << ds.key1 << ":key2 0x" << std::uppercase << std::hex << ds.key2 << ":key3 \"" << ds.key3 << "\":)";
+  return out;
+}
 
-  bool operator<(const DataStruct& a, const DataStruct& b)
-  {
-    if (a.key1 != b.key1)
-    {
-      return a.key1 < b.key1;
-    }
-    else if (a.key2 != b.key2)
-    {
-      return a.key2 < b.key2;
-    }
-    return a.key3.size() < b.key3.size();
-  }
-
-  iofmtguard::iofmtguard(std::basic_ios< char >& s) :
-    s_(s),
-    fill_(s.fill()),
-    precision_(s.precision()),
-    fmt_(s.flags())
-  {}
-
-  iofmtguard::~iofmtguard()
-  {
-    s_.fill(fill_);
-    s_.precision(precision_);
-    s_.flags(fmt_);
-  }
+bool bekhova::is_ULL_OCT(const std::string& str)
+{
+  const std::regex regular("^0[0-7]+$");
+  return std::regex_match(str, regular);
+}
+bool bekhova::is_ULL_HEX(const std::string& str)
+{
+  const std::regex regular("^0[xX][0-9A-Fa-f]+$");
+  return std::regex_match(str, regular);
+}
+bool bekhova::isString(const std::string& str)
+{
+  const std::regex regular("\".*\"");
+  return std::regex_match(str, regular);
+}
+bekhova::iofmtguard::iofmtguard(std::basic_ios< char >& s) :
+  s_(s),
+  fill_(s.fill()),
+  precision_(s.precision()),
+  fmt_(s.flags())
+{}
+bekhova::iofmtguard::~iofmtguard()
+{
+  s_.fill(fill_);
+  s_.precision(precision_);
+  s_.flags(fmt_);
 }

@@ -1,33 +1,40 @@
 ﻿#include "datastruct.h"
-#include <iostream>
-#include <string>
-#include <limits>
+﻿#include <algorithm>
 #include <vector>
-#include <algorithm>
 #include <iterator>
 
-int main()
+using namespace bekhova;
+
+int main(void)  
 {
-  using namespace bekhova;
-  std::vector< DataStruct > data;
+  std::vector<DataStruct> vec;
   while (!std::cin.eof())
   {
+    std::cin.clear();
     std::copy(
-      std::istream_iterator< DataStruct >{std::cin},
-      std::istream_iterator< DataStruct >{},
-      std::back_inserter(data)
+      std::istream_iterator<DataStruct>(std::cin),
+      std::istream_iterator<DataStruct>(),
+      std::back_inserter(vec)
     );
-    if (std::cin.fail())
-    {
-      std::cin.clear();
-      std::cin.ignore(std::numeric_limits< std::streamsize >::max(), '\n');
-    }
   }
-  std::sort(data.begin(), data.end());
-  std::copy(
-    std::begin(data),
-    std::end(data),
-    std::ostream_iterator< DataStruct >(std::cout, "\n")
+  std::sort(
+    vec.begin(),
+    vec.end(),
+    [](const DataStruct& lhs, const DataStruct& rhs)
+    {
+      if (lhs.key1 < rhs.key1)
+      {
+        return true;
+      }
+      if (lhs.key2 < rhs.key2)
+      {
+        return true;
+      }
+      else
+      {
+        return lhs.key3 < rhs.key3;
+      }
+    }
   );
-  return 0;
+  std::copy(vec.begin(), vec.end(), std::ostream_iterator<DataStruct>(std::cout, "\n"));
 }

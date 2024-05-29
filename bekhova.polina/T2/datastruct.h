@@ -1,47 +1,34 @@
-#ifndef _DATA_STRUCT_HPP_
-#define _DATA_STRUCT_HPP_
+#ifndef _DATASTRUCT_H
+#define _DATASTRUCT_H
+
 #include <iostream>
+#include <iomanip>
 #include <string>
+#include <sstream>
+#include <regex>
 
 namespace bekhova
 {
+  bool is_ULL_OCT(const std::string& str);
+  bool is_ULL_HEX(const std::string& str);
+  bool isString(const std::string& str);
+
   struct DataStruct
   {
-    unsigned long long key1;
-    unsigned long long key2;
+    unsigned long long key1; 
+    unsigned long long key2;  
     std::string key3;
   };
 
-  struct ULLOctIO
-  {
-    unsigned long long& ull;
-  };
-  struct ULLHexIO
-  {
-    unsigned long long& ullo;
-  };
-  struct DelimiterIO
-  {
-    char delimiter;
-  };
+  std::istream& operator>>(std::istream& in, DataStruct& ds);
+  std::ostream& operator<<(std::ostream& out, const DataStruct& ds);
 
-  struct StringIO
-  {
-    std::string& str;
-  };
-
-  std::istream& operator>>(std::istream& in, DelimiterIO&& d);
-  std::istream& operator>>(std::istream& in, ULLOctIO&& d);
-  std::istream& operator>>(std::istream& in, ULLHexIO&& d);
-  std::istream& operator>>(std::istream& in, StringIO&& d);
-  std::istream& operator>>(std::istream& in, DataStruct& d);
-  std::ostream& operator<<(std::ostream& out, const DataStruct& d);
-  bool operator<(const DataStruct& a, const DataStruct& b);
+  std::pair<std::string, std::string> getNextPair(std::string& s);
 
   class iofmtguard
   {
   public:
-    explicit iofmtguard(std::basic_ios< char >& s);
+    iofmtguard(std::basic_ios< char >& s);
     ~iofmtguard();
   private:
     std::basic_ios< char >& s_;
