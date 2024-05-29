@@ -54,7 +54,7 @@ void semzin::make(std::unordered_map<std::string, std::size_t> &frequencyDict, s
   out << "Dictionary successfully created.\n\n";
 }
 
-void semzin::sortMtoL(std::unordered_map<std::string, std::size_t> &frequencyDict, std::istream &in, std::ostream &out)
+void semzin::sortMtoL(std::unordered_map<std::string, std::size_t> &frequencyDict, std::ostream &out)
 {
   if (frequencyDict.size() == 0)
   {
@@ -72,7 +72,7 @@ void semzin::sortMtoL(std::unordered_map<std::string, std::size_t> &frequencyDic
   out << "\n";
 }
 
-void semzin::sortLtoM(std::unordered_map<std::string, std::size_t> &frequencyDict, std::istream &in, std::ostream &out)
+void semzin::sortLtoM(std::unordered_map<std::string, std::size_t> &frequencyDict, std::ostream &out)
 {
   if (frequencyDict.size() == 0)
   {
@@ -114,7 +114,7 @@ bool semzin::comparatorMin(const std::pair<std::string, std::size_t> &currPair, 
   return currPair.second < nextPair.second;
 }
 
-void semzin::holyTrinityMost(std::unordered_map<std::string, std::size_t> &frequencyDict, std::istream &in, std::ostream &out)
+void semzin::holyTrinityMost(std::unordered_map<std::string, std::size_t> &frequencyDict, std::ostream &out)
 {
   if (frequencyDict.size() == 0)
   {
@@ -130,7 +130,7 @@ void semzin::holyTrinityMost(std::unordered_map<std::string, std::size_t> &frequ
   out << '\n';
 }
 
-void semzin::holyTrinityLeast(std::unordered_map<std::string, std::size_t> &frequencyDict, std::istream &in, std::ostream &out)
+void semzin::holyTrinityLeast(std::unordered_map<std::string, std::size_t> &frequencyDict, std::ostream &out)
 {
   if (frequencyDict.size() == 0)
   {

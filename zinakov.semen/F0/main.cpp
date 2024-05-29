@@ -17,11 +17,11 @@ int main()
 
   cmds["commands"] = std::bind(semzin::commands, _3);
   cmds["make"] = std::bind(semzin::make, _1, _2, _3);
-  cmds["sortMtoL"] = std::bind(semzin::sortMtoL, _1, _2, _3);
-  cmds["sortLtoM"] = std::bind(semzin::sortLtoM, _1, _2, _3);
+  cmds["sortMtoL"] = std::bind(semzin::sortMtoL, _1, _3);
+  cmds["sortLtoM"] = std::bind(semzin::sortLtoM, _1, _3);
   cmds["print"] = std::bind(semzin::print, _1, _3);
-  cmds["holyTrinityMost"] = std::bind(semzin::holyTrinityMost, _1, _2, _3);
-  cmds["holyTrinityLeast"] = std::bind(semzin::holyTrinityLeast, _1, _2, _3);
+  cmds["holyTrinityMost"] = std::bind(semzin::holyTrinityMost, _1, _3);
+  cmds["holyTrinityLeast"] = std::bind(semzin::holyTrinityLeast, _1, _3);
   cmds["find"] = std::bind(semzin::findWord, _1, _2, _3);
   cmds["remove"] = std::bind(semzin::removeWord, _1, _2, _3);
   cmds["deleteDict"] = std::bind(semzin::remove, _1, _3);
