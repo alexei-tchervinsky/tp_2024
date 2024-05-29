@@ -1,23 +1,18 @@
-#ifndef COMMANDS_HPP
-#define COMMANDS_HPP
+#ifndef COMANDS_HPP
+#define COMANDS_HPP
+#include "Structs.hpp"
+#include <algorithm>
+#include <functional>
+#include <regex>
 
-#include "Polygon.hpp"
-#include <iostream>
-#include <vector>
+const std::string ERROR_OF_COMMAND = "<INVALID COMMAND>";
 
-void less_area_command(const std::vector<kabalin::Polygon> &polygons,
-                       std::istream &in, std::ostream &out);
-void same_area_command(const std::vector<kabalin::Polygon> &polygons,
-                       std::istream &in, std::ostream &out);
-void area_command(const std::vector<kabalin::Polygon> &polygons,
-                  std::istream &in, std::ostream &out);
-void max_command(const std::vector<kabalin::Polygon> &polygons,
-                 std::istream &in, std::ostream &out);
-void min_command(const std::vector<kabalin::Polygon> &polygons,
-                 std::istream &in, std::ostream &out);
-void count_command(const std::vector<kabalin::Polygon> &polygons,
-                   std::istream &in, std::ostream &out);
-void ioUI(const std::vector<kabalin::Polygon> &polygons, std::istream &in,
-          std::ostream &out);
+int isIntOrDigit(std::string str);
+void area(std::vector<kabalin::Polygon> &data, std::string &str);
+void max(std::vector<kabalin::Polygon> &data, std::string &str);
+void min(std::vector<kabalin::Polygon> &data, std::string &str);
+void count(std::vector<kabalin::Polygon> &data, std::string &str);
+void maxSeq(std::vector<kabalin::Polygon> &data);
+void lessArea(std::vector<kabalin::Polygon> &data);
 
-#endif // COMMANDS_HPP
+#endif

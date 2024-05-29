@@ -1,127 +1,171 @@
 #include "Commands.hpp"
-#include "Utilities.hpp"
-#include <algorithm>
-#include <iomanip>
-#include <stdexcept>
+#include <limits>
 
-void less_area_command(const std::vector<kabalin::Polygon> &polygons,
-                       std::istream &in, std::ostream &out) {
-  std::string param;
-  in >> param;
-  double threshold = std::stod(param);
+int isIntOrDigit(const std::string str) {
+  std::regex digits("\\d+");
+  std::regex letters("[A-Z]+");
 
-  double sumArea = 0.0;
-  for (const auto &polygon : polygons) {
-    double area = polygonArea(polygon);
-    if (area < threshold) {
-      sumArea += area;
-    }
-  }
-  out << std::setprecision(1) << sumArea << '\n';
+  if (std::regex_match(str, digits))
+    return std::stoi(str);
+  else if (std::regex_match(str, letters))
+    return -1;
+  else
+    return 0;
 }
 
-void same_area_command(const std::vector<kabalin::Polygon> &polygons,
-                       std::istream &in, std::ostream &out) {
-  std::string polygonIndexStr;
-  in >> polygonIndexStr;
-  int polygonIndex = std::stoi(polygonIndexStr);
-  if (polygonIndex < 0 || polygonIndex >= static_cast<int>(polygons.size())) {
-    throw std::invalid_argument("<INVALID INDEX>");
+void area(std::vector<kabalin::Polygon> &data, std::string &str) {
+  auto sum = [](double value, const kabalin::Polygon &pl, const int rem,
+                int divisor) {
+    double res = value;
+    if (pl.points.size() % divisor == static_cast<size_t>(rem) || rem == -1)
+      res += pl.area();
+    return res;
+  };
+
+  if (isIntOrDigit(str) == -1) {
+    if (str == "EVEN") {
+      std::cout << std::accumulate(data.begin(), data.end(), 0.0,
+                                   std::bind(sum, std::placeholders::_1,
+                                             std::placeholders::_2, 0, 2))
+                << std::endl;
+    }
+
+    else if (str == "ODD") {
+      std::cout << std::accumulate(data.begin(), data.end(), 0.0,
+                                   std::bind(sum, std::placeholders::_1,
+                                             std::placeholders::_2, 1, 2))
+                << std::endl;
+    }
+
+    else if (str == "MEAN" && data.size() != 0) {
+      std::cout << std::accumulate(data.begin(), data.end(), 0.0,
+                                   std::bind(sum, std::placeholders::_1,
+                                             std::placeholders::_2, -1, 2)) /
+                       data.size()
+                << std::endl;
+    }
+
+    else
+      throw ERROR_OF_COMMAND;
+  } else if (isIntOrDigit(str) > 2) {
+    std::cout << std::accumulate(data.begin(), data.end(), 0.0,
+                                 std::bind(sum, std::placeholders::_1,
+                                           std::placeholders::_2,
+                                           isIntOrDigit(str),
+                                           std::numeric_limits<int>::max()))
+              << std::endl;
+  } else
+    throw ERROR_OF_COMMAND;
+}
+
+void max(std::vector<kabalin::Polygon> &data, std::string &str) {
+  if (data.empty())
+    throw ERROR_OF_COMMAND;
+  else {
+    if (str == "AREA") {
+      auto maxArea = *std::max_element(
+          data.begin(), data.end(),
+          [](const kabalin::Polygon &pl1, const kabalin::Polygon &pl2) {
+            return pl1.area() < pl2.area();
+          });
+      std::cout << maxArea.area() << std::endl;
+    } else if (str == "VERTEXES") {
+      auto maxVertexes = *std::max_element(
+          data.begin(), data.end(),
+          [](const kabalin::Polygon &pl1, const kabalin::Polygon &pl2) {
+            return pl1.points.size() < pl2.points.size();
+          });
+      std::cout << maxVertexes.points.size() << std::endl;
+    } else
+      throw ERROR_OF_COMMAND;
   }
-  const kabalin::Polygon &polygon = polygons[polygonIndex];
+}
+
+void min(std::vector<kabalin::Polygon> &data, std::string &str) {
+  if (data.empty())
+    throw ERROR_OF_COMMAND;
+  else {
+    if (str == "AREA") {
+      auto maxArea = *std::min_element(
+          data.begin(), data.end(),
+          [](const kabalin::Polygon &pl1, const kabalin::Polygon &pl2) {
+            return pl1.area() < pl2.area();
+          });
+      std::cout << maxArea.area() << std::endl;
+    } else if (str == "VERTEXES") {
+      auto maxVertexes = *std::min_element(
+          data.begin(), data.end(),
+          [](const kabalin::Polygon &pl1, const kabalin::Polygon &pl2) {
+            return pl1.points.size() < pl2.points.size();
+          });
+      std::cout << maxVertexes.points.size() << std::endl;
+    } else
+      throw ERROR_OF_COMMAND;
+  }
+}
+
+void count(std::vector<kabalin::Polygon> &data, std::string &str) {
+  auto cnt = [](kabalin::Polygon &el, const int rem, int divisor) {
+    return el.points.size() % divisor == static_cast<size_t>(rem) || rem == -1;
+  };
+
+  if (isIntOrDigit(str) == -1) {
+    if (str == "EVEN") {
+      std::cout << std::count_if(data.begin(), data.end(),
+                                 std::bind(cnt, std::placeholders::_1, 0, 2))
+                << std::endl;
+    } else if (str == "ODD") {
+      std::cout << std::count_if(data.begin(), data.end(),
+                                 std::bind(cnt, std::placeholders::_1, 1, 2))
+                << std::endl;
+    } else
+      throw ERROR_OF_COMMAND;
+  }
+
+  else if (isIntOrDigit(str) > 2) {
+    std::cout << std::count_if(data.begin(), data.end(),
+                               std::bind(cnt, std::placeholders::_1,
+                                         isIntOrDigit(str),
+                                         std::numeric_limits<int>::max()))
+              << std::endl;
+  } else
+    throw ERROR_OF_COMMAND;
+}
+
+void same(std::vector<kabalin::Polygon> &data, kabalin::Polygon &target) {
   int count = 0;
-  for (const auto &p : polygons) {
-    if (arePolygonsEqual(p, polygon)) {
-      count++;
+
+  for (const auto &polygon : data) {
+    if (polygon.isSame(target)) {
+      ++count;
     }
   }
-  out << count << '\n';
-}
 
-void area_command(const std::vector<kabalin::Polygon> &polygons,
-                  std::istream &in, std::ostream &out) {
-  std::string param;
-  in >> param;
-  if (param == "ODD") {
-    out << std::setprecision(1) << sumAreaByVertexType(polygons, false) << '\n';
-  } else if (param == "EVEN") {
-    out << std::setprecision(1) << sumAreaByVertexType(polygons, true) << '\n';
-  } else if (param == "MEAN") {
-    out << std::setprecision(1) << meanArea(polygons) << '\n';
-  } else {
-    std::size_t vertexCount = std::stoul(param);
-    out << std::setprecision(1) << sumAreaByVertexCount(polygons, vertexCount)
-        << '\n';
-  }
+  std::cout << count << std::endl;
 }
+void lessArea(std::vector<kabalin::Polygon> &data) {
+  if (data.empty())
+    throw ERROR_OF_COMMAND;
 
-void max_command(const std::vector<kabalin::Polygon> &polygons,
-                 std::istream &in, std::ostream &out) {
-  std::string param;
-  in >> param;
-  if (param == "AREA") {
-    out << std::setprecision(1) << getMaxArea(polygons) << '\n';
-  } else if (param == "VERTEXES") {
-    out << getMaxVertexes(polygons) << '\n';
-  } else {
-    throw std::invalid_argument("<INVALID PARAMETER>");
-  }
-}
+  kabalin::Polygon newPoly;
 
-void min_command(const std::vector<kabalin::Polygon> &polygons,
-                 std::istream &in, std::ostream &out) {
-  std::string param;
-  in >> param;
-  if (param == "AREA") {
-    out << std::setprecision(1) << getMinArea(polygons) << '\n';
-  } else if (param == "VERTEXES") {
-    out << getMinVertexes(polygons) << '\n';
-  } else {
-    throw std::invalid_argument("<INVALID PARAMETER>");
-  }
-}
+  std::cin >> newPoly;
+  int el = std::cin.get();
 
-void count_command(const std::vector<kabalin::Polygon> &polygons,
-                   std::istream &in, std::ostream &out) {
-  std::string param;
-  in >> param;
-  if (param == "EVEN") {
-    out << countPolygonsByVertexType(polygons, true) << '\n';
-  } else if (param == "ODD") {
-    out << countPolygonsByVertexType(polygons, false) << '\n';
-  } else {
-    std::size_t vertexCount = std::stoul(param);
-    out << countPolygonsByVertexCount(polygons, vertexCount) << '\n';
-  }
-}
-
-void ioUI(const std::vector<kabalin::Polygon> &polygons, std::istream &in,
-          std::ostream &out) {
-  std::string param;
-  in >> param;
-  if (param == "COUNT" && polygons.size() >= 1) {
-    in >> param;
-    int count = 0;
-    if (param == "ODD") {
-      count = std::count_if(
-          polygons.begin(), polygons.end(),
-          [](const kabalin::Polygon &p) { return p.points.size() % 2 != 0; });
-      out << count << '\n';
-    } else if (param == "EVEN") {
-      count = std::count_if(
-          polygons.begin(), polygons.end(),
-          [](const kabalin::Polygon &p) { return p.points.size() % 2 == 0; });
-      out << count << '\n';
-    } else {
-      int vertexCount = std::stoi(param);
-      count = std::count_if(polygons.begin(), polygons.end(),
-                            [vertexCount](const kabalin::Polygon &p) {
-                              return p.points.size() ==
-                                     static_cast<std::size_t>(vertexCount);
-                            });
-      out << count << '\n';
+  while (el != int('\n') && el != std::cin.eof()) {
+    if (!isspace(el)) {
+      std::cin.setstate(std::istream::failbit);
+      break;
     }
-  } else {
-    throw std::invalid_argument("<INVALID COMMAND>");
+    el = std::cin.get();
   }
+  if (std::cin.fail()) {
+    std::cin.clear();
+    throw ERROR_OF_COMMAND;
+  }
+
+  auto cnt = [&newPoly](kabalin::Polygon el) {
+    return el.area() < newPoly.area();
+  };
+  std::cout << std::count_if(data.begin(), data.end(), cnt) << std::endl;
 }
