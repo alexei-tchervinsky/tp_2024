@@ -17,14 +17,14 @@ namespace commands {
     os << "2. LIST - show list of all dictionaries\n";
     os << "3. CREATE <filename> - create a new reference dictionary, based on text from the given file\n";
     os << "4. RENAME <new dictionary_name> <dictionary_name> - rename the dictionary\n";
-    os << "4. DELETE <dictionary_name> - delete the dictionary with given name\n";
+    os << "5. DELETE <dictionary_name> - delete the dictionary with given name\n";
     os << "for the following commands you need to have a dictionary selected (use command 5)\n";
-    os << "5. USE <dictionary_name> - use the dictionary, based on the given file\n";
-    os << "6. COUNT - show the number of words in the dictionary\n";
-    os << "7. PRINT - show content of the dictionary\n";
-    os << "8. SEARCH <word> - search for the word in the dictionary\n";
-    os << "9. REMOVE <word> - remove the word from the dictionary\n";
-    os << "10. SAVE <filename> - save the dictionary to the file\n";
+    os << "6. USE <dictionary_name> - use the dictionary, based on the given file\n";
+    os << "7. COUNT - show the number of words in the dictionary\n";
+    os << "8. PRINT - show content of the dictionary\n";
+    os << "9. SEARCH <word> - search for the word in the dictionary\n";
+    os << "10. REMOVE <word> - remove the word from the dictionary\n";
+    os << "11. SAVE <filename> - save the dictionary to the file\n";
     os << "===============================================================\n\n";
   }
 
