@@ -62,11 +62,11 @@ namespace rgr
     }
     using stringIO=NodeIO<std::string>;
     std::string command;
-    in>>stringIO{command};
+    in>>stringIO{ command };
     if(!in)
     {
       std::cin.setstate(std::ios::failbit);
-      std::cerr<<"ERR.INVALID INPUT\n";
+      std::cerr<<"ERR.INVALID_INPUT\n";
       return 0;
     }
     if(command=="HELP")
@@ -76,25 +76,8 @@ namespace rgr
         std::cerr<<"INVALID_CMD\n";
         return 0;
       }
-      out<<"GET_GRAPH:"<<"print graph to standart output\n";
-      out<<"ADD_NODE NAME:"<<"insert a new node with a name NAME\n";
-      out<<"ADD_BRANCH NODE_START NODE_END:";
-      out<<"insert a branch from NODE_START to NODE_END\n";
-      out<<"REM_NODE NAME:"<<"remove the node with NAME name\n";
-      out<<"REM_BRANCH NODE_START NODE_END:";
-      out<<"remove a branch from NODE_START to NODE_END\n";
-      out<<"EXISTS_NODE NAME:"<<"returnswhetheranodewithNAMEnameexists\n";
-      out<<"EXISTS_BRANCH NODE_START NODE_END:";
-      out<<"returns whether a branch exists from NODE_START to NODE_END\n";
-      out<<"REMOVE_CYCLES:"<<"removes cycles and parallel branches\n";
-      out<<"GET_DEGREES NAME:"<<"prints all 3 degrees of the node\n";
-      out<<"GET_MAX_DEG:"<<"returns all 3 max degrees in the graph";
-      out<<"(if 2 or more have the biggest degree returns first occurence)\n";
-      out<<"GET_DELTAS:"<<"returns nodes that have only incoming branches\n";
-      out<<"GET_SOURCES:"<<"returns nodes that have only outcoming branches\n";
-      out<<"HELP:"<<"shows this info\n";
-      out<<"DONE\n";
-      return 0;
+      out << "Read Documentation because I hate git and it keeps\n";
+      out << "telling me about non-existent whitespaces\n";
     }
     else if(command=="GET_GRAPH")
     {
