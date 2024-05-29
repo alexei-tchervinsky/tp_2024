@@ -89,7 +89,7 @@ bool bekhova::isString(const std::string& str)
   const std::regex regular("\".*\"");
   return std::regex_match(str, regular);
 }
-bekhova::iofmtguard::iofmtguard(std::basic_ios< char >& s) :
+bekhova::iofmtguard::iofmtguard(std::basic_ios< char >& s):
   s_(s),
   fill_(s.fill()),
   precision_(s.precision()),
