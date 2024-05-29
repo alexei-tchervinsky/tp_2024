@@ -52,9 +52,8 @@ void berezneva::create(DictMap& Dicts, std::istream& in, std::ostream& out)
 
       if (input.is_open())
       {
-        std::string dictName = fileName.replace((std::size_t)(fileName.find(".txt")),
-          (std::size_t)(fileName.find(".txt")) + 4, "");
-
+        std::size_t start{ fileName.find(".txt") };
+        std::string dictName = fileName.replace(start, start + 4, "");
         dict = berezneva::input(input);
         Dicts.emplace(dictName, dict);
       }
