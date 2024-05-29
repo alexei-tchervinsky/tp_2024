@@ -3,7 +3,7 @@
 
 std::pair<std::string, std::string> bekhova::getNextPair(std::string& s)
 {
-  s.erase(0, s.find(':') + 1); 
+  s.erase(0, s.find(':') + 1);
   std::string key = s.substr(0, 4);
   s.erase(0, 5);
   std::string value;
@@ -17,7 +17,7 @@ std::pair<std::string, std::string> bekhova::getNextPair(std::string& s)
     value = s.substr(0, s.find(':'));
     s.erase(0, value.size());
   }
-  return std::make_pair(key, value); 
+  return std::make_pair(key, value);
 }
 std::istream& bekhova::operator>>(std::istream& in, bekhova::DataStruct& ds)
 {
