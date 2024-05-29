@@ -89,6 +89,7 @@ namespace commands {
   }
 
   void rename(std::map<std::string, std::shared_ptr<std::map<std::string, std::list<int>>>>& dictionaries,
+              std::string& currentDict,
               std::istream& is, std::ostream& os) {
     std::string newname, oldname;
     is >> newname >> oldname;
@@ -104,6 +105,9 @@ namespace commands {
       std::shared_ptr<std::map<std::string, std::list<int>>> dictionaryPtr = it->second;
       dictionaries.erase(it);
       dictionaries[newname] = dictionaryPtr;
+      if (currentDict == oldname) {
+        currentDict = newname;
+      }
       os << "Dictionary has been renamed.\n";
     }
   }
@@ -200,14 +204,14 @@ namespace commands {
       throw std::invalid_argument("Error: wrong number of arguments.");
     }
 
-    auto dictionary = *dictionaries.find(currentDict)->second;
+    auto dictionary = dictionaries.find(currentDict)->second;
     std::transform(word.begin(), word.end(), word.begin(), ::tolower);
-    auto it = dictionary.find(word);
-    if (it == dictionary.end()) {
+    auto it = dictionary->find(word);
+    if (it == dictionary->end()) {
       throw std::invalid_argument("Error: word not found.");
     }
     else {
-      dictionary.erase(it);
+      dictionary->erase(word);
       os << "\"" << word << "\" has been removed from the dictionary.\n";
     }
   }

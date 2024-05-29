@@ -15,6 +15,7 @@ namespace commands {
               std::string& currentDict,
               std::istream& is, std::ostream& os);
   void rename(std::map<std::string, std::shared_ptr<std::map<std::string, std::list<int>>>>& dictionaries,
+              std::string& currentDict,
               std::istream& is, std::ostream& os);
   void del(std::map<std::string, std::shared_ptr<std::map<std::string, std::list<int>>>>& dictionaries,
            std::istream& is, std::ostream& os);
