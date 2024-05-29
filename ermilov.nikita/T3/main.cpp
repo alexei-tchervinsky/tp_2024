@@ -4,7 +4,7 @@
 #include "Functions.h"
 #include "Geometry.h"
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
   using namespace ermilov;
 
@@ -45,7 +45,6 @@ int main(int argc, char **argv)
     }
     catch (std::exception& e)
     {
-      std::cerr << e.what() << '\n';
       std::cin.clear();
       std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }

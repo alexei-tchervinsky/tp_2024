@@ -21,6 +21,8 @@ namespace ermilov
       return out;
     }
 
+    auto outError = std::bind(errorMessage, std::placeholders::_1, "<INVALID COMMAND>\n");
+
     std::string commandType, option;
     in >> commandType >> option;
 
@@ -46,7 +48,8 @@ namespace ermilov
         }
         else
         {
-          throw std::logic_error("<INVALID COMMAND>");
+          outError(out);
+          throw std::logic_error("");
         }
       }
     }
@@ -54,7 +57,8 @@ namespace ermilov
     {
       if (polygons.size() == 0)
       {
-        throw std::logic_error("<INVALID COMMAND>");
+        outError(out);
+        throw std::logic_error("");
       }
 
       std::map< std::string, std::function< double(const std::vector< Polygon >& data) > > commands;
@@ -74,7 +78,8 @@ namespace ermilov
       }
       catch (const std::out_of_range& e)
       {
-        throw std::logic_error("<INVALID COMMAND>");
+        outError(out);
+        throw std::logic_error("");
       }
       out.unsetf(std::ios_base::fixed);
     }
@@ -97,7 +102,8 @@ namespace ermilov
       }
       catch (const std::out_of_range& e)
       {
-        throw std::logic_error("<INVALID COMMAND>");
+        outError(out);
+        throw std::logic_error("");
       }
       out.unsetf(std::ios_base::fixed);
     }
@@ -120,7 +126,8 @@ namespace ermilov
         }
         else
         {
-          throw std::logic_error("<INVALID COMMAND>");
+          outError(out);
+          throw std::logic_error("");
         }
       }
     }
@@ -132,13 +139,15 @@ namespace ermilov
     {
       if (polygons.empty())
       {
-        throw std::logic_error("<INVALID COMMAND>");
+        outError(out);
+        throw std::logic_error("");
       }
       out << intersections(polygons, in);
     }
     else
     {
-      throw std::logic_error("<INVALID COMMAND>");
+      outError(out);
+      throw std::logic_error("");
     }
     return out;
   }
@@ -157,9 +166,11 @@ namespace ermilov
 
   double areaMean(const std::vector<Polygon>& polygons)
   {
+    auto outError = std::bind(errorMessage, std::placeholders::_1, "<INVALID COMMAND>\n");
     if (polygons.empty())
     {
-      throw std::logic_error("<INVALID COMMAND>");
+      outError(std::cout);
+      throw std::logic_error("");
     }
     double sumArea = std::accumulate(polygons.begin(), polygons.end(), 0.0, sumAll) / polygons.size();
     return sumArea;
@@ -271,9 +282,13 @@ namespace ermilov
       return 0;
     }
 
+    auto outError = std::bind(errorMessage, std::placeholders::_1, "<INVALID COMMAND>\n");
+
     if (!(in >> deletePolygon))
     {
-      throw std::logic_error("BAD POLYGON");
+
+      outError(std::cout);
+      throw std::logic_error("");
     }
 
     bool found = false;
@@ -436,5 +451,10 @@ namespace ermilov
   bool isSmallerY(const Point& first, const Point& second)
   {
     return (first.y_ < second.y_);
+  }
+
+  void errorMessage(std::ostream& out, const std::string& message)
+  {
+    out << message;
   }
 }

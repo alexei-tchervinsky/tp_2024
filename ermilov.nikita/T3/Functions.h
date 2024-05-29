@@ -26,6 +26,8 @@ namespace ermilov
   bool isSmallerX(const Point& first, const Point& second);
   bool isSmallerY(const Point& first, const Point& second);
 
+  void errorMessage(std::ostream& out, const std::string& message);
+
   //commands
   std::ostream& chooseCommand(std::istream& in, std::ostream& out, std::vector<Polygon>& polygons);
 
