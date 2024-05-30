@@ -75,8 +75,10 @@ void bredyuk::create(huffCode huffmanCode, std::istream& in, std::ostream& out)
     }
     while (prior_que.size() != 1)
     {
-        bredyuk::Node* left = prior_que.top(); prior_que.pop();
-        bredyuk::Node* right = prior_que.top();	prior_que.pop();
+        bredyuk::Node* left = prior_que.top();
+        prior_que.pop();
+        bredyuk::Node* right = prior_que.top();
+        prior_que.pop();
         int sum = left->freq + right->freq;
         prior_que.push(getNode('\0', sum, left, right));
     }
