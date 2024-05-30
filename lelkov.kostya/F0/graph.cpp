@@ -270,4 +270,5 @@ namespace lelkov {
     std::cout << "\n";
     std::cout << "Выберите действие: ";
     }
+    
 }
