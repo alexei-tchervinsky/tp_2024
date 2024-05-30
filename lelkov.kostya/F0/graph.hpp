@@ -3,8 +3,10 @@
 
 #include <vector>
 
-namespace lelkov {
-    class Graph {
+namespace lelkov
+{
+    class Graph
+    {
     public:
         explicit Graph(int n);
 
@@ -23,7 +25,8 @@ namespace lelkov {
         int runGetTreeDiameter();
         void clearGraph();
 
-        ~Graph() {
+        ~Graph()
+        {
             clearGraph();
         }
 
