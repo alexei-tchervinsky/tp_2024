@@ -2,9 +2,7 @@
 #define COMMANDS_HPP
 
 #include "Figure.hpp"
-
 using namespace bredyuk;
-
 namespace commands
 {
 	int isInputNumber(const std::string& num);
