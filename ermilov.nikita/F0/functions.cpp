@@ -14,9 +14,9 @@ namespace ermilov
     {
       return false;
     }
-    for (int i = 0; i < word.size(); i++)
+    for (size_t i = 0; i < word.size(); i++)
     {
-      if (word[i] < 'A' || word[i] > 'Z' && word[i] < 'a' || word[i] > 'z')
+      if (word[i] < 'A' || (word[i] > 'Z' && word[i] < 'a') || word[i] > 'z')
       {
         return false;
       }
@@ -30,9 +30,9 @@ namespace ermilov
     {
       return false;
     }
-    for (int i = 0; i < word.size(); i++)
+    for (size_t i = 0; i < word.size(); i++)
     {
-      if (word[i] < 'À' || word[i] > 'ï' && word[i] < 'ð' || word[i] > 'ÿ')
+      if (word[i] < 'À' || (word[i] > 'ï' && word[i] < 'ð'_) || word[i] > 'ÿ')
       {
         return false;
       }
