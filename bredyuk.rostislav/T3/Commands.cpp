@@ -5,10 +5,10 @@
 #include "Commands.hpp"
 
 using namespace bredyuk;
-using namespace commands;
+using namespace command;
 using namespace std::placeholders;
 
-int commands::isInputNumber(const std::string& str)
+int command::isInputNumber(const std::string& str)
 {
     char* end;
     int res = strtol(str.c_str(), &end, 10);
@@ -18,7 +18,7 @@ int commands::isInputNumber(const std::string& str)
     return res;
 }
 
-bool commands::isRectangle(const Polygon& poly)
+bool command::isRectangle(const Polygon& poly)
 {
     if (poly.points.size() != 4)
     {
@@ -53,7 +53,7 @@ bool commands::isRectangle(const Polygon& poly)
     return d1 == d3 && d2 == d4 && diag1 == diag2 && dotProduct(poly.points[0], poly.points[1], poly.points[2]) == 0;
 }
 
-void commands::area(const std::vector<Polygon>& data)
+void command::area(const std::vector<Polygon>& data)
 {
     std::string arg;
     int num;
@@ -90,7 +90,7 @@ void commands::area(const std::vector<Polygon>& data)
     }
 }
 
-void commands::min(const std::vector<Polygon>& data)
+void command::min(const std::vector<Polygon>& data)
 {
     std::string arg;
     std::cin >> arg;
@@ -114,7 +114,7 @@ void commands::min(const std::vector<Polygon>& data)
 
 }
 
-void commands::max(const std::vector<Polygon>& data)
+void command::max(const std::vector<Polygon>& data)
 {
     std::string arg;
     std::cin >> arg;
@@ -136,7 +136,7 @@ void commands::max(const std::vector<Polygon>& data)
         throw std::invalid_argument("<INVALID COMMAND>");
 }
 
-void commands::count(const std::vector<Polygon>& data)
+void command::count(const std::vector<Polygon>& data)
 {
     std::string arg;
     int num;
@@ -176,12 +176,12 @@ void commands::count(const std::vector<Polygon>& data)
     }
 }
 
-void commands::rects(const std::vector<Polygon>& data)
+void command::rects(const std::vector<Polygon>& data)
 {
     std::cout << std::count_if(data.begin(), data.end(), isRectangle) << std::endl;
 }
 
-void commands::intersections(const std::vector<Polygon>& data)
+void command::intersections(const std::vector<Polygon>& data)
 {
     Polygon arg;
 

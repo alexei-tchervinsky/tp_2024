@@ -1,9 +1,11 @@
-#ifndef COMMANDS_HPP
-#define COMMANDS_HPP
+#ifndef COMMAND_HPP
+#define COMMAND_HPP
 
-#include "Figure.hpp"
+#include "shape.hpp"
+
 using namespace bredyuk;
-namespace commands
+
+namespace command
 {
 	int isInputNumber(const std::string& num);
 	bool isRectangle(const Polygon& poly);
