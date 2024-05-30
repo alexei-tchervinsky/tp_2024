@@ -278,7 +278,7 @@ namespace grudov
     }) << '\n';
   }
 
-  void maxseqgrudov(const std::vector< grudov::Polygon > polygons, std::istream &in, std::ostream &out)
+  void maxseq(const std::vector< grudov::Polygon > polygons, std::istream &in, std::ostream &out)
   {
     Polygon arg;
     in >> arg;
