@@ -1,4 +1,4 @@
-#ifndef COMMANDS_HPP
+#ifndef COMMAND_HPP
 #define COMMAND_HPP
 
 #include <exception>
