@@ -1,6 +1,6 @@
-#include <algorithm> //
-#include <numeric> //
-#include <cmath> //
+#include <algorithm> //transform unique remove_if sort
+#include <numeric> //accumulate
+#include <cmath> //sqrt
 
 #include "shape.hpp"
 

@@ -1,7 +1,7 @@
-#include <functional> //
-#include <algorithm> //
-#include <numeric> //
-#include <cmath> //
+#include <functional> //placeholders
+#include <algorithm> //min_element, max_element, transform, remove_if, count_if
+#include <numeric> //accumulate
+#include <cmath> //pow
 
 #include "command.hpp"
 
