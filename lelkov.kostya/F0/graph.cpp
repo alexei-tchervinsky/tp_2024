@@ -161,10 +161,10 @@ namespace lelkov
         }
         std::cout << "Введите вес ребра: ";
         std::cin >> weight;
-        if (!std::cin)
+        if (!std::cin || weight <= 0)
         {
             throw std::runtime_error("Некорректный ввод! Вес ребра должен быть "
-                                     "целым числом.");
+                                     "целым числом больше нуля.");
         }
 
         if (start == end)
