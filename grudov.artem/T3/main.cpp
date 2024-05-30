@@ -44,10 +44,11 @@ int main(int argc, char* argv[])
     try {
       cmds.at(command)(polygons, std::cin, std::cout);
     }
-    catch (const std::exception& ex) {
+    catch (const std::exception& ex)
+    {
       std::cout << ex.what() << '\n';
       std::cin.clear();
-      std::cin.ignore(std::numeric_limits< std::streamsize >::max(), '\n');
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
   }
   return 0;

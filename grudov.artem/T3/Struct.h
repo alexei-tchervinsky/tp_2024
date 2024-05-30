@@ -32,7 +32,7 @@ namespace grudov
     std::vector< Point > points_;
     bool operator==(const Polygon& other) const;
   };
-
+  double areaPolygon(const Polygon& polygon);
   std::istream &operator>>(std::istream &in, DelimiterIO &&dest);
   std::istream &operator>>(std::istream &in, Point &dest);
   std::istream &operator>>(std::istream &in, Polygon &dest);

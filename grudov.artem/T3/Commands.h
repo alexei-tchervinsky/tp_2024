@@ -4,7 +4,6 @@
 
 namespace grudov
 {
-  double areaPolygon(const Polygon& polygon);
   double get_sum(double result, const Polygon& polygon, std::size_t arg);
   double get_area(std::size_t arg, const std::vector< grudov::Polygon > polygons);
   double get_max(std::size_t arg, const std::vector< grudov::Polygon > polygons);
