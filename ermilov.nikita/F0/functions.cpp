@@ -119,7 +119,7 @@ namespace ermilov
     {
       out << "Error! No such word in dictionary.\n\n";
     }
-    else if (in.peek() == '\n' && in.eof())
+    else
     {
       unit iter = map.find(deleteEng);
       std::string deleteRus = subTranslate(iter->second);
@@ -141,10 +141,6 @@ namespace ermilov
       }
       std::ofstream ofile("words.txt");
       ofile << wordsList;
-    }
-    else
-    {
-      throw std::invalid_argument("");
     }
     out << '\n';
   }
