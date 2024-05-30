@@ -55,6 +55,7 @@ void grudov::add_vertex(Graph& graph, std::ostream& out){
             graph[i].push_back(0);
         }
     }
+    out << "VERTEX " << graph.size() << " ADDED\n";
 }
 void grudov::delete_vertex(Graph &graph, std::istream &in, std::ostream &out)
 {
@@ -72,6 +73,7 @@ void grudov::delete_vertex(Graph &graph, std::istream &in, std::ostream &out)
     for(std::size_t i = 0; i < graph.size(); i++){
         graph[i].erase(graph[i].begin()+vertex);
     }
+    out << "VERTEX " << vertex << " DELETED\n";
 }
 void grudov::add_edge(Graph &graph, std::istream &in, std::ostream &out)
 {
@@ -94,6 +96,7 @@ void grudov::add_edge(Graph &graph, std::istream &in, std::ostream &out)
         throw std::invalid_argument("<VERTEX DOESNT EXIST>");
     }
     graph[vertex1-1][vertex2-1] = 1;
+    out << "EDGE FROM " << vertex1 << " TO " << vertex2 << " ADDED\n";
 }
 
 void grudov::empty(Graph &graph, std::ostream &out)
