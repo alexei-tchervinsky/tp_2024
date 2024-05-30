@@ -29,8 +29,8 @@ namespace grudov
     void DFS(Graph& graph, std::istream& in, std::ostream& out);
     void Topological_sort(Graph& graph, std::ostream& out);
 
-    void DFS_rec(Graph &graph,  std::ostream &out, std::vector<bool>& visited, int from);
-    void Topological_sort_rec(Graph &graph, std::vector<int>& visited, std::stack<int>& order, int from);
+    void DFS_rec(Graph &graph,  std::ostream &out, std::vector<bool>& visited, std::size_t from);
+    void Topological_sort_rec(Graph &graph, std::vector<int>& visited, std::stack<int>& order, std::size_t from);
 
 }
 

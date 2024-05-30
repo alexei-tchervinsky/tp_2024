@@ -22,17 +22,17 @@ void grudov::show(Graph& graph, std::ostream& out)
         out << "GRAPH IS EMPTY\n";
     } else {
         out << std::setw(10) << "|";
-        for(int i = 0; i < graph.size(); i++) {
+        for(std::size_t i = 0; i < graph.size(); i++) {
             out << std::setw(5) << i+1 << std::setw(5) << "|";
         }
         out << "\n";
-        for(int i = 0; i < graph.size(); i++){
-            for(int j = 0; j < graph[i].size()+1; j++){
+        for(std::size_t i = 0; i < graph.size(); i++){
+            for(std::size_t j = 0; j < graph[i].size()+1; j++){
                 out << std::setw(10) << "__________";
             }
             out << "\n";
             out << std::setw(5) << i+1 << std::setw(5) << "|";
-            for(int j = 0; j < graph[i].size(); j++){
+            for(std::size_t j = 0; j < graph[i].size(); j++){
                 out << std::setw(5) << graph[i][j] << std::setw(5) << "|";
             }
             out << "\n";
@@ -47,11 +47,11 @@ void grudov::add_vertex(Graph& graph, std::ostream& out){
         graph.push_back(temp);
     } else {
         std::vector<bool> temp(graph[0].size());
-        for(int i = 0; i < temp.size(); i++){
+        for(std::size_t i = 0; i < temp.size(); i++){
             temp[i] = 0;
         }
         graph.push_back(temp);
-        for(int i = 0; i < graph.size(); i++){
+        for(std::size_t i = 0; i < graph.size(); i++){
             graph[i].push_back(0);
         }
     }
@@ -64,12 +64,12 @@ void grudov::delete_vertex(Graph &graph, std::istream &in, std::ostream &out)
     {
         throw std::invalid_argument("<INVALID COMMAND>");
     }
-    if(vertex > graph.size() || vertex < 1){
+    if(static_cast<std::size_t>(vertex) > graph.size() || vertex < 1){
         throw std::invalid_argument("<VERTEX DOESNT EXIST>");
     }
     vertex--;
     graph.erase(graph.begin()+vertex);
-    for(int i = 0; i < graph.size(); i++){
+    for(std::size_t i = 0; i < graph.size(); i++){
         graph[i].erase(graph[i].begin()+vertex);
     }
 }
@@ -81,7 +81,7 @@ void grudov::add_edge(Graph &graph, std::istream &in, std::ostream &out)
     {
         throw std::invalid_argument("<INVALID COMMAND>");
     }
-    if(vertex1 > graph.size() || vertex1 < 1){
+    if(static_cast<std::size_t>(vertex1) > graph.size() || vertex1 < 1){
         throw std::invalid_argument("<VERTEX DOESNT EXIST>");
     }
 
@@ -90,7 +90,7 @@ void grudov::add_edge(Graph &graph, std::istream &in, std::ostream &out)
     {
         throw std::invalid_argument("<INVALID COMMAND>");
     }
-    if(vertex2 > graph.size() || vertex2 < 1){
+    if(static_cast<std::size_t>(vertex2) > graph.size() || vertex2 < 1){
         throw std::invalid_argument("<VERTEX DOESNT EXIST>");
     }
     graph[vertex1-1][vertex2-1] = 1;
@@ -113,7 +113,7 @@ void grudov::check_vertex(Graph &graph, std::istream &in, std::ostream &out)
     {
       throw std::invalid_argument("<INVALID COMMAND>");
     }
-    if(vertex > graph.size() || vertex < 1){
+    if(static_cast<std::size_t>(vertex) > graph.size() || vertex < 1){
         out << "VERTEX DOESN EXIST\n";
     }else {
         out << "VERTEX EXIST\n";
@@ -128,7 +128,7 @@ void grudov::check_edge(Graph &graph, std::istream &in, std::ostream &out)
     {
       throw std::invalid_argument("<INVALID COMMAND>");
     }
-    if(vertex1 > graph.size() || vertex1 < 1){
+    if(static_cast<std::size_t>(vertex1) > graph.size() || vertex1 < 1){
         throw std::invalid_argument("<VERTEX DOESNT EXIST>");
     }
 
@@ -137,7 +137,7 @@ void grudov::check_edge(Graph &graph, std::istream &in, std::ostream &out)
     {
       throw std::invalid_argument("<INVALID COMMAND>");
     }
-    if(vertex2 > graph.size() || vertex2 < 1){
+    if(static_cast<std::size_t>(vertex2) > graph.size() || vertex2 < 1){
         throw std::invalid_argument("<VERTEX DOESNT EXIST>");
     }
     if(graph[vertex1-1][vertex2-1]){
@@ -149,9 +149,8 @@ void grudov::check_edge(Graph &graph, std::istream &in, std::ostream &out)
 
 void grudov::check_any_edge(Graph &graph,  std::ostream &out)
 {
-    bool state;
-    for(int i = 0; i < graph.size(); i++){
-        for(int j = 0; j < graph.size(); j++){
+    for(std::size_t i = 0; i < graph.size(); i++){
+        for(std::size_t j = 0; j < graph.size(); j++){
             if(graph[i][j]){
                 out << "EDGES EXIST\n";
                 return;
@@ -172,7 +171,7 @@ void grudov::DFS(Graph &graph, std::istream &in, std::ostream &out)
         {
           throw std::invalid_argument("<INVALID COMMAND>");
         }
-        if(vertex > graph.size() || vertex < 1){
+        if(static_cast<std::size_t>(vertex) > graph.size() || vertex < 1){
             throw std::invalid_argument("<VERTEX DOESNT EXIST>");
         }
         std::vector<bool> visited(graph.size());
@@ -189,7 +188,7 @@ void grudov::Topological_sort(Graph &graph, std::ostream &out)
     } else {
         std::stack<int> order;
         std::vector<int> visited(graph.size());
-        for(int i = 0; i < graph.size(); i++){
+        for(std::size_t i = 0; i < graph.size(); i++){
            Topological_sort_rec(graph, visited, order, i);
         }
         out << "Topological sort: " << "\n";
@@ -201,22 +200,22 @@ void grudov::Topological_sort(Graph &graph, std::ostream &out)
     }
 }
 
-void grudov::DFS_rec(Graph &graph, std::ostream &out, std::vector<bool> &visited, int from)
+void grudov::DFS_rec(Graph &graph, std::ostream &out, std::vector<bool> &visited, std::size_t from)
 {
     visited[from] = 1;
     out << from+1 << " ";
-    for(int to = 0; to < graph[from].size(); to++){
+    for(std::size_t to = 0; to < graph[from].size(); to++){
         if(graph[from][to] && !visited[to]){
             DFS_rec(graph, out, visited, to);
         }
     }
 }
 
-void grudov::Topological_sort_rec(Graph &graph, std::vector<int> &visited, std::stack<int> &order, int from)
+void grudov::Topological_sort_rec(Graph &graph, std::vector<int> &visited, std::stack<int> &order, std::size_t from)
 {
     if(visited[from] != 2){
         visited[from] = 1;
-        for(int to = 0; to < graph[from].size(); to++){
+        for(std::size_t to = 0; to < graph[from].size(); to++){
             if(graph[from][to]){
                 if(visited[to] == 0){
                     Topological_sort_rec(graph, visited, order, to);
