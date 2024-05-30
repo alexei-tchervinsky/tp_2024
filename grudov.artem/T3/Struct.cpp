@@ -65,7 +65,7 @@ namespace grudov
 
   bool Polygon::operator==(const Polygon& other) const
   {
-    return (points_ == points_);
+    return (points_ == other.points_);
   }
 
   bool Point::operator==(const Point& other) const
