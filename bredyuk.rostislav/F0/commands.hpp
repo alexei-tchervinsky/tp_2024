@@ -7,7 +7,7 @@ namespace bredyuk
 {
 	struct Node
 	{
-		char ch;
+        char ch;
 		int freq = 0;
 		Node* left;
 		Node* right = nullptr;
