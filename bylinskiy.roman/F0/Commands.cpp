@@ -19,8 +19,6 @@ void dijkstraCommand(std::istream& input, std::ostream& output, Graph& graph) {
     std::string startVertex;
     input >> startVertex;
 
-    iofmtguard guard(output);
-
     if (graph.adjList.find(startVertex) == graph.adjList.end()) {
         output << "Vertex does not exist\n";
     }
@@ -60,8 +58,6 @@ void shortestPathCommand(std::istream& input, std::ostream& output, const Graph&
     std::string startVertex, endVertex;
     input >> startVertex >> endVertex;
 
-    iofmtguard guard(output);
-
     if (graph.distances.find(endVertex) == graph.distances.end()) {
         output << "One of the vertices doesn't exists\n";
     }
@@ -90,8 +86,6 @@ void addCommand(std::istream& input, std::ostream& output, Graph& graph) {
     std::string type;
     input >> type;
 
-    iofmtguard guard(output);
-
     if (type == "v") {
         std::string vertex;
         input >> vertex;
@@ -111,8 +105,6 @@ void addCommand(std::istream& input, std::ostream& output, Graph& graph) {
 void delCommand(std::istream& input, std::ostream& output, Graph& graph) {
     std::string type;
     input >> type;
-
-    iofmtguard guard(output);
 
     if (type == "v") {
         std::string vertex;
@@ -147,8 +139,6 @@ void updateEdgeCommand(std::istream& input, std::ostream& output, Graph& graph) 
     std::string type;
     input >> type;
 
-    iofmtguard guard(output);
-
     if (type == "e") {
         std::string vertex1, vertex2;
         int newWeight;
@@ -161,7 +151,6 @@ void updateEdgeCommand(std::istream& input, std::ostream& output, Graph& graph) 
 }
 
 void printInvalidCommand(std::ostream& output) {
-    iofmtguard guard(output);
 
     output << "<INVALID COMMAND>\n";
 }
