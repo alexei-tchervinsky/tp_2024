@@ -1,5 +1,5 @@
-#ifndef FIGURE_HPP
-#define FIGURE_HPP
+#ifndef SHAPE_HPP
+#define SHAPE_HPP
 
 #include <iostream>
 #include <vector>

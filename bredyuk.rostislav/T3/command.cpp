@@ -1,8 +1,9 @@
-#include <functional>
-#include <numeric>
-#include <algorithm>
-#include <cmath>
-#include "Commands.hpp"
+#include <functional> //
+#include <algorithm> //
+#include <numeric> //
+#include <cmath> //
+
+#include "command.hpp"
 
 using namespace bredyuk;
 using namespace command;

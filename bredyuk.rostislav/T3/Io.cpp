@@ -1,4 +1,4 @@
-#include "Figure.hpp"
+#include "shape.hpp"
 
 std::istream& bredyuk::operator>>(std::istream& input, Sep&& res)
 {

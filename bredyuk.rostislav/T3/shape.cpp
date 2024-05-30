@@ -1,8 +1,8 @@
-#include <algorithm>
-#include <numeric>
-#include <cmath>
+#include <algorithm> //
+#include <numeric> //
+#include <cmath> //
 
-#include "Figure.hpp"
+#include "shape.hpp"
 
 using namespace bredyuk;
 

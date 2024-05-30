@@ -5,7 +5,7 @@
 #include <map>
 #include <functional>
 
-#include "Commands.hpp"
+#include "command.hpp"
 
 using namespace bredyuk;
 
@@ -13,7 +13,7 @@ int main(int argC, char* argV[])
 {
     if (argC != 2)
     {
-        std::cerr << "<INCORRECT USAGE>" << std::endl;
+        std::cerr << "INCORRECT USAGE" << std::endl;
         return 1;
     }
 
@@ -23,7 +23,7 @@ int main(int argC, char* argV[])
 
     if (!file)
     {
-        std::cerr << "<FILE NOT FOUND>" << std::endl;
+        std::cerr << "File not found!" << std::endl;
         return 1;
     }
 
