@@ -5,20 +5,20 @@
 
 namespace bredyuk
 {
-	struct Node
-	{
+    struct Node
+    {
         char ch;
-		int freq = 0;
-		Node* left;
-		Node* right = nullptr;
-	};
-	using huffCode = std::unordered_map<char, std::string>;
+        int freq = 0;
+        Node* left;
+        Node* right = nullptr;
+    };
+    using huffCode = std::unordered_map<char, std::string>;
 
-	void help(std::ostream& out);
-	void create(huffCode huffmanCode, std::istream& in, std::ostream& out);
-	void display(huffCode huffmanCode, std::ostream& out);
+    void help(std::ostream& out);
+    void create(huffCode huffmanCode, std::istream& in, std::ostream& out);
+    void display(huffCode huffmanCode, std::ostream& out);
 
-	void encode(huffCode huffmanCode, bredyuk::Node* root, std::string str);
+    void encode(huffCode huffmanCode, bredyuk::Node* root, std::string str);
 }
 
 #endif
