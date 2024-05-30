@@ -2,7 +2,7 @@
 #define COMMAND_HPP
 #include "shape.hpp"
 #include <iostream>
-using namespace bredyuk;
+namespace bredyuk
 namespace command {
     int isInputNumber(const std::string& num);
     bool isRectangle(const Polygon& poly);
