@@ -32,9 +32,12 @@ namespace ermilov
     }
     for (size_t i = 0; i < word.size(); i++)
     {
-      if (word[i] < 'À' || (word[i] > 'ï' && word[i] < 'ð'_) || word[i] > 'ÿ')
+      if (word[i] < -64 || word[i] > -1)
       {
-        return false;
+        if (word[i] != -72 && word[i] != -88)
+        {
+          return false;
+        }
       }
     }
     return true;
