@@ -1,14 +1,9 @@
 #ifndef COMMAND_HPP
 #define COMMAND_HPP
-
-//
-//
 #include "shape.hpp"
 #include <iostream>
-
 using namespace bredyuk;
 namespace command {
-    
     int isInputNumber(const std::string& num);
     bool isRectangle(const Polygon& poly);
     void area(const std::vector<Polygon>& data);
@@ -18,5 +13,4 @@ namespace command {
     void rects(const std::vector<Polygon>& data);
     void intersections(const std::vector<Polygon>& data);
 }
-
-#endif //
+#endif
