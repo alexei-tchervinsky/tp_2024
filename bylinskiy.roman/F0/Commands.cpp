@@ -4,7 +4,6 @@
 #include <queue>
 #include <functional>
 #include <algorithm>
-#include "iofmtguard.h"
 #include "Commands.h"
 #include "GraphUtils.h"
 

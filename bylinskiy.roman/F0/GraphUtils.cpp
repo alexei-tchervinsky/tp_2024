@@ -1,7 +1,6 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
-#include "iofmtguard.h"
 #include "GraphUtils.h"
 
 void addVertex(Graph& graph, const std::string& vertex) {
