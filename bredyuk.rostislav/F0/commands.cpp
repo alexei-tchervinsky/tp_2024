@@ -30,6 +30,10 @@ struct compare
     }
 };
 void bredyuk::display(huffCode& huffmanCode, std::istream& in, std::ostream& out) {
+    if (!in)
+    {
+        throw std::runtime_error("<INVALID COMMAND>");
+    }
     for (auto pair : huffmanCode) {
         out << pair.first << " " << pair.second << '\n';
     }
