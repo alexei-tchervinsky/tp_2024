@@ -223,8 +223,8 @@ bool arePolygonsCompatible(const kabalin::Polygon &a,
               return std::tie(a.x, a.y) < std::tie(b.x, b.y);
             });
 
-  return std::equal(translatedA.begin(), translatedA.end(),
-                    translatedB.begin());
+  return std::equal(translatedA.begin(), translatedA.end(), translatedB.begin(),
+                    translatedB.end());
 }
 
 } // namespace kabalin
