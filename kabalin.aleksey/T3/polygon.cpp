@@ -54,6 +54,8 @@ std::istream &operator>>(std::istream &in, Polygon &dest) {
     in >> point;
     if (in) {
       polygon.points.push_back(point);
+    } else {
+      break;
     }
   }
 
@@ -190,16 +192,9 @@ int countPolygonsByVertexCount(const std::vector<kabalin::Polygon> &polygons,
                          return polygon.points.size() == vertexCount;
                        });
 }
-bool areAllPointsUnique(const Polygon &polygon) {
-  std::set<Point> uniquePoints(polygon.points.begin(), polygon.points.end());
-  return uniquePoints.size() == polygon.points.size();
-}
 
 bool arePolygonsCompatible(const kabalin::Polygon &a,
                            const kabalin::Polygon &b) {
-  if (!areAllPointsUnique(a) || !areAllPointsUnique(b)) {
-    throw std::invalid_argument("<INVALID COMMAND>");
-  }
   if (a.points.size() != b.points.size()) {
     return false;
   }

@@ -53,8 +53,8 @@ void max_command(const std::vector<kabalin::Polygon> &polygons,
 void less_area_command(const std::vector<kabalin::Polygon> &polygons,
                        std::istream &in, std::ostream &out) {
   kabalin::Polygon referencePolygon;
-  in >> referencePolygon;
-  if (!in || !areAllPointsUnique(referencePolygon)) {
+
+  if (!(in >> referencePolygon)) {
     throw std::invalid_argument("<INVALID COMMAND>");
   }
   double referenceArea = polygonArea(referencePolygon);
@@ -110,8 +110,7 @@ void count_command(const std::vector<kabalin::Polygon> &polygons,
 void same_area_command(const std::vector<kabalin::Polygon> &polygons,
                        std::istream &in, std::ostream &out) {
   kabalin::Polygon referencePolygon;
-  in >> referencePolygon;
-  if (!in || !areAllPointsUnique(referencePolygon)) {
+  if (!(in >> referencePolygon)) {
     throw std::invalid_argument("<INVALID COMMAND>");
   }
 
