@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <fstream>
 #include <limits>
+#include <set>
 #include <stdexcept>
 #include <tuple>
 
@@ -101,6 +102,9 @@ double sumAreaByVertexType(const std::vector<kabalin::Polygon> &polygons,
 }
 
 double meanArea(const std::vector<kabalin::Polygon> &polygons) {
+  if (polygons.empty()) {
+    throw std::invalid_argument("No polygons available to calculate mean area");
+  }
   double totalArea = 0.0;
   for (const auto &polygon : polygons) {
     totalArea += polygonArea(polygon);
@@ -120,6 +124,9 @@ double sumAreaByVertexCount(const std::vector<kabalin::Polygon> &polygons,
 }
 
 double getMaxArea(const std::vector<kabalin::Polygon> &polygons) {
+  if (polygons.empty()) {
+    throw std::invalid_argument("No polygons available to calculate max area");
+  }
   return polygonArea(*std::max_element(
       polygons.begin(), polygons.end(),
       [](const kabalin::Polygon &a, const kabalin::Polygon &b) {
@@ -128,6 +135,10 @@ double getMaxArea(const std::vector<kabalin::Polygon> &polygons) {
 }
 
 std::size_t getMaxVertexes(const std::vector<kabalin::Polygon> &polygons) {
+  if (polygons.empty()) {
+    throw std::invalid_argument(
+        "No polygons available to calculate max vertexes");
+  }
   return std::max_element(
              polygons.begin(), polygons.end(),
              [](const kabalin::Polygon &a, const kabalin::Polygon &b) {
@@ -137,6 +148,9 @@ std::size_t getMaxVertexes(const std::vector<kabalin::Polygon> &polygons) {
 }
 
 double getMinArea(const std::vector<kabalin::Polygon> &polygons) {
+  if (polygons.empty()) {
+    throw std::invalid_argument("No polygons available to calculate min area");
+  }
   return polygonArea(*std::min_element(
       polygons.begin(), polygons.end(),
       [](const kabalin::Polygon &a, const kabalin::Polygon &b) {
@@ -145,6 +159,10 @@ double getMinArea(const std::vector<kabalin::Polygon> &polygons) {
 }
 
 std::size_t getMinVertexes(const std::vector<kabalin::Polygon> &polygons) {
+  if (polygons.empty()) {
+    throw std::invalid_argument(
+        "No polygons available to calculate min vertexes");
+  }
   return std::min_element(
              polygons.begin(), polygons.end(),
              [](const kabalin::Polygon &a, const kabalin::Polygon &b) {
@@ -168,6 +186,10 @@ int countPolygonsByVertexCount(const std::vector<kabalin::Polygon> &polygons,
                        [vertexCount](const kabalin::Polygon &polygon) {
                          return polygon.points.size() == vertexCount;
                        });
+}
+bool areAllPointsUnique(const Polygon &polygon) {
+  std::set<Point> uniquePoints(polygon.points.begin(), polygon.points.end());
+  return uniquePoints.size() == polygon.points.size();
 }
 
 bool arePolygonsCompatible(const kabalin::Polygon &a,

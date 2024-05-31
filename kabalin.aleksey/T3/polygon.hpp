@@ -47,5 +47,6 @@ int countPolygonsByVertexType(const std::vector<kabalin::Polygon> &polygons,
 
 int countPolygonsByVertexCount(const std::vector<kabalin::Polygon> &polygons,
                                std::size_t vertexCount);
+bool areAllPointsUnique(const Polygon &polygon);
 } // namespace kabalin
 #endif // POLYGON_HPP
