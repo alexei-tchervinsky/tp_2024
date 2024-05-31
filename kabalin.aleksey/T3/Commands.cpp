@@ -53,10 +53,8 @@ void max_command(const std::vector<kabalin::Polygon> &polygons,
 void less_area_command(const std::vector<kabalin::Polygon> &polygons,
                        std::istream &in, std::ostream &out) {
   kabalin::Polygon referencePolygon;
-  try {
-    if (!(in >> referencePolygon)) {
-      throw std::invalid_argument("<INVALID COMMAND>");
-    }
+
+  if (in >> referencePolygon) {
     double referenceArea = polygonArea(referencePolygon);
 
     int count = 0;
@@ -66,7 +64,7 @@ void less_area_command(const std::vector<kabalin::Polygon> &polygons,
       }
     }
     out << count << '\n';
-  } catch (std::exception &ex) {
+  } else {
     throw std::invalid_argument("<INVALID COMMAND>");
   }
 }
@@ -113,20 +111,24 @@ void count_command(const std::vector<kabalin::Polygon> &polygons,
 void same_area_command(const std::vector<kabalin::Polygon> &polygons,
                        std::istream &in, std::ostream &out) {
   kabalin::Polygon referencePolygon;
-  try {
-    if (!(in >> referencePolygon)) {
-      throw std::invalid_argument("<INVALID COMMAND>");
-    }
-
+  if (in >> referencePolygon) {
     int count = 0;
     for (const auto &polygon : polygons) {
       if (arePolygonsCompatible(polygon, referencePolygon)) {
         ++count;
       }
+      out << count << '\n';
     }
-    out << count << '\n';
-  } catch (std::exception &ex) {
-    throw std::invalid_argument("<INVALID COMMAND>");
+  } else {
+    throw std::invalid_argument("<INVALID COMMAND");
   }
+
+  int count = 0;
+  for (const auto &polygon : polygons) {
+    if (arePolygonsCompatible(polygon, referencePolygon)) {
+      ++count;
+    }
+  }
+  out << count << '\n';
 }
 } // namespace kabalin
