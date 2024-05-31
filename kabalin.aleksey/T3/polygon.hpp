@@ -7,19 +7,21 @@
 
 namespace kabalin {
 struct Point {
-  double x, y;
-
+  int x, y;
   bool operator==(const Point &other) const;
 };
 
-class Polygon {
-public:
+struct Polygon {
   std::vector<Point> points;
-
-  friend std::istream &operator>>(std::istream &is, Polygon &polygon);
 };
-} // namespace kabalin
 
+struct DelimiterIO {
+  char del;
+};
+
+std::istream &operator>>(std::istream &in, DelimiterIO &&dest);
+std::istream &operator>>(std::istream &in, Point &dest);
+std::istream &operator>>(std::istream &in, Polygon &dest);
 double polygonArea(const kabalin::Polygon &polygon);
 
 bool arePolygonsEqual(const kabalin::Polygon &a, const kabalin::Polygon &b);
@@ -45,5 +47,5 @@ int countPolygonsByVertexType(const std::vector<kabalin::Polygon> &polygons,
 
 int countPolygonsByVertexCount(const std::vector<kabalin::Polygon> &polygons,
                                std::size_t vertexCount);
-
+} // namespace kabalin
 #endif // POLYGON_HPP
