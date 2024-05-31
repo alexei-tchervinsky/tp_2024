@@ -56,16 +56,15 @@ void less_area_command(const std::vector<kabalin::Polygon> &polygons,
 
   if (!(in >> referencePolygon)) {
     throw std::invalid_argument("<INVALID COMMAND>");
-  }
-  double referenceArea = polygonArea(referencePolygon);
+  } else {
+    double referenceArea = polygonArea(referencePolygon);
 
-  int count = 0;
-  for (const auto &polygon : polygons) {
-    if (polygonArea(polygon) < referenceArea) {
-      ++count;
+    int count = 0;
+    for (const auto &polygon : polygons) {
+      if (polygonArea(polygon) < referenceArea) {
+        ++count;
+      }
     }
-  }
-  if (count != 0) {
     out << count << '\n';
   }
 }
@@ -114,15 +113,13 @@ void same_area_command(const std::vector<kabalin::Polygon> &polygons,
   kabalin::Polygon referencePolygon;
   if (!(in >> referencePolygon)) {
     throw std::invalid_argument("<INVALID COMMAND>");
-    out << "";
-  }
-  int count = 0;
-  for (const auto &polygon : polygons) {
-    if (arePolygonsCompatible(polygon, referencePolygon)) {
-      ++count;
+  } else {
+    int count = 0;
+    for (const auto &polygon : polygons) {
+      if (arePolygonsCompatible(polygon, referencePolygon)) {
+        ++count;
+      }
     }
-  }
-  if (count != 0) {
     out << count << '\n';
   }
 }
