@@ -1,4 +1,5 @@
 #include "Commands.hpp"
+#include "polygon.hpp"
 #include <algorithm>
 #include <exception>
 #include <iomanip>
@@ -53,7 +54,7 @@ void less_area_command(const std::vector<kabalin::Polygon> &polygons,
                        std::istream &in, std::ostream &out) {
   kabalin::Polygon referencePolygon;
   in >> referencePolygon;
-  if (!in) {
+  if (!in || !areAllPointsUnique(referencePolygon)) {
     throw std::invalid_argument("<INVALID COMMAND>");
   }
   double referenceArea = polygonArea(referencePolygon);
@@ -110,7 +111,7 @@ void same_area_command(const std::vector<kabalin::Polygon> &polygons,
                        std::istream &in, std::ostream &out) {
   kabalin::Polygon referencePolygon;
   in >> referencePolygon;
-  if (!in) {
+  if (!in || !areAllPointsUnique(referencePolygon)) {
     throw std::invalid_argument("<INVALID COMMAND>");
   }
 
