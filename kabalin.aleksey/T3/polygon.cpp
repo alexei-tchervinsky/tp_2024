@@ -67,9 +67,7 @@ std::istream &operator>>(std::istream &in, Polygon &dest) {
 }
 
 double polygonArea(const kabalin::Polygon &polygon) {
-  if (!areAllPointsUnique(polygon)) {
-    throw std::invalid_argument("<INVALID COMMAND>");
-  }
+
   double area = 0.0;
   int n = polygon.points.size();
   for (int i = 0; i < n; ++i) {
