@@ -3,12 +3,16 @@
 
 #include <cmath>
 #include <iostream>
+#include <tuple>
 #include <vector>
 
 namespace kabalin {
 struct Point {
   int x, y;
   bool operator==(const Point &other) const;
+  bool operator<(const Point &other) const {
+    return std::tie(x, y) < std::tie(other.x, other.y);
+  }
 };
 
 struct Polygon {
