@@ -6,8 +6,6 @@ int main()
 
 std::cout<<"kanzhravi.ali"<<std::endl;
 
-return 0; 
+return 0;
 
 }
-
-
