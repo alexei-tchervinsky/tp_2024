@@ -1,7 +1,7 @@
 #include "Delimiter.h"
 
 namespace lawrenced {
-    
+
     std::istream& operator>>(std::istream& in, const Delimiter& exp) {
         char current_char;
         if (in >> current_char && current_char != exp.expected) {
@@ -9,7 +9,8 @@ namespace lawrenced {
         }
         return in;
     }
-    
+
+
     std::istream& operator>>(std::istream& in, const StringDelimiter& exp) {
         const char* p = exp.expected;
         char ch;
@@ -22,4 +23,4 @@ namespace lawrenced {
         return in;
     }
 
-} // namespace jean
+} // namespace lawrenced
