@@ -19,8 +19,8 @@ namespace lawrenced {
         if (*p != '\0') {
             in.setstate(std::ios::failbit);
         }
-        
         return in;
     }
 
 } // namespace jean
+
