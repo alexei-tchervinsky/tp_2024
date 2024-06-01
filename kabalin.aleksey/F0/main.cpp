@@ -10,7 +10,10 @@ void displayMenu() {
   std::cout << "5. Check is node in graph\n";
   std::cout << "6. Check is nodes connected\n";
   std::cout << "7. Add node to graph\n";
-  std::cout << "8. Exit\n";
+  std::cout << "8. BFS\n";
+  std::cout << "9. Shortest path\n";
+  std::cout << "10. Calculate diametr of the graph\n";
+  std::cout << "11. Exit\n";
   std::cout << "Enter your choice: ";
 }
 
@@ -21,6 +24,9 @@ int main() {
   while (true) {
     displayMenu();
     std::cin >> choice;
+    if (std::cin.eof()) {
+      return 0;
+    }
 
     switch (choice) {
     case 1:
@@ -108,24 +114,42 @@ int main() {
                   << " are not connected.\n";
       }
       break;
-    default:
-      std::cout << "Invalid choice. Please try again.\n";
-      break;
-
-    case 8:
-      delete graph;
-      std::cout << "Exiting...\n";
-      return 0;
 
     case 7:
       if (graph == nullptr) {
         std::cout << "Please create a graph first.\n";
         break;
       }
+      std::cout << "Enter node to bfs: ";
+      std::cin >> src;
+      graph->bfs(src);
 
       graph->addNode(graph->getNumOfNodes() + 1);
       std::cout << "Node are added\nNow graph has " << graph->getNumOfNodes()
                 << " nodes\n";
+      break;
+    case 9:
+      if (graph == nullptr) {
+        std::cout << "Please create a graph first.\n";
+        break;
+      }
+      std::cout << "Enter node to shortest path: ";
+      std::cin >> src;
+      graph->shortestPaths(src);
+      break;
+    case 10:
+      if (graph == nullptr) {
+        std::cout << "Please create a graph first.\n";
+        break;
+      }
+      std::cout << "Diametr of the graph is " << graph->calculateDiameter()
+                << '\n';
+      break;
+    case 11:
+      std::cout << "Thank you!\n";
+      return 0;
+    default:
+      std::cout << "Invalid choice. Please try again.\n";
       break;
     }
   }
