@@ -3,6 +3,6 @@ using namespace std;
 
 int main()
 {
-  cout<<"lin.zedong"<<end;
+  cout<<"lin.zedong"<<'\n';
   return 0;
 }
