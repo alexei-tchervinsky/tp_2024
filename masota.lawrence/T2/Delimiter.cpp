@@ -23,4 +23,3 @@ namespace lawrenced {
     }
 
 } // namespace jean
-
