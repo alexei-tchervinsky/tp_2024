@@ -1,6 +1,6 @@
 #include <iostream>
 
 int main() {
-    std::cout << "lastname.firstname" << '\n';
+    std::cout << "tabrichi.ahmed" << '\n';
     return 0;
 }
