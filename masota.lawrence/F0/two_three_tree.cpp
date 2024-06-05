@@ -32,7 +32,7 @@ void TwoThreeTree::insert(const std::string& key, const std::vector<std::string>
         while (!node->isLeaf()) {
             parent = node;
             int pos = 0;
-            while (pos < node->keys.size() && key > node->keys[pos]) pos++;
+            while (pos < static_cast<int>(node->keys.size()) && key > node->keys[pos]) pos++;
             node = node->children[pos];
         }
 
@@ -44,7 +44,7 @@ void TwoThreeTree::insert(const std::string& key, const std::vector<std::string>
         if (node->keys.size() > 2) {
             // Split the node
             Node* newNode = new Node();
-            int midIndex = 1;
+            //removed smtng
             newNode->keys.push_back(node->keys[2]);
             newNode->translations.push_back(node->translations[2]);
             node->keys.resize(2);
@@ -60,7 +60,7 @@ void TwoThreeTree::insert(const std::string& key, const std::vector<std::string>
             else {
                 // Insert the middle key into the parent node
                 int parentPos = 0;
-                while (parentPos < parent->keys.size() && node->keys[1] > parent->keys[parentPos]) parentPos++;
+                while (parentPos < static_cast<int>(parent->keys.size()) && node->keys[1] > parent->keys[parentPos]) parentPos++;
                 parent->keys.insert(parent->keys.begin() + parentPos, node->keys[1]);
                 parent->translations.insert(parent->translations.begin() + parentPos, node->translations[1]);
                 parent->children.insert(parent->children.begin() + parentPos + 1, newNode);
@@ -80,7 +80,7 @@ Node* TwoThreeTree::insertInternal(Node* node, const std::string& key, const std
     }
 
     int pos = 0;
-    while (pos < node->keys.size() && key > node->keys[pos]) pos++;
+    while (pos < static_cast<int>(node->keys.size()) && key > node->keys[pos]) pos++;
 
     if (node->isLeaf()) {
         // Insert the new key and translations into the current leaf node
@@ -144,7 +144,7 @@ Node* TwoThreeTree::searchInternal(Node* node, const std::string& key) const {
     if (!node) return nullptr;  // Base case: key not found
 
     // Iterate over keys in the current node
-    for (int i = 0; i < node->keys.size(); i++) {
+    for (int i = 0; i < static_cast<int>(node->keys.size()); i++) {
         if (key == node->keys[i]) {
             return node;  // Key found in the current node
         }
@@ -171,10 +171,10 @@ Node* TwoThreeTree::deleteRecursive(Node* node, const std::string& key) {
     if (!node) return nullptr;
 
     int pos = 0;
-    while (pos < node->keys.size() && node->keys[pos] < key) ++pos;
+    while (pos < static_cast<int>(node->keys.size()) && node->keys[pos] < key) ++pos;
 
     // If found in the current node and it's a leaf, delete it directly
-    if (node->isLeaf() && pos < node->keys.size() && node->keys[pos] == key) {
+    if (node->isLeaf() && pos < static_cast<int>(node->keys.size()) && node->keys[pos] == key) {
         node->keys.erase(node->keys.begin() + pos);
         node->translations.erase(node->translations.begin() + pos);
         if (node->keys.empty()) {
@@ -215,7 +215,7 @@ void TwoThreeTree::fixUnderflow(Node* parent, int pos) {
     }
 
     // Try to borrow from the right sibling
-    if (pos < parent->children.size() - 1 && parent->children[pos + 1]->keys.size() > 1) {
+    if (pos < static_cast<int>(parent->children.size()) - 1 && parent->children[pos + 1]->keys.size() > 1) {
         Node* rightSibling = parent->children[pos + 1];
         child->keys.push_back(rightSibling->keys.front());
         child->translations.push_back(rightSibling->translations.front());
