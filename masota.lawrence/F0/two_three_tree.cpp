@@ -117,8 +117,8 @@ Node* TwoThreeTree::split(Node* node) {
     int midIndex = 1;
 
     // Copy the keys and translations to the new node
-    newChild->keys.push_back(node->keys[midIndex + 1]);
-    newChild->translations.push_back(node->translations[midIndex + 1]);
+    newChild->keys.push_back(node->keys[static_cast<std::vector<std::string, std::allocator<std::string>>::size_type>(midIndex) + 1]);
+    newChild->translations.push_back(node->translations[static_cast<std::vector<std::vector<std::string, std::allocator<std::string>>, std::allocator<std::vector<std::string, std::allocator<std::string>>>>::size_type>(midIndex) + 1]);
 
     // If the node isn't a leaf, adjust the children pointers
     if (!node->isLeaf()) {
@@ -128,7 +128,7 @@ Node* TwoThreeTree::split(Node* node) {
     // Adjust the original node's keys and translations
     node->keys.resize(midIndex);
     node->translations.resize(midIndex);
-    node->children.resize(midIndex + 1);
+    node->children.resize(static_cast<std::vector<Node*, std::allocator<Node*>>::size_type>(midIndex) + 1);
 
     return newChild;
 }
@@ -205,8 +205,8 @@ void TwoThreeTree::fixUnderflow(Node* parent, int pos) {
     Node* child = parent->children[pos];
 
     // Try to borrow from the left sibling
-    if (pos > 0 && parent->children[pos - 1]->keys.size() > 1) {
-        Node* leftSibling = parent->children[pos - 1];
+    if (pos > 0 && parent->children[static_cast<std::vector<Node*, std::allocator<Node*>>::size_type>(pos) - 1]->keys.size() > 1) {
+        Node* leftSibling = parent->children[static_cast<std::vector<Node*, std::allocator<Node*>>::size_type>(pos) - 1];
         child->keys.insert(child->keys.begin(), leftSibling->keys.back());
         child->translations.insert(child->translations.begin(), leftSibling->translations.back());
         leftSibling->keys.pop_back();
@@ -215,8 +215,8 @@ void TwoThreeTree::fixUnderflow(Node* parent, int pos) {
     }
 
     // Try to borrow from the right sibling
-    if (pos < static_cast<int>(parent->children.size()) - 1 && parent->children[pos + 1]->keys.size() > 1) {
-        Node* rightSibling = parent->children[pos + 1];
+    if (pos < static_cast<int>(parent->children.size()) - 1 && parent->children[static_cast<std::vector<Node*, std::allocator<Node*>>::size_type>(pos) + 1]->keys.size() > 1) {
+        Node* rightSibling = parent->children[static_cast<std::vector<Node*, std::allocator<Node*>>::size_type>(pos) + 1];
         child->keys.push_back(rightSibling->keys.front());
         child->translations.push_back(rightSibling->translations.front());
         rightSibling->keys.erase(rightSibling->keys.begin());
@@ -227,7 +227,7 @@ void TwoThreeTree::fixUnderflow(Node* parent, int pos) {
     // Merge with a sibling if borrowing is not possible
     if (pos > 0) {
         // Merge with left sibling
-        Node* leftSibling = parent->children[pos - 1];
+        Node* leftSibling = parent->children[static_cast<std::vector<Node*, std::allocator<Node*>>::size_type>(pos) - 1];
         leftSibling->keys.insert(leftSibling->keys.end(), child->keys.begin(), child->keys.end());
         leftSibling->translations.insert(leftSibling->translations.end(), child->translations.begin(), child->translations.end());
         delete child;
@@ -235,7 +235,7 @@ void TwoThreeTree::fixUnderflow(Node* parent, int pos) {
     }
     else {
         // Merge with right sibling
-        Node* rightSibling = parent->children[pos + 1];
+        Node* rightSibling = parent->children[static_cast<std::vector<Node*, std::allocator<Node*>>::size_type>(pos) + 1];
         child->keys.insert(child->keys.end(), rightSibling->keys.begin(), rightSibling->keys.end());
         child->translations.insert(child->translations.end(), rightSibling->translations.begin(), rightSibling->translations.end());
         delete rightSibling;
