@@ -32,7 +32,6 @@ namespace dictcommands
 	void MERGE(
 		std::shared_ptr< std::pair<std::string, std::map< std::string, std::set<std::string> > > > dict,
 		std::istream& in, std::ostream& out);
-
 	void INSERT(
 		std::shared_ptr< std::pair<std::string, std::map< std::string, std::set<std::string> > > > dict,
 		std::istream& in, std::ostream& out);
