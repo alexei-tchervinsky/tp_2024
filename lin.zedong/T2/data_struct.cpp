@@ -3,18 +3,15 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
-
 namespace namesp
 {
     iofmtguard::iofmtguard(std::basic_ios<char>& s) : s_(s), fill_(s.fill()), precision_(s.precision()), fmt_(s.flags()) {}
-
     iofmtguard::~iofmtguard()
     {
         s_.fill(fill_);
         s_.precision(precision_);
         s_.flags(fmt_);
     }
-
     std::istream& operator>>(std::istream& in, DelimiterIO&& dest)
     {
         std::istream::sentry sentry(in);
@@ -30,7 +27,6 @@ namespace namesp
         }
         return in;
     }
-
     std::istream& operator>>(std::istream& in, DoubleIO&& dest)
     {
         std::istream::sentry sentry(in);
@@ -49,7 +45,6 @@ namespace namesp
         dest.ref = std::stod(str);
         return in;
     }
-
     std::istream& operator>>(std::istream& in, StringIO&& dest)
     {
         std::istream::sentry sentry(in);
@@ -59,7 +54,6 @@ namespace namesp
         }
         return std::getline(in >> DelimiterIO{ '"' }, dest.ref, '"');
     }
-
     std::istream& operator>>(std::istream& in, LITIO&& dest)
     {
         std::istream::sentry sentry(in);
@@ -78,7 +72,6 @@ namespace namesp
         dest.ref = std::stoll(str);
         return in;
     }
-
     std::istream& operator>>(std::istream& in, LabelIO&& dest)
     {
         std::istream::sentry sentry(in);
@@ -93,14 +86,12 @@ namespace namesp
         }
         return in;
     }
-
     std::string fromDoubleToScientific(double val)
     {
         std::ostringstream oss;
         oss << std::scientific << val << 'd';
         return oss.str();
     }
-
     std::istream& operator>>(std::istream& in, DataStruct& dest)
     {
         std::istream::sentry sentry(in);
@@ -142,7 +133,6 @@ namespace namesp
         }
         return in;
     }
-
     std::ostream& operator<<(std::ostream& out, const DataStruct& src)
     {
         std::ostream::sentry sentry(out);
@@ -156,7 +146,6 @@ namespace namesp
         out << ":key3 \"" << src.key3 << "\":)";
         return out;
     }
-
     bool Compare::operator()(DataStruct first, DataStruct second) const
     {
         if (first.key1 != second.key1)

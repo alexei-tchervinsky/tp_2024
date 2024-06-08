@@ -1,9 +1,7 @@
 #ifndef DATA_STRUCT_HPP
 #define DATA_STRUCT_HPP
-
 #include <string>
 #include <iostream>
-
 namespace namesp
 {
     struct DataStruct
@@ -12,37 +10,30 @@ namespace namesp
         long long key2;
         std::string key3;
     };
-
     struct DelimiterIO
     {
         char exp;
     };
-
     struct DoubleIO
     {
         double& ref;
     };
-
     struct LITIO
     {
         long long& ref;
     };
-
     struct StringIO
     {
         std::string& ref;
     };
-
     struct LabelIO
     {
         std::string exp;
     };
-
     struct Compare
     {
         bool operator()(DataStruct first, DataStruct second) const;
     };
-
     class iofmtguard
     {
     public:
@@ -54,7 +45,6 @@ namespace namesp
         std::streamsize precision_;
         std::basic_ios< char >::fmtflags fmt_;
     };
-
     std::string fromDoubleToScientific(double val);
     std::istream& operator>>(std::istream& in, DelimiterIO&& dest);
     std::istream& operator>>(std::istream& in, DoubleIO&& dest);
