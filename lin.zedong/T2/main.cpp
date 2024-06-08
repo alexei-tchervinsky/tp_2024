@@ -19,7 +19,7 @@ int main()
     std::copy(
         dataStructs.begin(),
         dataStructs.end(),
-        std::ostream_iterator<namesp::DataStruct>(std::cout, "\n")
+        std::ostream_iterator<namesp::DataStruct>{std::cout, "\n"}
     );
     return 0;
 }
