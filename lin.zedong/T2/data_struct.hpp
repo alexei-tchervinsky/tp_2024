@@ -64,5 +64,4 @@ namespace namesp
     std::istream& operator>>(std::istream& in, LITIO&& dest);
     std::ostream& operator<<(std::ostream& out, const DataStruct& dest);
 }
-
 #endif
