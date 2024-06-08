@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <iterator>
 
-using namespace mungoi;
+using namespace namesp;
 
 int main()
 {
