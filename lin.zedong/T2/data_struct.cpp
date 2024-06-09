@@ -6,8 +6,7 @@
 
 namespace namesp
 {
-    iofmtguard::iofmtguard(std::basic_ios<char>& s)
-        : s_(s), fill_(s.fill()), precision_(s.precision()), fmt_(s.flags()) {}
+    iofmtguard::iofmtguard(std::basic_ios<char>& s) : s_(s), fill_(s.fill()), precision_(s.precision()), fmt_(s.flags()) {}
 
     iofmtguard::~iofmtguard()
     {
@@ -121,17 +120,21 @@ namespace namesp
             {
                 in >> sep{ ':' };
                 in >> characters;
+                std::cout << "Read character: " << characters << std::endl;
                 if (characters == "key1")
                 {
                     in >> dbl{ input.key1 };
+                    std::cout << "Read key1: " << input.key1 << std::endl;
                 }
                 else if (characters == "key2")
                 {
                     in >> lit{ input.key2 };
+                    std::cout << "Read key2: " << input.key2 << std::endl;
                 }
                 else
                 {
                     in >> str{ input.key3 };
+                    std::cout << "Read key3: " << input.key3 << std::endl;
                 }
             }
             in >> sep{ ':' };
