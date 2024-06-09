@@ -22,8 +22,9 @@ namespace namesp
         {
             return in;
         }
-        char c = '\0';
+        char c = '0';
         in >> c;
+        c = tolower(c);
         if (in && (c != dest.exp))
         {
             in.setstate(std::ios::failbit);
@@ -109,17 +110,16 @@ namespace namesp
             return in;
         }
         DataStruct input;
-        std::string characters;
         {
             using sep = DelimiterIO;
             using lit = LITIO;
             using str = StringIO;
             using dbl = DoubleIO;
             in >> sep{ '(' };
+            std::string characters;
             for (std::size_t i = 0; i < 3; i++)
             {
-                in >> sep{ ':' };
-                in >> characters;
+                in >> sep{ ':' } >> characters;
                 std::cout << "Read character: " << characters << std::endl;
                 if (characters == "key1")
                 {

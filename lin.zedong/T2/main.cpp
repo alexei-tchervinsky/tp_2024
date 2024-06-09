@@ -3,6 +3,7 @@
 #include <vector>
 #include <algorithm>
 #include <iterator>
+#include <sstream>
 #include <limits>
 
 int main()
@@ -11,8 +12,8 @@ int main()
     while (std::cin.eof() != true)
     {
         std::copy(
-            std::istream_iterator<namesp::DataStruct>(std::cin),
-            std::istream_iterator<namesp::DataStruct>(),
+            std::istream_iterator<namesp::DataStruct>{std::cin},
+            std::istream_iterator<namesp::DataStruct>{},
             std::back_inserter(dataStructs));
         if (std::cin.fail() == true)
         {
@@ -23,8 +24,7 @@ int main()
 
     std::sort(
         dataStructs.begin(),
-        dataStructs.end(),
-        namesp::Compare()
+        dataStructs.end()
     );
 
     std::copy(
