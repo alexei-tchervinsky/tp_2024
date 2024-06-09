@@ -16,8 +16,8 @@ int main()
             std::back_inserter(dataStructs));
         if (std::cin.fail() == true)
         {
-        std::cin.clear();
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         }
     }
 
