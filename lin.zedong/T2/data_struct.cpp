@@ -118,25 +118,29 @@ namespace namesp
         using lit = LITIO;
         using str = StringIO;
         using dbl = DoubleIO;
+        bool validRecord = true;
+
         if (!(in >> sep{ '(' }))
         {
             in.setstate(std::ios::failbit);
-            return in;
+            validRecord = false;
         }
-        for (std::size_t i = 0; i < 3; i++)
+        for (std::size_t i = 0; i < 3 && validRecord; i++)
         {
             std::string characters;
             if (!(in >> sep{ ':' } >> characters))
             {
                 in.setstate(std::ios::failbit);
-                return in;
+                validRecord = false;
+                break;
             }
             if (characters == "key1")
             {
                 if (!(in >> dbl{ input.key1 }))
                 {
                     in.setstate(std::ios::failbit);
-                    return in;
+                    validRecord = false;
+                    break;
                 }
             }
             else if (characters == "key2")
@@ -144,7 +148,8 @@ namespace namesp
                 if (!(in >> lit{ input.key2 }))
                 {
                     in.setstate(std::ios::failbit);
-                    return in;
+                    validRecord = false;
+                    break;
                 }
             }
             else if (characters == "key3")
@@ -152,21 +157,23 @@ namespace namesp
                 if (!(in >> str{ input.key3 }))
                 {
                     in.setstate(std::ios::failbit);
-                    return in;
+                    validRecord = false;
+                    break;
                 }
             }
             else
             {
                 in.setstate(std::ios::failbit);
-                return in;
+                validRecord = false;
+                break;
             }
         }
         if (!(in >> sep{ ':' } >> sep{ ')' }))
         {
             in.setstate(std::ios::failbit);
-            return in;
+            validRecord = false;
         }
-        if (in)
+        if (in && validRecord)
         {
             dest = input;
         }
