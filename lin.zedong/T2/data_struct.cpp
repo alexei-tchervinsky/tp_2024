@@ -41,7 +41,7 @@ namespace namesp
         double value;
         char suffix;
         in >> value >> suffix;
-        if (suffix != 'd' && suffix != 'D')
+        if (!in || (suffix != 'd' && suffix != 'D'))
         {
             in.setstate(std::ios::failbit);
             return in;
@@ -58,6 +58,11 @@ namespace namesp
             return in;
         }
         return std::getline(in >> DelimiterIO{ '"' }, dest.ref, '"');
+        if (!in)
+        {
+            in.setstate(std::ios::failbit);
+        }
+        return in;
     }
 
     std::istream& operator>>(std::istream& in, LITIO&& dest)
@@ -70,7 +75,7 @@ namespace namesp
         long long value;
         char suffix1, suffix2;
         in >> value >> suffix1 >> suffix2;
-        if (suffix1 != 'l' || suffix2 != 'l')
+        if (!in || (suffix1 != 'l' || suffix2 != 'l'))
         {
             in.setstate(std::ios::failbit);
             return in;
@@ -113,30 +118,54 @@ namespace namesp
         using lit = LITIO;
         using str = StringIO;
         using dbl = DoubleIO;
-        in >> sep{ '(' };
-        std::string characters;
+        if (!(in >> sep{ '(' }))
+        {
+            in.setstate(std::ios::failbit);
+            return in;
+        }
         for (std::size_t i = 0; i < 3; i++)
         {
-            in >> sep{ ':' } >> characters;
+            std::string characters;
+            if (!(in >> sep{ ':' } >> characters))
+            {
+                in.setstate(std::ios::failbit);
+                return in;
+            }
             if (characters == "key1")
             {
-                in >> dbl{ input.key1 };
+                if (!(in >> dbl{ input.key1 }))
+                {
+                    in.setstate(std::ios::failbit);
+                    return in;
+                }
             }
             else if (characters == "key2")
             {
-                in >> lit{ input.key2 };
+                if (!(in >> lit{ input.key2 }))
+                {
+                    in.setstate(std::ios::failbit);
+                    return in;
+                }
             }
             else if (characters == "key3")
             {
-                in >> str{ input.key3 };
+                if (!(in >> str{ input.key3 }))
+                {
+                    in.setstate(std::ios::failbit);
+                    return in;
+                }
             }
             else
             {
                 in.setstate(std::ios::failbit);
-                break;
+                return in;
             }
         }
-        in >> sep{ ':' } >> sep{ ')' };
+        if (!(in >> sep{ ':' } >> sep{ ')' }))
+        {
+            in.setstate(std::ios::failbit);
+            return in;
+        }
         if (in)
         {
             dest = input;
