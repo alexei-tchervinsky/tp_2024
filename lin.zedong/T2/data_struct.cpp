@@ -147,7 +147,7 @@ namespace namesp
         return out;
     }
 
-    bool namesp::operator<(const DataStruct& first, const DataStruct& second)
+    bool operator<(const DataStruct& first, const DataStruct& second)
     {
         if (first.key1 != second.key1)
         {
