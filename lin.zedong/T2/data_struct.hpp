@@ -1,5 +1,6 @@
 #ifndef DATA_STRUCT_HPP
 #define DATA_STRUCT_HPP
+
 #include <string>
 #include <iostream>
 
@@ -45,13 +46,13 @@ namespace namesp
     class iofmtguard
     {
     public:
-        explicit iofmtguard(std::basic_ios< char >& s);
+        explicit iofmtguard(std::basic_ios<char>& s);
         ~iofmtguard();
     private:
-        std::basic_ios< char >& s_;
+        std::basic_ios<char>& s_;
         char fill_;
         std::streamsize precision_;
-        std::basic_ios< char >::fmtflags fmt_;
+        std::basic_ios<char>::fmtflags fmt_;
     };
 
     std::string fromDoubleToScientific(double val);
@@ -63,4 +64,5 @@ namespace namesp
     std::istream& operator>>(std::istream& in, LITIO&& dest);
     std::ostream& operator<<(std::ostream& out, const DataStruct& dest);
 }
+
 #endif
