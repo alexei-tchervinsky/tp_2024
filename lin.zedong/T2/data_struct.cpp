@@ -39,16 +39,7 @@ namespace namesp
         {
             return in;
         }
-        std::string str;
-        in >> str;
-        if (str.back() != 'd' && str.back() != 'D')
-        {
-            in.setstate(std::ios::failbit);
-            return in;
-        }
-        str.pop_back();
-        dest.ref = std::stod(str);
-        return in;
+        return in >> dest.ref >> DelimiterIO { 'd' };
     }
 
     std::istream& operator>>(std::istream& in, StringIO&& dest)
@@ -68,16 +59,7 @@ namespace namesp
         {
             return in;
         }
-        std::string str;
-        in >> str;
-        if (str.size() < 3 || str.substr(str.size() - 2) != "ll")
-        {
-            in.setstate(std::ios::failbit);
-            return in;
-        }
-        str.erase(str.size() - 2);
-        dest.ref = std::stoll(str);
-        return in;
+        return in >> dest.ref >> DelimiterIO{ 'l' } >> DelimiterIO{ 'l' };
     }
 
     std::istream& operator>>(std::istream& in, LabelIO&& dest)
@@ -131,10 +113,14 @@ namespace namesp
                     in >> lit{ input.key2 };
                     std::cout << "Read key2: " << input.key2 << std::endl;
                 }
-                else
+                else if (characters == "key3")
                 {
                     in >> str{ input.key3 };
                     std::cout << "Read key3: " << input.key3 << std::endl;
+                }
+                else
+                {
+                    in.setstate(std::ios::failbit);
                 }
             }
             in >> sep{ ':' };
@@ -156,13 +142,21 @@ namespace namesp
         }
         iofmtguard fmtguard(out);
         out << "(:key1 " << fromDoubleToScientific(src.key1);
-        out << ":key2 " << src.key2 << "ll";
-        out << ":key3 \"" << src.key3 << "\":)";
+        out << ":key2 " << src.key2 << "ll:";
+        out << ":key3 " << '"' << src.key3 << '"' << ":)";
         return out;
     }
 
-    bool Compare::operator()(DataStruct first, DataStruct second) const
+    bool namesp::operator<(const DataStruct& first, const DataStruct& second)
     {
-        return first < second;
+        if (first.key1 != second.key1)
+        {
+            return first.key1 < second.key1;
+        }
+        if (first.key2 != second.key2)
+        {
+            return first.key2 < second.key2;
+        }
+        return first.key3.size() < second.key3.size();
     }
 }
