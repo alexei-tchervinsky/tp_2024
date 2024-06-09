@@ -24,7 +24,6 @@ namespace namesp
         }
         char c = '0';
         in >> c;
-        c = tolower(c);
         if (in && (c != dest.exp))
         {
             in.setstate(std::ios::failbit);
@@ -39,7 +38,16 @@ namespace namesp
         {
             return in;
         }
-        return in >> dest.ref >> DelimiterIO { 'd' };
+        double value;
+        char suffix;
+        in >> value >> suffix;
+        if (suffix != 'd' && suffix != 'D')
+        {
+            in.setstate(std::ios::failbit);
+            return in;
+        }
+        dest.ref = value;
+        return in;
     }
 
     std::istream& operator>>(std::istream& in, StringIO&& dest)
@@ -59,7 +67,16 @@ namespace namesp
         {
             return in;
         }
-        return in >> dest.ref >> DelimiterIO{ 'l' } >> DelimiterIO{ 'l' };
+        long long value;
+        char suffix1, suffix2;
+        in >> value >> suffix1 >> suffix2;
+        if (suffix1 != 'l' || suffix2 != 'l')
+        {
+            in.setstate(std::ios::failbit);
+            return in;
+        }
+        dest.ref = value;
+        return in;
     }
 
     std::istream& operator>>(std::istream& in, LabelIO&& dest)
@@ -92,40 +109,34 @@ namespace namesp
             return in;
         }
         DataStruct input;
+        using sep = DelimiterIO;
+        using lit = LITIO;
+        using str = StringIO;
+        using dbl = DoubleIO;
+        in >> sep{ '(' };
+        std::string characters;
+        for (std::size_t i = 0; i < 3; i++)
         {
-            using sep = DelimiterIO;
-            using lit = LITIO;
-            using str = StringIO;
-            using dbl = DoubleIO;
-            in >> sep{ '(' };
-            std::string characters;
-            for (std::size_t i = 0; i < 3; i++)
+            in >> sep{ ':' } >> characters;
+            if (characters == "key1")
             {
-                in >> sep{ ':' } >> characters;
-                std::cout << "Read character: " << characters << std::endl;
-                if (characters == "key1")
-                {
-                    in >> dbl{ input.key1 };
-                    std::cout << "Read key1: " << input.key1 << std::endl;
-                }
-                else if (characters == "key2")
-                {
-                    in >> lit{ input.key2 };
-                    std::cout << "Read key2: " << input.key2 << std::endl;
-                }
-                else if (characters == "key3")
-                {
-                    in >> str{ input.key3 };
-                    std::cout << "Read key3: " << input.key3 << std::endl;
-                }
-                else
-                {
-                    in.setstate(std::ios::failbit);
-                }
+                in >> dbl{ input.key1 };
             }
-            in >> sep{ ':' };
-            in >> sep{ ')' };
+            else if (characters == "key2")
+            {
+                in >> lit{ input.key2 };
+            }
+            else if (characters == "key3")
+            {
+                in >> str{ input.key3 };
+            }
+            else
+            {
+                in.setstate(std::ios::failbit);
+                break;
+            }
         }
+        in >> sep{ ':' } >> sep{ ')' };
         if (in)
         {
             dest = input;
@@ -141,8 +152,8 @@ namespace namesp
             return out;
         }
         iofmtguard fmtguard(out);
-        out << "(:key1 " << fromDoubleToScientific(src.key1);
-        out << ":key2 " << src.key2 << "ll:";
+        out << "(:key1 " << fromDoubleToScientific(src.key1) << " ";
+        out << ":key2 " << src.key2 << "ll ";
         out << ":key3 " << '"' << src.key3 << '"' << ":)";
         return out;
     }
