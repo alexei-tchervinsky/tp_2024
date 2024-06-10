@@ -3,6 +3,7 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
+#include <string>
 
 namespace namesp
 {
@@ -24,6 +25,7 @@ namespace namesp
         }
         char c = '0';
         in >> c;
+        c = tolower(c);
         if (in && (c != dest.exp))
         {
             in.setstate(std::ios::failbit);
@@ -38,16 +40,7 @@ namespace namesp
         {
             return in;
         }
-        double value;
-        char suffix;
-        in >> value >> suffix;
-        if (!in || (suffix != 'd' && suffix != 'D'))
-        {
-            in.setstate(std::ios::failbit);
-            return in;
-        }
-        dest.ref = value;
-        return in;
+        return in >> dest.ref >> DelimiterIO { 'd' };
     }
 
     std::istream& operator>>(std::istream& in, StringIO&& dest)
@@ -58,11 +51,6 @@ namespace namesp
             return in;
         }
         return std::getline(in >> DelimiterIO{ '"' }, dest.ref, '"');
-        if (!in)
-        {
-            in.setstate(std::ios::failbit);
-        }
-        return in;
     }
 
     std::istream& operator>>(std::istream& in, LITIO&& dest)
@@ -72,16 +60,7 @@ namespace namesp
         {
             return in;
         }
-        long long value;
-        char suffix1, suffix2;
-        in >> value >> suffix1 >> suffix2;
-        if (!in || (suffix1 != 'l' || suffix2 != 'l'))
-        {
-            in.setstate(std::ios::failbit);
-            return in;
-        }
-        dest.ref = value;
-        return in;
+        return in >> dest.ref >> DelimiterIO{ 'l' } >> DelimiterIO{ 'l' };
     }
 
     std::istream& operator>>(std::istream& in, LabelIO&& dest)
@@ -114,73 +93,43 @@ namespace namesp
             return in;
         }
         DataStruct input;
-        using sep = DelimiterIO;
-        using lit = LITIO;
-        using str = StringIO;
-        using dbl = DoubleIO;
-        bool validRecord = true;
-
-        if (!(in >> sep{ '(' }))
         {
-            in.setstate(std::ios::failbit);
-            validRecord = false;
-        }
-        for (std::size_t i = 0; i < 3 && validRecord; i++)
-        {
-            std::string characters;
-            if (!(in >> sep{ ':' } >> characters))
+            using sep = DelimiterIO;
+            using lit = LITIO;
+            using str = StringIO;
+            using dbl = DoubleIO;
+            in >> sep{ '(' };
+            std::string keyX;
+            for (std::size_t i = 0; i < 3; i++)
             {
-                in.setstate(std::ios::failbit);
-                validRecord = false;
-                break;
-            }
-            if (characters == "key1")
-            {
-                if (!(in >> dbl{ input.key1 }))
+                in >> sep{ ':' } >> keyX;
+                if (keyX == "key1")
+                {
+                    in >> dbl{ input.key1 };
+                }
+                else if (keyX == "key2")
+                {
+                    in >> lit{ input.key2 };
+                }
+                else if (keyX == "key3")
+                {
+                    in >> str{ input.key3 };
+                }
+                else
                 {
                     in.setstate(std::ios::failbit);
-                    validRecord = false;
-                    break;
                 }
             }
-            else if (characters == "key2")
-            {
-                if (!(in >> lit{ input.key2 }))
-                {
-                    in.setstate(std::ios::failbit);
-                    validRecord = false;
-                    break;
-                }
-            }
-            else if (characters == "key3")
-            {
-                if (!(in >> str{ input.key3 }))
-                {
-                    in.setstate(std::ios::failbit);
-                    validRecord = false;
-                    break;
-                }
-            }
-            else
-            {
-                in.setstate(std::ios::failbit);
-                validRecord = false;
-                break;
-            }
+            in >> sep{ ':' } >> sep{ ')' };
         }
-        if (!(in >> sep{ ':' } >> sep{ ')' }))
-        {
-            in.setstate(std::ios::failbit);
-            validRecord = false;
-        }
-        if (in && validRecord)
+        if (in)
         {
             dest = input;
         }
         return in;
     }
 
-    std::ostream& operator<<(std::ostream& out, const DataStruct& src)
+    std::ostream& operator<<(std::ostream& out, const DataStruct& dest)
     {
         std::ostream::sentry sentry(out);
         if (!sentry)
@@ -188,9 +137,9 @@ namespace namesp
             return out;
         }
         iofmtguard fmtguard(out);
-        out << "(:key1 " << fromDoubleToScientific(src.key1) << " ";
-        out << ":key2 " << src.key2 << "ll ";
-        out << ":key3 " << '"' << src.key3 << '"' << ":)";
+        out << "(:key1 " << std::fixed << std::setprecision(1) << dest.key1 << " ";
+        out << ":key2 " << dest.key2 << "ll ";
+        out << ":key3 " << '"' << dest.key3 << '"' << ":)";
         return out;
     }
 

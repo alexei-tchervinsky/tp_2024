@@ -38,11 +38,6 @@ namespace namesp
         std::string exp;
     };
 
-    struct Compare
-    {
-        bool operator()(DataStruct first, DataStruct second) const;
-    };
-
     class iofmtguard
     {
     public:

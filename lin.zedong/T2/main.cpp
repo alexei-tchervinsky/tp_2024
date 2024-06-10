@@ -8,22 +8,18 @@
 
 int main()
 {
-    try
+    using namespace namesp;
+    std::vector< DataStruct > data;
+    while (!std::cin.eof())
     {
-        std::istream_iterator<namesp::DataStruct> start(std::cin), end;
-        if (start == end)
+        std::copy(std::istream_iterator< DataStruct >{std::cin}, std::istream_iterator< DataStruct >{}, std::back_inserter(data));
+        if (std::cin.fail())
         {
-            std::cerr << "Looks like there is no supported record. Cannot determine input. Test skipped" << std::endl;
-            return 1;
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits< std::streamsize >::max(), '\n');
         }
-        std::vector<namesp::DataStruct> data(start, end);
-        std::sort(data.begin(), data.end());
-        std::copy(data.begin(), data.end(), std::ostream_iterator<namesp::DataStruct>(std::cout, "\n"));
     }
-    catch (const std::exception& e)
-    {
-        std::cerr << "Error: " << e.what() << std::endl;
-        return 2;
-    }
+    std::sort(data.begin(), data.end());
+    std::copy(std::begin(data), std::end(data), std::ostream_iterator< DataStruct >(std::cout, "\n"));
     return 0;
 }
