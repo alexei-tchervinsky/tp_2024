@@ -23,9 +23,10 @@ namespace namesp
         {
             return in;
         }
-        char c;
+        char c = '0';
         in >> c;
-        if (in && tolower(c) != dest.exp)
+        c = tolower(c);
+        if (in && (c != dest.exp))
         {
             in.setstate(std::ios::failbit);
         }
@@ -34,34 +35,41 @@ namespace namesp
 
     std::istream& operator>>(std::istream& in, DoubleIO&& dest)
     {
-        if (std::istream::sentry sentry(in);!sentry)
+        std::istream::sentry sentry(in);
+        if (!sentry)
         {
             return in;
         }
-        return in >> dest.ref >> DelimiterIO { 'd' };
+        in >> dest.ref;
+        return in >> DelimiterIO { 'd' };
     }
 
     std::istream& operator>>(std::istream& in, StringIO&& dest)
     {
-        if (std::istream::sentry sentry(in);!sentry)
+        std::istream::sentry sentry(in);
+        if (!sentry)
         {
             return in;
         }
+        in >> dest.ref;
         return std::getline(in >> DelimiterIO{ '"' }, dest.ref, '"');
     }
 
     std::istream& operator>>(std::istream& in, LITIO&& dest)
     {
-        if (std::istream::sentry sentry(in);!sentry)
+        std::istream::sentry sentry(in);
+        if (!sentry)
         {
             return in;
         }
-        return in >> dest.ref >> DelimiterIO{ 'l' } >> DelimiterIO{ 'l' };
+        in >> dest.ref;
+        return in >> DelimiterIO{ 'l' } >> DelimiterIO{ 'l' };
     }
 
     std::istream& operator>>(std::istream& in, LabelIO&& dest)
     {
-        if (std::istream::sentry sentry(in);!sentry)
+        std::istream::sentry sentry(in);
+        if (!sentry)
         {
             return in;
         }
@@ -82,7 +90,8 @@ namespace namesp
 
     std::istream& operator>>(std::istream& in, DataStruct& dest)
     {
-        if (std::istream::sentry sentry(in);!sentry)
+        std::istream::sentry sentry(in);
+        if (!sentry)
         {
             return in;
         }
@@ -125,7 +134,8 @@ namespace namesp
 
     std::ostream& operator<<(std::ostream& out, const DataStruct& dest)
     {
-        if (std::ostream::sentry sentry(out);!sentry)
+        std::ostream::sentry sentry(out);
+        if (!sentry)
         {
             return out;
         }
