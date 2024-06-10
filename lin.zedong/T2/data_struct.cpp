@@ -23,10 +23,9 @@ namespace namesp
         {
             return in;
         }
-        char c = '0';
+        char c;
         in >> c;
-        c = tolower(c);
-        if (in && (c != dest.exp))
+        if (in && tolower(c) != dest.exp)
         {
             in.setstate(std::ios::failbit);
         }
@@ -35,8 +34,7 @@ namespace namesp
 
     std::istream& operator>>(std::istream& in, DoubleIO&& dest)
     {
-        std::istream::sentry sentry(in);
-        if (!sentry)
+        if (std::istream::sentry sentry(in);!sentry)
         {
             return in;
         }
@@ -45,8 +43,7 @@ namespace namesp
 
     std::istream& operator>>(std::istream& in, StringIO&& dest)
     {
-        std::istream::sentry sentry(in);
-        if (!sentry)
+        if (std::istream::sentry sentry(in);!sentry)
         {
             return in;
         }
@@ -55,8 +52,7 @@ namespace namesp
 
     std::istream& operator>>(std::istream& in, LITIO&& dest)
     {
-        std::istream::sentry sentry(in);
-        if (!sentry)
+        if (std::istream::sentry sentry(in);!sentry)
         {
             return in;
         }
@@ -65,8 +61,7 @@ namespace namesp
 
     std::istream& operator>>(std::istream& in, LabelIO&& dest)
     {
-        std::istream::sentry sentry(in);
-        if (!sentry)
+        if (std::istream::sentry sentry(in);!sentry)
         {
             return in;
         }
@@ -87,8 +82,7 @@ namespace namesp
 
     std::istream& operator>>(std::istream& in, DataStruct& dest)
     {
-        std::istream::sentry sentry(in);
-        if (!sentry)
+        if (std::istream::sentry sentry(in);!sentry)
         {
             return in;
         }
@@ -100,7 +94,7 @@ namespace namesp
             using dbl = DoubleIO;
             in >> sep{ '(' };
             std::string keyX;
-            for (std::size_t i = 0; i < 3; i++)
+            for (std::size_t i = 0; i < 3; ++i)
             {
                 in >> sep{ ':' } >> keyX;
                 if (keyX == "key1")
@@ -131,15 +125,14 @@ namespace namesp
 
     std::ostream& operator<<(std::ostream& out, const DataStruct& dest)
     {
-        std::ostream::sentry sentry(out);
-        if (!sentry)
+        if (std::ostream::sentry sentry(out);!sentry)
         {
             return out;
         }
         iofmtguard fmtguard(out);
-        out << "(:key1 " << std::fixed << std::setprecision(1) << dest.key1 << " ";
-        out << ":key2 " << dest.key2 << "ll ";
-        out << ":key3 " << '"' << dest.key3 << '"' << ":)";
+        out << "(:key1 " << std::fixed << std::setprecision(1) << dest.key1 << " "
+        << ":key2 " << dest.key2 << "ll "
+        << ":key3 " << '"' << dest.key3 << '"' << ":)";
         return out;
     }
 

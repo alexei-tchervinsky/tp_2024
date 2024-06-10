@@ -3,38 +3,45 @@
 
 #include <string>
 #include <iostream>
+#include <iomanip>
+#include <sstream>
 
 namespace namesp
 {
     struct DataStruct
     {
-        double key1;
-        long long key2;
+        double key1 = 0.0;
+        long long key2 = 0;
         std::string key3;
     };
 
     struct DelimiterIO
     {
+        explicit DelimiterIO(char expected) : exp(expected) {}
         char exp;
     };
 
     struct DoubleIO
     {
+        explicit DoubleIO(double& reference) : ref(reference) {}
         double& ref;
     };
 
     struct LITIO
     {
+        explicit LITIO(long long& reference) : ref(reference) {}
         long long& ref;
     };
 
     struct StringIO
     {
+        explicit StringIO(std::string& reference) : ref(reference) {}
         std::string& ref;
     };
 
     struct LabelIO
     {
+        explicit LabelIO(const std::string& expected) : exp(expected) {}
         std::string exp;
     };
 

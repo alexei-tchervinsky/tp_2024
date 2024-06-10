@@ -10,16 +10,24 @@ int main()
 {
     using namespace namesp;
     std::vector< DataStruct > data;
-    while (!std::cin.eof())
+    DataStruct input;
+    while (std::cin >> input)
     {
-        std::copy(std::istream_iterator< DataStruct >{std::cin}, std::istream_iterator< DataStruct >{}, std::back_inserter(data));
-        if (std::cin.fail())
-        {
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits< std::streamsize >::max(), '\n');
-        }
+        data.push_back(input);
     }
+
+    if (std::cin.fail() && !std::cin.eof())
+    {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
+
     std::sort(data.begin(), data.end());
-    std::copy(std::begin(data), std::end(data), std::ostream_iterator< DataStruct >(std::cout, "\n"));
+
+    for (const auto& elem : data)
+    {
+        std::cout << elem << '\n';
+    }
+
     return 0;
 }
