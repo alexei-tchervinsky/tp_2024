@@ -135,20 +135,36 @@ namespace namesp
                 in >> sep{ ':' } >> keyX;
                 if (keyX == "key1")
                 {
-                    in >> dbl{ input.key1 };
+                    if (!(in >> dbl{ input.key1 }))  //
+                    {
+                        in.setstate(std::ios::failbit);
+                        return in;
+                    }
+                    //in >> dbl{ input.key1 };
                 }
                 else if (keyX == "key2")
                 {
-                    in >> lit{ input.key2 };
+                    if (!(in >> lit{ input.key2 }))
+                    {
+                        in.setstate(std::ios::failbit);
+                        return in;
+                    }
+                    //in >> lit{ input.key2 };
                 }
                 else if (keyX == "key3")
                 {
-                    in >> str{ input.key3 };
+                    if (!(in >> str{ input.key3 }))
+                    {
+                        in.setstate(std::ios::failbit);
+                        return in;
+                    }
+                    //in >> str{ input.key3 };
                 }
                 else
                 {
                     in.setstate(std::ios::failbit);
                     std::cerr << "Error: Unknown key '" << keyX << "'\n"; //
+                    return in; //
                 }
             }
             in >> sep{ ':' } >> sep{ ')' };
