@@ -51,7 +51,6 @@ namespace namesp
         {
             return in;
         }
-        in >> dest.ref;
         return std::getline(in >> DelimiterIO{ '"' }, dest.ref, '"');
     }
 

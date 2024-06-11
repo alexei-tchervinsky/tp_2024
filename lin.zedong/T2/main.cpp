@@ -10,7 +10,6 @@ int main()
 {
     using namespace namesp;
     std::vector< DataStruct > data;
-    DataStruct input;
     while (!std::cin.eof())
     {
         std::copy(std::istream_iterator< DataStruct >{std::cin}, std::istream_iterator< DataStruct >{}, std::back_inserter(data));
