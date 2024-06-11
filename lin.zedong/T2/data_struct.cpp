@@ -29,6 +29,7 @@ namespace namesp
         if (in && (c != dest.exp))
         {
             in.setstate(std::ios::failbit);
+            std::cerr << "Error: Expected delimiter '" << dest.exp << "' but got '" << c << "'\n"; //
         }
         return in;
     }
@@ -40,8 +41,18 @@ namespace namesp
         {
             return in;
         }
-        in >> dest.ref;
-        return in >> DelimiterIO { 'd' };
+         if (!(in >> dest.ref))
+        {
+            in.setstate(std::ios::failbit);
+            std::cerr << "Error: Invalid input for double type\n";
+        }
+        else if (!(in >> DelimiterIO { 'd' }))
+        {
+            std::cerr << "Error: Expected 'd' after double value\n";
+        }
+        return in;
+        //in >> dest.ref;
+        //return in >> DelimiterIO { 'd' };
     }
 
     std::istream& operator>>(std::istream& in, StringIO&& dest)
@@ -51,7 +62,13 @@ namespace namesp
         {
             return in;
         }
-        return std::getline(in >> DelimiterIO{ '"' }, dest.ref, '"');
+        if (!std::getline(in >> DelimiterIO{ '"' }, dest.ref, '"'))
+        {
+            in.setstate(std::ios::failbit);
+            std::cerr << "Error: Invalid input for string type\n";
+        }
+        return in;
+        //return std::getline(in >> DelimiterIO{ '"' }, dest.ref, '"');
     }
 
     std::istream& operator>>(std::istream& in, LITIO&& dest)
@@ -61,8 +78,18 @@ namespace namesp
         {
             return in;
         }
-        in >> dest.ref;
-        return in >> DelimiterIO{ 'l' } >> DelimiterIO{ 'l' };
+        if (!(in >> dest.ref))
+        {
+            in.setstate(std::ios::failbit);
+            std::cerr << "Error: Invalid input for long long type\n";
+        }
+        else if (!(in >> DelimiterIO{ 'l' } >> DelimiterIO{ 'l' }))
+        {
+            std::cerr << "Error: Expected 'll' after long long value\n";
+        }
+        return in;
+        //in >> dest.ref;
+        //return in >> DelimiterIO{ 'l' } >> DelimiterIO{ 'l' };
     }
 
     std::istream& operator>>(std::istream& in, LabelIO&& dest)
@@ -76,6 +103,7 @@ namespace namesp
         if ((in >> StringIO{ data }) && (data != dest.exp))
         {
             in.setstate(std::ios::failbit);
+            std::cerr << "Error: Expected label '" << dest.exp << "' but got '" << data << "'\n"; //
         }
         return in;
     }
@@ -120,6 +148,7 @@ namespace namesp
                 else
                 {
                     in.setstate(std::ios::failbit);
+                    std::cerr << "Error: Unknown key '" << keyX << "'\n"; //
                 }
             }
             in >> sep{ ':' } >> sep{ ')' };
@@ -127,6 +156,10 @@ namespace namesp
         if (in)
         {
             dest = input;
+        }
+        else  //
+        {
+            std::cerr << "Error: Invalid input format for DataStruct\n";
         }
         return in;
     }

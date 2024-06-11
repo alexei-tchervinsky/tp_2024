@@ -15,6 +15,7 @@ int main()
         std::copy(std::istream_iterator< DataStruct >{std::cin}, std::istream_iterator< DataStruct >{}, std::back_inserter(data));
         if (std::cin.fail())
         {
+            std::cerr << "Error: Invalid input detected. Ignoring invalid line and continuing...\n"; //
             std::cin.clear();
             std::cin.ignore(std::numeric_limits< std::streamsize >::max(), '\n');
         }
