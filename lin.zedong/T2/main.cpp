@@ -11,12 +11,15 @@ int main()
     using namespace namesp;
     std::vector<DataStruct> data;
 
+    bool hasValidInput = false;
+
     while (true)
     {
         DataStruct temp;
         if (std::cin >> temp)
         {
             data.push_back(temp);
+            hasValidInput = true;
         }
         else if (std::cin.eof())
         {
@@ -24,15 +27,15 @@ int main()
         }
         else
         {
-            std::cerr << "Error: Invalid input detected. Ignoring invalid line and continuing...\n";
+            std::cerr << "Looks like there is no supported record. Cannot determine input. Test skipped\n";
             std::cin.clear();
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         }
     }
 
-    if (data.empty())
+    if (!hasValidInput)
     {
-        std::cerr << "Error: No valid input data found.\n";
+        std::cerr << "Looks like there is no supported record. Cannot determine input. Test skipped\n";
     }
     else
     {
