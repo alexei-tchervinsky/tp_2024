@@ -23,13 +23,12 @@ namespace namesp
         {
             return in;
         }
-        char c = '0';
+        char c;
         in >> c;
         c = tolower(c);
         if (in && (c != dest.exp))
         {
             in.setstate(std::ios::failbit);
-            std::cerr << "Error: Expected delimiter '" << dest.exp << "' but got '" << c << "'\n"; //
         }
         return in;
     }
@@ -44,11 +43,10 @@ namespace namesp
          if (!(in >> dest.ref))
         {
             in.setstate(std::ios::failbit);
-            std::cerr << "Error: Invalid input for double type\n";
         }
         else if (!(in >> DelimiterIO { 'd' }))
         {
-            std::cerr << "Error: Expected 'd' after double value\n";
+            in.setstate(std::ios::failbit);
         }
         return in;
         //in >> dest.ref;
@@ -65,7 +63,6 @@ namespace namesp
         if (!std::getline(in >> DelimiterIO{ '"' }, dest.ref, '"'))
         {
             in.setstate(std::ios::failbit);
-            std::cerr << "Error: Invalid input for string type\n";
         }
         return in;
         //return std::getline(in >> DelimiterIO{ '"' }, dest.ref, '"');
@@ -81,11 +78,10 @@ namespace namesp
         if (!(in >> dest.ref))
         {
             in.setstate(std::ios::failbit);
-            std::cerr << "Error: Invalid input for long long type\n";
         }
         else if (!(in >> DelimiterIO{ 'l' } >> DelimiterIO{ 'l' }))
         {
-            std::cerr << "Error: Expected 'll' after long long value\n";
+            in.setstate(std::ios::failbit);
         }
         return in;
         //in >> dest.ref;
@@ -103,7 +99,6 @@ namespace namesp
         if ((in >> StringIO{ data }) && (data != dest.exp))
         {
             in.setstate(std::ios::failbit);
-            std::cerr << "Error: Expected label '" << dest.exp << "' but got '" << data << "'\n"; //
         }
         return in;
     }
@@ -163,7 +158,6 @@ namespace namesp
                 else
                 {
                     in.setstate(std::ios::failbit);
-                    std::cerr << "Error: Unknown key '" << keyX << "'\n"; //
                     return in; //
                 }
             }
@@ -172,10 +166,6 @@ namespace namesp
         if (in)
         {
             dest = input;
-        }
-        else  //
-        {
-            std::cerr << "Error: Invalid input format for DataStruct\n";
         }
         return in;
     }
