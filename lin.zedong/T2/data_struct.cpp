@@ -49,8 +49,6 @@ namespace namesp
             in.setstate(std::ios::failbit);
         }
         return in;
-        //in >> dest.ref;
-        //return in >> DelimiterIO { 'd' };
     }
 
     std::istream& operator>>(std::istream& in, StringIO&& dest)
@@ -65,7 +63,6 @@ namespace namesp
             in.setstate(std::ios::failbit);
         }
         return in;
-        //return std::getline(in >> DelimiterIO{ '"' }, dest.ref, '"');
     }
 
     std::istream& operator>>(std::istream& in, LITIO&& dest)
@@ -84,8 +81,6 @@ namespace namesp
             in.setstate(std::ios::failbit);
         }
         return in;
-        //in >> dest.ref;
-        //return in >> DelimiterIO{ 'l' } >> DelimiterIO{ 'l' };
     }
 
     std::istream& operator>>(std::istream& in, LabelIO&& dest)
@@ -130,12 +125,11 @@ namespace namesp
                 in >> sep{ ':' } >> keyX;
                 if (keyX == "key1")
                 {
-                    if (!(in >> dbl{ input.key1 }))  //
+                    if (!(in >> dbl{ input.key1 }))
                     {
                         in.setstate(std::ios::failbit);
                         return in;
                     }
-                    //in >> dbl{ input.key1 };
                 }
                 else if (keyX == "key2")
                 {
@@ -144,7 +138,6 @@ namespace namesp
                         in.setstate(std::ios::failbit);
                         return in;
                     }
-                    //in >> lit{ input.key2 };
                 }
                 else if (keyX == "key3")
                 {
@@ -153,12 +146,11 @@ namespace namesp
                         in.setstate(std::ios::failbit);
                         return in;
                     }
-                    //in >> str{ input.key3 };
                 }
                 else
                 {
                     in.setstate(std::ios::failbit);
-                    return in; //
+                    return in;
                 }
             }
             in >> sep{ ':' } >> sep{ ')' };
