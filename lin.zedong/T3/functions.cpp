@@ -335,9 +335,10 @@ namespace geometry
     {
         return std::count_if(polygons.begin(), polygons.end(), [num](const Polygon& poly)
         {
-            return poly.points.size() == num;
+            return poly.points.size() == static_cast<std::vector<geometry::Point>::size_type>(num);
         });
     }
+
 
     std::string generate_polygon_description(const Polygon& polygon)
     {
@@ -373,40 +374,8 @@ namespace geometry
         return maxSequence;
     }
 
-    bool get_rects(const Point& start, const Point& end1, const Point& end2, const Point& end3)
+    void rects_param(const std::vector<Polygon>& polygons, std::istream&, std::ostream& out)
     {
-        Point vectors[3];
-        vectors[0].x = end1.x-start.x;
-        vectors[0].y = end1.y-start.y;
-        vectors[1].x = end2.x-start.x;
-        vectors[1].y = end2.y-start.y;
-        vectors[2].x = end3.x-start.x;
-        vectors[2].y = end3.y-start.y;
-        bool angle01 = ((vectors[0].x*vectors[1].x+vectors[0].y*vectors[1].y)/
-        (sqrt(std::pow(vectors[0].x, 2)+std::pow(vectors[0].y, 2))*sqrt(std::pow(vectors[1].x, 2)+std::pow(vectors[1].y, 2))) == 0);
-        bool angle02 = ((vectors[0].x*vectors[2].x+vectors[0].y*vectors[2].y)/
-        (sqrt(std::pow(vectors[0].x, 2)+std::pow(vectors[0].y, 2))*sqrt(std::pow(vectors[2].x, 2)+std::pow(vectors[2].y, 2))) == 0);
-        bool angle12 = ((vectors[2].x*vectors[1].x+vectors[2].y*vectors[1].y)/
-        (sqrt(std::pow(vectors[2].x, 2)+std::pow(vectors[2].y, 2))*sqrt(std::pow(vectors[1].x, 2)+std::pow(vectors[1].y, 2))) == 0);
-        return angle01 || angle02 || angle12;
-    }
-
-    void rects_param(const std::vector<Polygon>& polygons, std::istream& in, std::ostream& out)
-    {
-        if (!in)
-        {
-          throw std::invalid_argument("<INVALID COMMAND>");
-        }
-        out << std::setprecision(0) << std::count_if(polygons.cbegin(), polygons.cend(), [](const Polygon& polygon)
-        {
-            if (polygon.points.size()==4)
-            {
-                return get_rects(polygon.points[0], polygon.points[1], polygon.points[2], polygon.points[3]) &&
-                get_rects(polygon.points[1], polygon.points[2], polygon.points[3], polygon.points[0]) &&
-                get_rects(polygon.points[2], polygon.points[3], polygon.points[0], polygon.points[1]);
-            }
-            return false;
-        }) << '\n';
         out << count_rectangles(polygons) << '\n';
     }
 
