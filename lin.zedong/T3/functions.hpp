@@ -48,6 +48,7 @@ namespace geometry
     int get_count(const std::vector<Polygon>& polygons, std::function<bool(const Polygon&)> pred);
     int get_max_vertexes(const std::vector<Polygon>& polygons);
     int get_min_vertexes(const std::vector<Polygon>& polygons);
+    bool get_rects(const Point& start, const Point& end1, const Point& end2, const Point& end3);
     int count_rectangles(const std::vector<Polygon>& polygons);
     int max_sequence(const std::vector<Polygon>& polygons, const Polygon& target);
 
