@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
                 {
                     double result = geometry::get_area_sum(polygons, [&](const geometry::Polygon& poly)
                     {
-                        return poly.points.size() == num;
+                        return poly.points.size() == static_cast<std::vector<geometry::Point>::size_type>(num);
                     });
                     cout << fixed << setprecision(1) << result << endl;
                 }
