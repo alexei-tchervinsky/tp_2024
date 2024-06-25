@@ -9,7 +9,11 @@ namespace geometry
     std::istream& operator>>(std::istream& in, Point& dest)
     {
         char sep;
-        in >> sep >> dest.x >> sep >> dest.y >> sep;
+        if (in >> sep >> dest.x >> sep >> dest.y >> sep)
+        {
+            return in;
+        }
+        in.setstate(std::ios::failbit);
         return in;
     }
 
@@ -21,7 +25,11 @@ namespace geometry
             poly.points.resize(count);
             for (auto& point : poly.points)
             {
-                is >> point;
+                if (!(is >> point))
+                {
+                    is.setstate(std::ios::failbit);
+                    break;
+                }
             }
         }
         return is;
@@ -38,8 +46,7 @@ namespace geometry
             area += points[i].x * points[j].y;
             area -= points[j].x * points[i].y;
         }
-        area = std::abs(area) / 2.0;
-        return area;
+        return std::abs(area) / 2.0;
     }
 
     void read_polygons(std::istream& in, std::vector<Polygon>& polygons)
@@ -51,7 +58,7 @@ namespace geometry
             int num_vertices;
             if (!(iss >> num_vertices))
             {
-            continue;
+                continue;
             }
             Polygon poly;
             for (int i = 0; i < num_vertices; ++i)
@@ -60,11 +67,14 @@ namespace geometry
                 Point p;
                 if (!(iss >> c >> p.x >> c >> p.y >> c))
                 {
-                    return;
+                    continue;
                 }
                 poly.points.push_back(p);
             }
-            polygons.push_back(poly);
+            if (!poly.points.empty())
+            {
+                polygons.push_back(poly);
+            }
         }
     }
 
@@ -117,14 +127,7 @@ namespace geometry
         {
             sum += poly.calculate_area();
         }
-        if (polygons.size() > 0)
-        {
-            return sum / polygons.size();
-        }
-        else
-        {
-            return 0.0;
-        }
+        return polygons.size() > 0 ? sum / polygons.size() : 0.0;
     }
 
     double get_max_area(const std::vector<Polygon>& polygons)
@@ -237,7 +240,7 @@ namespace geometry
                     return poly.points.size() == num_vertices;
                 }) << '\n';
             }
-            catch (const std::invalid_argument& e)
+            catch (const std::invalid_argument&)
             {
                 out << "<INVALID COMMAND>" << '\n';
             }
@@ -308,7 +311,7 @@ namespace geometry
                     return poly.points.size() == num_vertices;
                 }) << '\n';
             }
-            catch (const std::invalid_argument& e)
+            catch (const std::invalid_argument&)
             {
                 out << "<INVALID COMMAND>" << '\n';
             }
@@ -339,13 +342,13 @@ namespace geometry
         });
     }
 
-
     std::string generate_polygon_description(const Polygon& polygon)
     {
         std::stringstream ss;
         ss << polygon.points.size() << " ";
 
-        for (const Point& point : polygon.points) {
+        for (const Point& point : polygon.points)
+        {
             ss << "(" << point.x << ";" << point.y << ") ";
         }
 
