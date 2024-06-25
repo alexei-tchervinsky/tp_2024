@@ -8,8 +8,9 @@ namespace geometry
 {
     std::istream& operator>>(std::istream& in, Point& dest)
     {
-        char sep;
-        if (in >> sep >> dest.x >> sep >> dest.y >> sep)
+        char sep1, sep2, sep3;
+        if (in >> sep1 >> dest.x >> sep2 >> dest.y >> sep3
+            && sep1 == '(' && sep2 == ',' && sep3 == ')')
         {
             return in;
         }
@@ -55,25 +56,10 @@ namespace geometry
         while (std::getline(in, line))
         {
             std::istringstream iss(line);
-            int num_vertices;
-            if (!(iss >> num_vertices))
-            {
-                continue;
-            }
             Polygon poly;
-            for (int i = 0; i < num_vertices; ++i)
+            if (iss >> poly)
             {
-                char c;
-                Point p;
-                if (!(iss >> c >> p.x >> c >> p.y >> c))
-                {
-                    continue;
-                }
-                poly.points.push_back(p);
-            }
-            if (!poly.points.empty())
-            {
-                polygons.push_back(poly);
+                polygons.push_back(std::move(poly));
             }
         }
     }
@@ -88,23 +74,19 @@ namespace geometry
             return (a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y);
         };
 
-        double d2 = dist_sq(p[0], p[1]);
-        double d3 = dist_sq(p[0], p[2]);
-        double d4 = dist_sq(p[0], p[3]);
+        std::vector<double> dists =
+        {
+            static_cast<double>(dist_sq(p[0], p[1])),
+            static_cast<double>(dist_sq(p[0], p[2])),
+            static_cast<double>(dist_sq(p[0], p[3])),
+            static_cast<double>(dist_sq(p[1], p[2])),
+            static_cast<double>(dist_sq(p[1], p[3])),
+            static_cast<double>(dist_sq(p[2], p[3]))
+        };
 
-        if (d2 == d3 + d4 && d3 == dist_sq(p[1], p[2]) && d4 == dist_sq(p[1], p[3]))
-        {
-            return true;
-        }
-        if (d3 == d2 + d4 && d2 == dist_sq(p[2], p[0]) && d4 == dist_sq(p[2], p[3]))
-        {
-            return true;
-        }
-        if (d4 == d2 + d3 && d2 == dist_sq(p[3], p[0]) && d3 == dist_sq(p[3], p[1]))
-        {
-            return true;
-        }
-        return false;
+        std::sort(dists.begin(), dists.end());
+
+        return dists[0] == dists[1] && dists[2] == dists[3] && dists[4] == dists[5] && dists[0] + dists[2] == dists[4];
     }
 
     double get_area_sum(const std::vector<Polygon>& polygons, std::function<bool(const Polygon&)> pred)
@@ -211,7 +193,12 @@ namespace geometry
     void area_param(const std::vector<Polygon>& polygons, std::istream& in, std::ostream& out)
     {
         std::string param;
-        in >> param;
+        if (!(in >> param))
+        {
+            out << "<INVALID COMMAND>\n";
+            return;
+        }
+
         if (param == "EVEN")
         {
             out << std::fixed << std::setprecision(1) << get_area_sum(polygons, [](const Polygon& poly)
@@ -232,17 +219,18 @@ namespace geometry
         }
         else
         {
-            try
+            std::size_t num_vertices;
+            std::istringstream iss(param);
+            if (iss >> num_vertices)
             {
-                std::size_t num_vertices = std::stoul(param);
                 out << std::fixed << std::setprecision(1) << get_area_sum(polygons, [num_vertices](const Polygon& poly)
                 {
                     return poly.points.size() == num_vertices;
                 }) << '\n';
             }
-            catch (const std::invalid_argument&)
+            else
             {
-                out << "<INVALID COMMAND>" << '\n';
+                out << "<INVALID COMMAND>\n";
             }
         }
     }
