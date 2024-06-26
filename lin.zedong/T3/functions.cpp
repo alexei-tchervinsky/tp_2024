@@ -72,7 +72,7 @@ namespace geometry
     bool is_rectangle(const Polygon& poly)
     {
         if (poly.points.size() != 4) return false;
-        auto& p = poly.points;
+        const auto& p = poly.points;
 
         auto dist_sq = [](const Point& a, const Point& b)
         {
@@ -121,7 +121,7 @@ namespace geometry
     {
         if (polygons.empty())
         {
-            return -1;
+            return -1.0;
         }
 
         return std::max_element(polygons.begin(), polygons.end(), [](const Polygon& a, const Polygon& b)
@@ -134,7 +134,7 @@ namespace geometry
     {
         if (polygons.empty())
         {
-            return -1;
+            return -1.0;
         }
         return std::min_element(polygons.begin(), polygons.end(), [](const Polygon& a, const Polygon& b)
         {
@@ -195,49 +195,40 @@ namespace geometry
         return max_seq;
     }
 
-    void area_param(const std::vector<Polygon>& polygons, std::istream& in, std::ostream& out)
+    void area_param(const std::vector<Polygon>& polygons, std::istringstream& iss, std::ostream& os)
     {
         std::string param;
-        if (!(in >> param))
-        {
-            out << "<INVALID COMMAND>\n";
-            return;
-        }
+        iss >> param;
+
+        double total_area = 0.0;
 
         if (param == "EVEN")
         {
-            out << std::fixed << std::setprecision(1) << get_area_sum(polygons, [](const Polygon& poly)
+            for (const auto& polygon : polygons)
             {
-                return poly.points.size() % 2 == 0;
-            }) << '\n';
+                if (polygon.points.size() % 2 == 0)
+                {
+                    total_area += polygon.calculate_area();
+                }
+            }
         }
         else if (param == "ODD")
         {
-            out << std::fixed << std::setprecision(1) << get_area_sum(polygons, [](const Polygon& poly)
+            for (const auto& polygon : polygons)
             {
-                return poly.points.size() % 2 != 0;
-            }) << '\n';
-        }
-        else if (param == "MEAN")
-        {
-            out << std::fixed << std::setprecision(1) << get_mean_area(polygons) << '\n';
+                if (polygon.points.size() % 2 != 0)
+                {
+                    total_area += polygon.calculate_area();
+                }
+            }
         }
         else
         {
-            std::size_t num_vertices;
-            std::istringstream iss(param);
-            if (iss >> num_vertices)
-            {
-                out << std::fixed << std::setprecision(1) << get_area_sum(polygons, [num_vertices](const Polygon& poly)
-                {
-                    return poly.points.size() == num_vertices;
-                }) << '\n';
-            }
-            else
-            {
-                out << "<INVALID COMMAND>\n";
-            }
+            os << "0.0" << std::endl;
+            return;
         }
+
+        os << std::fixed << std::setprecision(1) << total_area << std::endl;
     }
 
     void max_param(const std::vector<Polygon>& polygons, std::istream& in, std::ostream& out)
@@ -276,37 +267,32 @@ namespace geometry
         }
     }
 
-    void count_param(const std::vector<Polygon>& polygons, std::istream& in, std::ostream& out)
+    void count_param(const std::vector<Polygon>& polygons, std::istringstream& iss, std::ostream& os)
     {
         std::string param;
-        in >> param;
-        if (param == "EVEN")
+        iss >> param;
+
+        if (param == "ODD")
         {
-            out << get_count(polygons, [](const Polygon& poly)
-            {
-                return poly.points.size() % 2 == 0;
-            }) << '\n';
+            os << get_count(polygons, [](const Polygon& poly) { return poly.points.size() % 2 != 0; }) << std::endl;
         }
-        else if (param == "ODD")
+        else if (param == "EVEN")
         {
-            out << get_count(polygons, [](const Polygon& poly)
-            {
-                return poly.points.size() % 2 != 0;
-            }) << '\n';
+            os << get_count(polygons, [](const Polygon& poly) { return poly.points.size() % 2 == 0; }) << std::endl;
         }
         else
         {
             try
             {
-                std::size_t num_vertices = std::stoul(param);
-                out << get_count(polygons, [num_vertices](const Polygon& poly)
+                int specified_vertices = std::stoi(param);
+                os << get_count(polygons, [specified_vertices](const Polygon& poly)
                 {
-                    return poly.points.size() == num_vertices;
-                }) << '\n';
+                    return poly.points.size() == static_cast<std::size_t>(specified_vertices);
+                }) << std::endl;
             }
-            catch (const std::invalid_argument&)
+            catch (const std::invalid_argument& e)
             {
-                out << "<INVALID COMMAND>" << '\n';
+                os << "0" << std::endl;
             }
         }
     }
