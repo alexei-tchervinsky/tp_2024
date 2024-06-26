@@ -383,4 +383,3 @@ namespace geometry
         return maxSequence;
     }
 }
-
