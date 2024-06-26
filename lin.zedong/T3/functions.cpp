@@ -50,6 +50,11 @@ namespace geometry
         return std::abs(area) / 2.0;
     }
 
+    bool Polygon::operator==(const Polygon& other) const
+    {
+        return this->points == other.points;
+    }
+
     void read_polygons(std::istream& in, std::vector<Polygon>& polygons)
     {
         std::string line;
