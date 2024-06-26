@@ -306,6 +306,24 @@ namespace geometry
         }
     }
 
+    void rects_param(const std::vector<Polygon>& polygons, std::istream&, std::ostream& out)
+    {
+        out << count_rectangles(polygons) << '\n';
+    }
+
+    void maxseq_param(const std::vector<Polygon>& polygons, std::istream& in, std::ostream& out)
+    {
+        Polygon target;
+        if (in >> target)
+        {
+            out << max_sequence(polygons, target) << '\n';
+        }
+        else
+        {
+            out << "<INVALID COMMAND>" << '\n';
+        }
+    }
+
     int count_even_vertexes(const std::vector<Polygon>& polygons)
     {
         return std::count_if(polygons.begin(), polygons.end(), [](const Polygon& poly)
@@ -364,22 +382,5 @@ namespace geometry
 
         return maxSequence;
     }
-
-    void rects_param(const std::vector<Polygon>& polygons, std::istream&, std::ostream& out)
-    {
-        out << count_rectangles(polygons) << '\n';
-    }
-
-    void maxseq_param(const std::vector<Polygon>& polygons, std::istream& in, std::ostream& out)
-    {
-        Polygon target;
-        if (in >> target)
-        {
-            out << max_sequence(polygons, target) << '\n';
-        }
-        else
-        {
-            out << "<INVALID COMMAND>" << '\n';
-        }
-    }
 }
+
