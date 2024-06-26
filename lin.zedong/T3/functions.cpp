@@ -195,40 +195,37 @@ namespace geometry
         return max_seq;
     }
 
-    void area_param(const std::vector<Polygon>& polygons, std::istringstream& iss, std::ostream& os)
+    void area_param(const std::vector<Polygon>& polygons, std::istream& in, std::ostream& out)
     {
         std::string param;
-        iss >> param;
+        in >> param;
 
         double total_area = 0.0;
 
         if (param == "EVEN")
         {
-            for (const auto& polygon : polygons)
-            {
-                if (polygon.points.size() % 2 == 0)
-                {
-                    total_area += polygon.calculate_area();
-                }
-            }
+            total_area = get_area_sum(polygons, [](const Polygon& poly) { return poly.points.size() % 2 == 0; });
         }
         else if (param == "ODD")
         {
-            for (const auto& polygon : polygons)
-            {
-                if (polygon.points.size() % 2 != 0)
-                {
-                    total_area += polygon.calculate_area();
-                }
-            }
+            total_area = get_area_sum(polygons, [](const Polygon& poly) { return poly.points.size() % 2 != 0; });
         }
         else
         {
-            os << "0.0" << std::endl;
-            return;
+            try
+            {
+                int specified_vertices = std::stoi(param);
+                total_area = get_area_sum(polygons, [specified_vertices](const Polygon& poly)
+                {
+                    return poly.points.size() == static_cast<std::size_t>(specified_vertices);
+                });
+            }
+            catch (const std::invalid_argument& e)
+            {
+                total_area = 0.0;
+            }
         }
-
-        os << std::fixed << std::setprecision(1) << total_area << std::endl;
+        out << std::fixed << std::setprecision(1) << total_area << std::endl;
     }
 
     void max_param(const std::vector<Polygon>& polygons, std::istream& in, std::ostream& out)
@@ -267,32 +264,32 @@ namespace geometry
         }
     }
 
-    void count_param(const std::vector<Polygon>& polygons, std::istringstream& iss, std::ostream& os)
+    void count_param(const std::vector<Polygon>& polygons, std::istream& in, std::ostream& out)
     {
         std::string param;
-        iss >> param;
+        in >> param;
 
         if (param == "ODD")
         {
-            os << get_count(polygons, [](const Polygon& poly) { return poly.points.size() % 2 != 0; }) << std::endl;
+            out << get_count(polygons, [](const Polygon& poly) { return poly.points.size() % 2 != 0; }) << std::endl;
         }
         else if (param == "EVEN")
         {
-            os << get_count(polygons, [](const Polygon& poly) { return poly.points.size() % 2 == 0; }) << std::endl;
+            out << get_count(polygons, [](const Polygon& poly) { return poly.points.size() % 2 == 0; }) << std::endl;
         }
         else
         {
             try
             {
                 int specified_vertices = std::stoi(param);
-                os << get_count(polygons, [specified_vertices](const Polygon& poly)
+                out << get_count(polygons, [specified_vertices](const Polygon& poly)
                 {
                     return poly.points.size() == static_cast<std::size_t>(specified_vertices);
                 }) << std::endl;
             }
             catch (const std::invalid_argument& e)
             {
-                os << "0" << std::endl;
+                out << "0" << std::endl;
             }
         }
     }

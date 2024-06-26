@@ -60,7 +60,6 @@ namespace geometry
     int count_odd_vertexes(const std::vector<Polygon>& polygons);
     int count_specific_vertexes(const std::vector<Polygon>& polygons, int num);
     int max_sequence_of_polygon(const std::vector<Polygon>& polygons, const std::string& polygonDesc);
-
 }
 
 #endif
