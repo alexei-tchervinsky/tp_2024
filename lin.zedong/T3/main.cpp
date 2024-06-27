@@ -9,58 +9,37 @@
 using namespace std;
 using namespace geometry;
 
-int main(int argc, char *argv[])
+int main()
 {
-    if (argc != 2)
-    {
-        cerr << "Usage: ./program filename" << endl;
-        return 1;
-    }
 
-    vector<Polygon> polygons;
-    ifstream inputFile(argv[1]);
-    if (!inputFile)
-    {
-        cerr << "Error opening file: " << argv[1] << endl;
-        return 1;
-    }
-
-    read_polygons(inputFile, polygons);
+    std::vector<geometry::Shape> shapes;
 
     string command;
     while (getline(cin, command))
     {
         istringstream iss(command);
-        string cmd;
-        iss >> cmd;
+        string cmd, type;
+        iss >> cmd >> type;
 
-        if (cmd == "AREA")
+        if (cmd == "COUNT")
         {
-            area_param(polygons, iss, cout);
+            geometry::countCommand(shapes, type);
+        }
+        else if (cmd == "AREA")
+        {
+            geometry::areaCommand(shapes, type);
         }
         else if (cmd == "MAX")
         {
-            max_param(polygons, iss, cout);
-        }
-        else if (cmd == "MIN")
-        {
-            min_param(polygons, iss, cout);
-        }
-        else if (cmd == "COUNT")
-        {
-            count_param(polygons, iss, cout);
+            geometry::maxCommand(shapes, type);
         }
         else if (cmd == "RECTS")
         {
-            rects_param(polygons, iss, cout);
-        }
-        else if (cmd == "MAXSEQ")
-        {
-            maxseq_param(polygons, iss, cout);
+            geometry::rectsCommand(shapes);
         }
         else
         {
-            cout << "<INVALID COMMAND>" << endl;
+            std::cout << "<INVALID COMMAND>\n";
         }
     }
 

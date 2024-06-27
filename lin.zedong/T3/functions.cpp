@@ -117,29 +117,19 @@ namespace geometry
         return polygons.size() > 0 ? sum / polygons.size() : 0.0;
     }
 
-    double get_max_area(const std::vector<Polygon>& polygons)
+    double get_extreme_area(const std::vector<Polygon>& polygons, bool find_max)
     {
         if (polygons.empty())
         {
             return -1.0;
         }
-
-        return std::max_element(polygons.begin(), polygons.end(), [](const Polygon& a, const Polygon& b)
+        auto cmp = [](const Polygon& a, const Polygon& b)
         {
             return a.calculate_area() < b.calculate_area();
-        })->calculate_area();
-    }
-
-    double get_min_area(const std::vector<Polygon>& polygons)
-    {
-        if (polygons.empty())
-        {
-            return -1.0;
-        }
-        return std::min_element(polygons.begin(), polygons.end(), [](const Polygon& a, const Polygon& b)
-        {
-            return a.calculate_area() < b.calculate_area();
-        })->calculate_area();
+        };
+        auto it = find_max ? std::max_element(polygons.begin(), polygons.end(), cmp)
+                           : std::min_element(polygons.begin(), polygons.end(), cmp);
+        return it->calculate_area();
     }
 
     int get_count(const std::vector<Polygon>& polygons, std::function<bool(const Polygon&)> pred)
@@ -147,28 +137,19 @@ namespace geometry
         return std::count_if(polygons.begin(), polygons.end(), pred);
     }
 
-    int get_max_vertexes(const std::vector<Polygon>& polygons)
+    int get_extreme_vertex_count(const std::vector<Polygon>& polygons, bool find_max)
     {
         if (polygons.empty())
         {
             return -1;
         }
-        return std::max_element(polygons.begin(), polygons.end(), [](const Polygon& a, const Polygon& b)
+        auto cmp = [](const Polygon& a, const Polygon& b)
         {
             return a.points.size() < b.points.size();
-        })->points.size();
-    }
-
-    int get_min_vertexes(const std::vector<Polygon>& polygons)
-    {
-        if (polygons.empty())
-        {
-            return -1;
-        }
-        return std::min_element(polygons.begin(), polygons.end(), [](const Polygon& a, const Polygon& b)
-        {
-            return a.points.size() < b.points.size();
-        })->points.size();
+        };
+        auto it = find_max ? std::max_element(polygons.begin(), polygons.end(), cmp)
+                           : std::min_element(polygons.begin(), polygons.end(), cmp);
+        return it->points.size();
     }
 
     int count_rectangles(const std::vector<Polygon>& polygons)
@@ -228,35 +209,31 @@ namespace geometry
         out << std::fixed << std::setprecision(1) << total_area << std::endl;
     }
 
-    void max_param(const std::vector<Polygon>& polygons, std::istream& in, std::ostream& out)
+    void extreme_param(const std::vector<Polygon>& polygons, std::istream& in, std::ostream& out, bool find_max, const std::string& type)
     {
-        std::string param;
-        in >> param;
-        if (param == "AREA")
+        double result = -1.0;
+        if (type == "AREA")
         {
-            out << std::fixed << std::setprecision(1) << get_max_area(polygons) << '\n';
+            result = get_extreme_area(polygons, find_max);
         }
-        else if (param == "VERTEXES")
+        else if (type == "VERTEXES")
         {
-            out << get_max_vertexes(polygons) << '\n';
+            int count = get_extreme_vertex_count(polygons, find_max);
+            if (count != -1)
+            {
+                out << count << '\n';
+                return;
+            }
         }
         else
         {
             out << "<INVALID COMMAND>" << '\n';
+            return;
         }
-    }
 
-    void min_param(const std::vector<Polygon>& polygons, std::istream& in, std::ostream& out)
-    {
-        std::string param;
-        in >> param;
-        if (param == "AREA")
+        if (result != -1.0)
         {
-            out << std::fixed << std::setprecision(1) << get_min_area(polygons) << '\n';
-        }
-        else if (param == "VERTEXES")
-        {
-            out << get_min_vertexes(polygons) << '\n';
+            out << std::fixed << std::setprecision(1) << result << '\n';
         }
         else
         {
@@ -370,4 +347,229 @@ namespace geometry
 
         return maxSequence;
     }
+
+    Shape::Shape(std::vector<Point> vertices) : vertices_(vertices) {}
+
+    int Shape::countVertices() const
+    {
+        return vertices_.size();
+    }
+
+    int Shape::countOddVertices() const
+    {
+        return std::count_if(vertices_.begin(), vertices_.end(), [](const Point& p)
+        {
+            return (p.x % 2 != 0) || (p.y % 2 != 0);
+        });
+    }
+
+    int Shape::countEvenVertices() const
+    {
+        return std::count_if(vertices_.begin(), vertices_.end(), [](const Point& p)
+        {
+            return (p.x % 2 == 0) && (p.y % 2 == 0);
+        });
+    }
+
+    double Shape::area() const
+    {
+        if (vertices_.size() < 3) return 0.0;
+        double a = 0.0;
+        for (size_t i = 0; i < vertices_.size(); ++i)
+        {
+            const Point& p1 = vertices_[i];
+            const Point& p2 = vertices_[(i + 1) % vertices_.size()];
+            a += p1.x * p2.y - p2.x * p1.y;
+        }
+    return std::abs(a) / 2.0;
+    }
+
+    const std::vector<Point>& Shape::getVertices() const
+    {
+        return vertices_;
+    }
+
+    void Shape::printShapeData() const
+    {
+        std::cout << "Vertices: ";
+        for (const auto& vertex : vertices_)
+        {
+            std::cout << "(" << vertex.x << ";" << vertex.y << ") ";
+        }
+        std::cout << "\n";
+    }
+
+    void countCommand(const std::vector<Shape>& shapes, const std::string& type)
+    {
+        if (type == "ODD")
+        {
+            int count = 0;
+            for (const auto& shape : shapes)
+            {
+                count += shape.countOddVertices();
+            }
+            std::cout << count << "\n";
+        }
+        else if (type == "EVEN")
+        {
+            int count = 0;
+            for (const auto& shape : shapes)
+            {
+                count += shape.countEvenVertices();
+            }
+            std::cout << count << "\n";
+        }
+        else
+        {
+            try
+            {
+                int n = std::stoi(type);
+                int count = 0;
+                for (const auto& shape : shapes)
+                {
+                    if (shape.countVertices() == n)
+                    {
+                        count++;
+                    }
+                }
+                std::cout << count << "\n";
+            }
+            catch (const std::invalid_argument& e)
+            {
+                std::cout << "<INVALID COMMAND>\n";
+            }
+        }
+    }
+
+    void areaCommand(const std::vector<Shape>& shapes, const std::string& type)
+    {
+        if (type == "EVEN")
+        {
+            double area = 0.0;
+            for (const auto& shape : shapes)
+            {
+                if (shape.countVertices() % 2 == 0)
+                {
+                    area += shape.area();
+                }
+            }
+            std::cout << area << "\n";
+        }
+        else if (type == "ODD")
+        {
+            double area = 0.0;
+            for (const auto& shape : shapes)
+            {
+                if (shape.countVertices() % 2 != 0)
+                {
+                    area += shape.area();
+                }
+            }
+            std::cout << area << "\n";
+        }
+        else if (type == "MEAN")
+        {
+            double totalArea = 0.0;
+            int shapeCount = 0;
+            for (const auto& shape : shapes)
+            {
+                totalArea += shape.area();
+                shapeCount++;
+            }
+            if (shapeCount == 0)
+            {
+                std::cout << "<INVALID COMMAND>\n";
+            }
+            else
+            {
+                std::cout << totalArea / shapeCount << "\n";
+            }
+        }
+        else
+        {
+            try
+            {
+                int n = std::stoi(type);
+                double area = 0.0;
+                for (const auto& shape : shapes)
+                {
+                    if (shape.countVertices() == n)
+                    {
+                        area += shape.area();
+                    }
+                }
+                std::cout << area << "\n";
+            }
+            catch (const std::invalid_argument& e)
+            {
+                std::cout << "<INVALID COMMAND>\n";
+            }
+        }
+    }
+
+    void maxCommand(const std::vector<Shape>& shapes, const std::string& type)
+    {
+        if (type == "AREA")
+        {
+            double maxArea = -1.0;
+            for (const auto& shape : shapes)
+            {
+                double shapeArea = shape.area();
+                if (shapeArea > maxArea)
+                {
+                    maxArea = shapeArea;
+                }
+            }
+            if (maxArea == -1.0)
+            {
+                std::cout << "<INVALID COMMAND>\n";
+            }
+            else
+            {
+                std::cout << maxArea << "\n";
+            }
+        }
+        else if (type == "VERTEXES")
+        {
+            int maxVertices = -1;
+            for (const auto& shape : shapes)
+            {
+                int vertexCount = shape.countVertices();
+                if (vertexCount > maxVertices)
+                {
+                    maxVertices = vertexCount;
+                }
+            }
+            if (maxVertices == -1)
+            {
+                std::cout << "<INVALID COMMAND>\n";
+            }
+            else
+            {
+                std::cout << maxVertices << "\n";
+            }
+        }
+        else
+        {
+            std::cout << "<INVALID COMMAND>\n";
+        }
+    }
+
+    void rectsCommand(const std::vector<Shape>& shapes)
+    {
+        int rectCount = 0;
+        for (const auto& shape : shapes)
+        {
+            if (shape.countVertices() == 4)
+            {
+                const auto& v = shape.getVertices();
+                if ((v[0].x == v[1].x && v[2].x == v[3].x && v[0].y == v[3].y && v[1].y == v[2].y) ||
+                    (v[0].y == v[1].y && v[2].y == v[3].y && v[0].x == v[3].x && v[1].x == v[2].x)) {
+                    rectCount++;
+                }
+            }
+        }
+        std::cout << rectCount << "\n";
+    }
+
 }
