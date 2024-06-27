@@ -209,7 +209,7 @@ namespace geometry
         out << std::fixed << std::setprecision(1) << total_area << std::endl;
     }
 
-    void extreme_param(const std::vector<Polygon>& polygons, std::istream& in, std::ostream& out, bool find_max, const std::string& type)
+    void extreme_param(const std::vector<Polygon>& polygons, std::istream&, std::ostream& out, bool find_max, const std::string& type)
     {
         double result = -1.0;
         if (type == "AREA")
