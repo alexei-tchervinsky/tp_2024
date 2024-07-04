@@ -31,24 +31,7 @@ namespace geometry
         bool operator==(const Polygon& other) const;
     };
 
-    class Shape
-    {
-        public:
-        Shape(std::vector<Point> vertices);
-
-        int countVertices() const;
-        int countOddVertices() const;
-        int countEvenVertices() const;
-        double area() const;
-        void printShapeData() const;
-        const std::vector<Point>& getVertices() const;
-
-        private:
-        std::vector<Point> vertices_;
-    };
-
     std::istream& operator>>(std::istream& in, Point& dest);
-    std::string generate_polygon_description(const Polygon& polygon);
 
     void read_polygons(std::istream& in, std::vector<Polygon>& polygons);
 
@@ -56,8 +39,10 @@ namespace geometry
 
     double get_area_sum(const std::vector<Polygon>& polygons, std::function<bool(const Polygon&)> pred);
     double get_mean_area(const std::vector<Polygon>& polygons);
+    double get_extreme_area(const std::vector<Polygon>& polygons, bool find_max);
 
     int get_count(const std::vector<Polygon>& polygons, std::function<bool(const Polygon&)> pred);
+    int get_extreme_vertex_count(const std::vector<Polygon>& polygons, bool find_max);
     int count_rectangles(const std::vector<Polygon>& polygons);
     int max_sequence(const std::vector<Polygon>& polygons, const Polygon& target);
 
@@ -65,16 +50,7 @@ namespace geometry
     void count_param(const std::vector<Polygon>& polygons, std::istream& in, std::ostream& out);
     void rects_param(const std::vector<Polygon>& polygons, std::istream&, std::ostream& out);
     void maxseq_param(const std::vector<Polygon>& polygons, std::istream& in, std::ostream& out);
-
-    int count_even_vertexes(const std::vector<Polygon>& polygons);
-    int count_odd_vertexes(const std::vector<Polygon>& polygons);
-    int count_specific_vertexes(const std::vector<Polygon>& polygons, int num);
-    int max_sequence_of_polygon(const std::vector<Polygon>& polygons, const std::string& polygonDesc);
-
-    void countCommand(const std::vector<Shape>& shapes, const std::string& type);
-    void areaCommand(const std::vector<Shape>& shapes, const std::string& type);
-    void maxCommand(const std::vector<Shape>& shapes, const std::string& type);
-    void rectsCommand(const std::vector<Shape>& shapes);
+    void extreme_param(const std::vector<Polygon>& polygons, std::istream&, std::ostream& out, bool find_max, const std::string& type);
 }
 
 #endif
