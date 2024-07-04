@@ -256,7 +256,7 @@ namespace geometry
                     }) << std::endl;
                 }
             }
-            catch (const std::invalid_argument& e)
+            catch (const std::invalid_argument&)
             {
                 out << "<INVALID COMMAND>" << std::endl;
             }
