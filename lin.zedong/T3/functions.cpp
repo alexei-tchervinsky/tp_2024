@@ -295,36 +295,6 @@ namespace geometry
         }
     }
 
-    void count_param(const std::vector<Polygon>& polygons, std::istream& in, std::ostream& out)
-    {
-        std::string param;
-        in >> param;
-
-        if (param == "ODD")
-        {
-            out << get_count(polygons, [](const Polygon& poly) { return poly.points.size() % 2 != 0; }) << std::endl;
-        }
-        else if (param == "EVEN")
-        {
-            out << get_count(polygons, [](const Polygon& poly) { return poly.points.size() % 2 == 0; }) << std::endl;
-        }
-        else
-        {
-            try
-            {
-                int specified_vertices = std::stoi(param);
-                out << get_count(polygons, [specified_vertices](const Polygon& poly)
-                {
-                    return poly.points.size() == static_cast<std::size_t>(specified_vertices);
-                }) << std::endl;
-            }
-            catch (const std::invalid_argument& e)
-            {
-                out << "0" << std::endl;
-            }
-        }
-    }
-
     void rects_param(const std::vector<Polygon>& polygons, std::istream&, std::ostream& out)
     {
         out << count_rectangles(polygons) << '\n';
