@@ -191,22 +191,76 @@ namespace geometry
         {
             total_area = get_area_sum(polygons, [](const Polygon& poly) { return poly.points.size() % 2 != 0; });
         }
+        else if (param == "MEAN")
+        {
+            if (polygons.empty())
+            {
+                out << "<INVALID COMMAND>" << std::endl;
+                return;
+            }
+            total_area = get_mean_area(polygons);
+        }
         else
         {
             try
             {
                 int specified_vertices = std::stoi(param);
-                total_area = get_area_sum(polygons, [specified_vertices](const Polygon& poly)
+                if (specified_vertices < 3)
                 {
-                    return poly.points.size() == static_cast<std::size_t>(specified_vertices);
-                });
+                    out << "<INVALID COMMAND>" << std::endl;
+                }
+                else
+                {
+                    total_area = get_area_sum(polygons, [specified_vertices](const Polygon& poly)
+                    {
+                        return poly.points.size() == static_cast<std::size_t>(specified_vertices);
+                    });
+                }
             }
             catch (const std::invalid_argument& e)
             {
-                total_area = 0.0;
+                out << "<INVALID COMMAND>" << std::endl;
+                return;
             }
         }
         out << std::fixed << std::setprecision(1) << total_area << std::endl;
+    }
+
+    void count_param(const std::vector<Polygon>& polygons, std::istream& in, std::ostream& out)
+    {
+        std::string param;
+        in >> param;
+
+        if (param == "ODD")
+        {
+            out << get_count(polygons, [](const Polygon& poly) { return poly.points.size() % 2 != 0; }) << std::endl;
+        }
+        else if (param == "EVEN")
+        {
+            out << get_count(polygons, [](const Polygon& poly) { return poly.points.size() % 2 == 0; }) << std::endl;
+        }
+        else
+        {
+            try
+            {
+                int specified_vertices = std::stoi(param);
+                if (specified_vertices < 3)
+                {
+                    out << "<INVALID COMMAND>" << std::endl;
+                }
+                else
+                {
+                    out << get_count(polygons, [specified_vertices](const Polygon& poly)
+                    {
+                        return poly.points.size() == static_cast<std::size_t>(specified_vertices);
+                    }) << std::endl;
+                }
+            }
+            catch (const std::invalid_argument& e)
+            {
+                out << "<INVALID COMMAND>" << std::endl;
+            }
+        }
     }
 
     void extreme_param(const std::vector<Polygon>& polygons, std::istream&, std::ostream& out, bool find_max, const std::string& type)
