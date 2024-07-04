@@ -207,7 +207,7 @@ namespace geometry
                 int specified_vertices = std::stoi(param);
                 if (specified_vertices < 3)
                 {
-                    out << "<INVALID COMMAND>" << std::endl;
+                    out << "0.0" << std::endl;
                 }
                 else
                 {
@@ -246,7 +246,7 @@ namespace geometry
                 int specified_vertices = std::stoi(param);
                 if (specified_vertices < 3)
                 {
-                    out << "<INVALID COMMAND>" << std::endl;
+                    out << "0" << std::endl;
                 }
                 else
                 {
