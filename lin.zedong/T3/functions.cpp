@@ -201,6 +201,7 @@ namespace geometry
                 if (specified_vertices < 3)
                 {
                     out << "0.0" << std::endl;
+                    return;
                 }
                 else
                 {

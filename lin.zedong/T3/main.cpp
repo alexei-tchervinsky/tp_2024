@@ -26,16 +26,6 @@ int main(int argc, char* argv[])
     vector<Polygon> polygons;
     read_polygons(in, polygons);
 
-    for (const auto& poly : polygons)
-    {
-        cout << "Polygon with " << poly.points.size() << " points\n";
-        for (const auto& point : poly.points)
-        {
-            cout << "(" << point.x << "," << point.y << ") ";
-        }
-        cout << "\n";
-    }
-
     string command;
     while (getline(cin, command))
     {
