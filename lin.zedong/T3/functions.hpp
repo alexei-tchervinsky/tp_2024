@@ -1,18 +1,17 @@
-#ifndef FUNCTIONS_HPP
-#define FUNCTIONS_HPP
-
-#include <vector>
+#ifndef STRUCT_HPP
+#define STRUCT_HPP
 #include <iostream>
-#include <functional>
-#include <algorithm>
-#include <iomanip>
-#include <limits>
-#include <cmath>
+#include <vector>
 #include <string>
-#include <numeric>
+#include <fstream>
 
 namespace geometry
 {
+    struct DelimiterIO
+    {
+        char del;
+    };
+
     struct Point
     {
         int x, y;
@@ -24,35 +23,34 @@ namespace geometry
 
     struct Polygon
     {
-        std::vector<Point> points;
-        double calculate_area() const;
+        std::vector< Point > points;
         bool operator==(const Polygon& other) const
         {
-            return this->points == other.points;
+          return (this->points == other.points);
         }
     };
 
-    std::istream& operator>>(std::istream& in, Point& dest);
-    std::istream& operator>>(std::istream& in, Polygon& dest);
+    std::istream &operator>>(std::istream &in, DelimiterIO &&dest);
+    std::istream &operator>>(std::istream &in, Point &dest);
+    std::istream &operator>>(std::istream &in, Polygon &dest);
+    std::size_t get_count(std::size_t param, const std::vector< geometry::Polygon > polygons);
+    std::size_t get_seq(std::vector< geometry::Polygon >::const_iterator begin,
+    std::vector< geometry::Polygon >::const_iterator end, const Polygon& param);
 
-    void read_polygons(std::istream& in, std::vector<Polygon>& polygons);
+    double area(const Polygon& polygon);
+    double get_sum(double result, const Polygon& polygon, std::size_t param);
+    double get_area(std::size_t param, const std::vector< geometry::Polygon > polygons);
+    double get_max(std::size_t param, const std::vector< geometry::Polygon > polygons);
+    double get_min(std::size_t param, const std::vector< geometry::Polygon > polygons);
 
-    bool is_rectangle(const Polygon& poly);
+    bool get_rects(const Point& start, const Point& end1, const Point& end2, const Point& end3);
 
-    double get_area_sum(const std::vector<Polygon>& polygons, std::function<bool(const Polygon&)> pred);
-    double get_mean_area(const std::vector<Polygon>& polygons);
-    double get_extreme_area(const std::vector<Polygon>& polygons, bool find_max);
-
-    int get_count(const std::vector<Polygon>& polygons, std::function<bool(const Polygon&)> pred);
-    int get_extreme_vertex_count(const std::vector<Polygon>& polygons, bool find_max);
-    int count_rectangles(const std::vector<Polygon>& polygons);
-    int max_sequence(const std::vector<Polygon>& polygons, const Polygon& target);
-
-    void area_param(const std::vector<Polygon>& polygons, std::istream& in, std::ostream& out);
-    void count_param(const std::vector<Polygon>& polygons, std::istream& in, std::ostream& out);
-    void rects_param(const std::vector<Polygon>& polygons, std::istream&, std::ostream& out);
-    void maxseq_param(const std::vector<Polygon>& polygons, std::istream& in, std::ostream& out);
-    void extreme_param(const std::vector<Polygon>& polygons, std::istream&, std::ostream& out, bool find_max, const std::string& type);
+    void area_param(const std::vector< geometry::Polygon > polygons, std::istream &in, std::ostream &out);
+    void max_param(const std::vector< geometry::Polygon > polygons, std::istream &in, std::ostream &out);
+    void min_param(const std::vector< geometry::Polygon > polygons, std::istream &in, std::ostream &out);
+    void count_param(const std::vector< geometry::Polygon > polygons, std::istream &in, std::ostream &out);
+    void rects_param(const std::vector< geometry::Polygon > polygons, std::istream &in, std::ostream &out);
+    void maxseq_param(const std::vector< geometry::Polygon > polygons, std::istream &in, std::ostream &out);
 }
 
 #endif
