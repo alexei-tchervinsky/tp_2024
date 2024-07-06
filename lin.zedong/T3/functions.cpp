@@ -1,8 +1,7 @@
 #include "functions.hpp"
-#include <fstream>
-#include <iterator>
+#include <cmath>
 #include <sstream>
-#include <stdexcept>
+#include <algorithm>
 
 namespace geometry
 {
@@ -40,7 +39,6 @@ namespace geometry
     {
         double area = 0.0;
         int n = points.size();
-
         for (int i = 0; i < n; ++i)
         {
             int j = (i + 1) % n;
@@ -48,11 +46,6 @@ namespace geometry
             area -= points[j].x * points[i].y;
         }
         return std::abs(area) / 2.0;
-    }
-
-    bool Polygon::operator==(const Polygon& other) const
-    {
-        return this->points == other.points;
     }
 
     void read_polygons(std::istream& in, std::vector<Polygon>& polygons)
@@ -217,13 +210,45 @@ namespace geometry
                     });
                 }
             }
-            catch (const std::invalid_argument& e)
+            catch (const std::invalid_argument&)
             {
                 out << "<INVALID COMMAND>" << std::endl;
                 return;
             }
         }
         out << std::fixed << std::setprecision(1) << total_area << std::endl;
+    }
+
+    void extreme_param(const std::vector<Polygon>& polygons, std::istream&, std::ostream& out, bool find_max, const std::string& type)
+    {
+        double result = -1.0;
+        if (type == "AREA")
+        {
+            result = get_extreme_area(polygons, find_max);
+        }
+        else if (type == "VERTEXES")
+        {
+            int count = get_extreme_vertex_count(polygons, find_max);
+            if (count != -1)
+            {
+                out << count << '\n';
+                return;
+            }
+        }
+        else
+        {
+            out << "<INVALID COMMAND>" << '\n';
+            return;
+        }
+
+        if (result != -1.0)
+        {
+            out << std::fixed << std::setprecision(1) << result << '\n';
+        }
+        else
+        {
+            out << "<INVALID COMMAND>" << '\n';
+        }
     }
 
     void count_param(const std::vector<Polygon>& polygons, std::istream& in, std::ostream& out)
@@ -260,38 +285,6 @@ namespace geometry
             {
                 out << "<INVALID COMMAND>" << std::endl;
             }
-        }
-    }
-
-    void extreme_param(const std::vector<Polygon>& polygons, std::istream&, std::ostream& out, bool find_max, const std::string& type)
-    {
-        double result = -1.0;
-        if (type == "AREA")
-        {
-            result = get_extreme_area(polygons, find_max);
-        }
-        else if (type == "VERTEXES")
-        {
-            int count = get_extreme_vertex_count(polygons, find_max);
-            if (count != -1)
-            {
-                out << count << '\n';
-                return;
-            }
-        }
-        else
-        {
-            out << "<INVALID COMMAND>" << '\n';
-            return;
-        }
-
-        if (result != -1.0)
-        {
-            out << std::fixed << std::setprecision(1) << result << '\n';
-        }
-        else
-        {
-            out << "<INVALID COMMAND>" << '\n';
         }
     }
 

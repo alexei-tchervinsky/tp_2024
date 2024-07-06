@@ -4,7 +4,6 @@
 #include <vector>
 #include <iostream>
 #include <functional>
-#include <map>
 #include <algorithm>
 #include <iomanip>
 #include <limits>
@@ -19,7 +18,7 @@ namespace geometry
         int x, y;
         bool operator==(const Point& other) const
         {
-          return (this->x == other.x) && (this->y == other.y);
+            return (this->x == other.x) && (this->y == other.y);
         }
     };
 
@@ -27,11 +26,14 @@ namespace geometry
     {
         std::vector<Point> points;
         double calculate_area() const;
-        friend std::istream& operator>>(std::istream& is, Polygon& poly);
-        bool operator==(const Polygon& other) const;
+        bool operator==(const Polygon& other) const
+        {
+            return this->points == other.points;
+        }
     };
 
     std::istream& operator>>(std::istream& in, Point& dest);
+    std::istream& operator>>(std::istream& in, Polygon& dest);
 
     void read_polygons(std::istream& in, std::vector<Polygon>& polygons);
 
