@@ -4,6 +4,7 @@
 #include <exception>
 #include <map>
 #include <functional>
+#include <iterator>
 
 using namespace geometry;
 
@@ -14,14 +15,18 @@ int main(int argc, char* argv[])
         std::cerr << "FILENAME_NOT_SPECIFIED\n";
         return 1;
     }
+
     std::ifstream in;
     in.open(argv[1]);
+
     if (!in)
     {
         std::cerr << "FILE_NOT_FOUND\n";
         return 1;
     }
+
     std::vector< geometry::Polygon > polygons;
+
     while (!in.eof())
     {
         std::copy(std::istream_iterator< geometry::Polygon >(in),
@@ -45,6 +50,7 @@ int main(int argc, char* argv[])
     };
 
     std::cout << std::fixed;
+
     while (!std::cin.eof())
     {
         try
