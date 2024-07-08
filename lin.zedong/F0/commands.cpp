@@ -203,7 +203,7 @@ namespace custom_dict
     {
         auto z = searchTreeHelper(root, key);
         if (z == nullptr) throw std::invalid_argument("Ключ не найден");
-    
+
         auto y = z;
         auto yOriginalColor = y->color;
         std::shared_ptr<Node> x;
