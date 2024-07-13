@@ -70,11 +70,8 @@ int main()
     std::string input;
 
     displayMenu();
-<<<<<<< HEAD
+
     while (!std::cin.eof())
-=======
-    while (true)
->>>>>>> f0f72d4f9757b7978dae7e046ae398b796413d2e
     {
         std::cout << "> ";
         std::getline(std::cin, input);
