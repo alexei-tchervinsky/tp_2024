@@ -1,5 +1,5 @@
-#ifndef STREAM_GUARD_HPP
-#define STREAM_GUARD_HPP
+#ifndef _STREAM_GUARD_HPP
+#define _STREAM_GUARD_HPP
 
 #include <iostream>
 
@@ -16,4 +16,4 @@ namespace tchervinsky
     std::basic_ios<char>::fmtflags flags_;
   };
 }
-#endif // STREAM_GUARD_HPP
+#endif // _STREAM_GUARD_HPP

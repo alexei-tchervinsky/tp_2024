@@ -19,6 +19,47 @@ std::istream& tchervinsky::operator>>(std::istream& in, tchervinsky::Delimiter&&
   return in;
 }
 
+std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::Complex&& dest)
+{
+  std::istream::sentry sentry(in);
+  if (!sentry)
+  {
+    return in;
+  }
+  in >> std::skipws >> tchervinsky::Delimiter{ '#' };
+  if (!in)
+  {
+    return in;
+  }
+  in >> std::noskipws >> tchervinsky::Delimiter{ 'c' };
+  if (!in)
+  {
+    return in;
+  }
+  in >> std::noskipws >> tchervinsky::Delimiter{ '(' };
+  if (!in)
+  {
+    return in;
+  }
+  double realvalue;
+  in >> std::noskipws >> realvalue;
+  if (!in)
+  {
+    in.setstate(std::ios::failbit);
+    return in;
+  }
+  dest.value.real(realvalue);
+  double imagvalue;
+  in >> std::skipws >> imagvalue;
+  if (!in)
+  {
+    in.setstate(std::ios::failbit);
+    return in;
+  }
+  dest.value.imag(imagvalue);
+  return in;
+}
+
 std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::DataStruct& dest)
 {
   char c{ '\0' };
@@ -64,45 +105,10 @@ std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::DataStruc
       }
       case '2':
       {
-        in >> std::skipws >> tchervinsky::Delimiter{ '#' };
-        if (!in)
-        {
-          return in;
-        }
-        in >> std::noskipws >> tchervinsky::Delimiter{ 'c' };
-        if (!in)
-        {
-          return in;
-        }
-        in >> std::noskipws >> tchervinsky::Delimiter{ '(' };
-        if (!in)
-        {
-          return in;
-        }
-        double realvalue;
-        in >> std::noskipws >> realvalue;
+        in >> std::skipws >> tchervinsky::Complex{ dest.key2 };
         if (!in)
         {
           in.setstate(std::ios::failbit);
-          return in;
-        }
-        dest.key2.real(realvalue);
-        double imagvalue;
-        in >> std::skipws >> imagvalue;
-        if (!in)
-        {
-          in.setstate(std::ios::failbit);
-          return in;
-        }
-        dest.key2.imag(imagvalue);
-        in >> std::noskipws >> tchervinsky::Delimiter{ ')' };
-        if (!in)
-        {
-          return in;
-        }
-        in >> std::noskipws >> tchervinsky::Delimiter{ ':' };
-        if (!in)
-        {
           return in;
         }
         keyfields[1] = true;
@@ -132,7 +138,12 @@ std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::DataStruc
   }
   if (((keyfields[0] == keyfields[1]) == keyfields[2]) == true)
   {
-    in >> std::noskipws >> tchervinsky::Delimiter{ ')' } >> std::noskipws;
+    in >> std::noskipws >> tchervinsky::Delimiter{ ')' };
+    if (!in)
+    {
+      return in;
+    }
+    in >> std::noskipws >> tchervinsky::Delimiter{ ':' };
     if (!in)
     {
       return in;
