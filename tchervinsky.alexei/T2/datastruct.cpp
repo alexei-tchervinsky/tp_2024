@@ -57,6 +57,18 @@ std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::Complex&&
     return in;
   }
   dest.value.imag(imagvalue);
+  in >> std::noskipws >> tchervinsky::Delimiter{ ')' };
+  if (!in)
+  {
+    in.setstate(std::ios::failbit);
+    return in;
+  }
+  in >> std::noskipws >> tchervinsky::Delimiter{ ':' };
+  if (!in)
+  {
+    in.setstate(std::ios::failbit);
+    return in;
+  }
   return in;
 }
 
@@ -126,7 +138,6 @@ std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::DataStruc
         }
         dest.key3 = key3string;
         keyfields[2] = true;
-        in >> std::noskipws >> c >> std::noskipws;
         break;
       }
       default:
@@ -136,24 +147,25 @@ std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::DataStruc
       }
     }
   }
-  if (((keyfields[0] == keyfields[1]) == keyfields[2]) == true)
+
+  in >> std::skipws >> tchervinsky::Delimiter{ ':' };
+  if (!in)
   {
-    in >> std::noskipws >> tchervinsky::Delimiter{ ')' };
-    if (!in)
-    {
-      return in;
-    }
-    in >> std::noskipws >> tchervinsky::Delimiter{ ':' };
-    if (!in)
-    {
-      return in;
-    }
-  }
-  else
-  {
-    in.setstate(std::ios::failbit);
     return in;
   }
+
+  in >> std::noskipws >> tchervinsky::Delimiter{ ')' };
+  if (!in)
+  {
+    return in;
+  }
+
+  if (((keyfields[0] == keyfields[1]) == keyfields[2]) == true)
+  {
+    return in;
+  }
+
+  in.setstate(std::ios::failbit);
   return in;
 }
 

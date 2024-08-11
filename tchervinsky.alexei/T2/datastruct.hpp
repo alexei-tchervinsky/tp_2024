@@ -14,7 +14,7 @@ namespace tchervinsky
 
   struct Complex
   {
-    std::complex<double> value;
+    std::complex<double> &value;
   };
   struct DataStruct
   {
