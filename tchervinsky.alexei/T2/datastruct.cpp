@@ -1,6 +1,7 @@
 #include "datastruct.hpp"
 #include "stream_guard.hpp"
 #include <iomanip>
+#include <limits>
 
 
 std::istream& tchervinsky::operator>>(std::istream& in, tchervinsky::Delimiter&& dest)
@@ -138,6 +139,12 @@ std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::DataStruc
         }
         dest.key3 = key3string;
         keyfields[2] = true;
+        in >> std::skipws >> tchervinsky::Delimiter{ ':' };
+        if (!in)
+        {
+        // return in;
+          in.clear();
+        }
         break;
       }
       default:
@@ -147,11 +154,15 @@ std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::DataStruc
       }
     }
   }
-
+#if 1
+  in.clear();
+  in.ignore(std::numeric_limits< std::streamsize >::max(), '\n');
+#else
   in >> std::skipws >> tchervinsky::Delimiter{ ':' };
   if (!in)
   {
-    return in;
+    // return in;
+    in.clear();
   }
 
   in >> std::noskipws >> tchervinsky::Delimiter{ ')' };
@@ -159,7 +170,7 @@ std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::DataStruc
   {
     return in;
   }
-
+#endif
   if (((keyfields[0] == keyfields[1]) == keyfields[2]) == true)
   {
     return in;
