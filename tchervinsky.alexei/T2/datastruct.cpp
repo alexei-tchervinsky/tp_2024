@@ -142,8 +142,7 @@ std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::DataStruc
         in >> std::skipws >> tchervinsky::Delimiter{ ':' };
         if (!in)
         {
-        // return in;
-          in.clear();
+          return in;
         }
         break;
       }
@@ -154,29 +153,16 @@ std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::DataStruc
       }
     }
   }
-#if 1
-  in.clear();
-  in.ignore(std::numeric_limits< std::streamsize >::max(), '\n');
-#else
-  in >> std::skipws >> tchervinsky::Delimiter{ ':' };
-  if (!in)
-  {
-    // return in;
-    in.clear();
-  }
-
   in >> std::noskipws >> tchervinsky::Delimiter{ ')' };
   if (!in)
   {
     return in;
   }
-#endif
-  if (((keyfields[0] == keyfields[1]) == keyfields[2]) == true)
+  if (!(((keyfields[0] == keyfields[1]) == keyfields[2]) == true))
   {
+    in.setstate(std::ios::failbit);
     return in;
   }
-
-  in.setstate(std::ios::failbit);
   return in;
 }
 
