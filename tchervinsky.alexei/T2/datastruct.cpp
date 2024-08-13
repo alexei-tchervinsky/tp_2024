@@ -155,7 +155,7 @@ std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::DataStruc
       }
       case '2':
       {
-        in >> std::skipws >> ComplexIO{ dest.key2 };
+        in >> ComplexIO{ dest.key2 };
         if (!in)
         {
           in.setstate(std::ios::failbit);
@@ -166,7 +166,7 @@ std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::DataStruc
       }
       case '3':
       {
-        in >> std::skipws >> StringIO{ dest.key3 };
+        in >> StringIO{ dest.key3 };
         if (!in)
         {
           return in;
