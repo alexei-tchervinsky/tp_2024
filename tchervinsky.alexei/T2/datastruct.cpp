@@ -75,6 +75,9 @@ std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::Complex&&
 
 std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::DataStruct& dest)
 {
+
+  using ComplexIO = tchervinsky::Complex;
+
   char c{ '\0' };
   in >> std::skipws >> tchervinsky::Delimiter{ '(' } >> std::noskipws;
   if (!in)
@@ -118,7 +121,7 @@ std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::DataStruc
       }
       case '2':
       {
-        in >> std::skipws >> tchervinsky::Complex{ dest.key2 };
+        in >> std::skipws >> ComplexIO{ dest.key2 };
         if (!in)
         {
           in.setstate(std::ios::failbit);
