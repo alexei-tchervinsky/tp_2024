@@ -73,10 +73,32 @@ std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::Complex&&
   return in;
 }
 
+std::istream& tchervinsky::operator >> (std::istream& in, String&& dest)
+{
+  std::string key3string;
+  std::getline(in, key3string, '"');
+  std::getline(in, key3string, '"');
+  if (!in)
+  {
+    in.setstate(std::ios::failbit);
+    return in;
+  }
+  dest.str = key3string;
+  in >> std::skipws >> tchervinsky::Delimiter{ ':' };
+  if (!in)
+  {
+    in.setstate(std::ios::failbit);
+    return in;
+  }
+  return in;
+}
+
+
 std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::DataStruct& dest)
 {
 
   using ComplexIO = tchervinsky::Complex;
+  using StringIO = tchervinsky::String;
 
   char c{ '\0' };
   in >> std::skipws >> tchervinsky::Delimiter{ '(' } >> std::noskipws;
@@ -132,21 +154,12 @@ std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::DataStruc
       }
       case '3':
       {
-        std::string key3string;
-        std::getline(in, key3string, '"');
-        std::getline(in, key3string, '"');
+        in >> std::skipws >> StringIO{ dest.key3 };
         if (!in)
         {
-          in.setstate(std::ios::failbit);
           return in;
         }
-        dest.key3 = key3string;
         keyfields[2] = true;
-        in >> std::skipws >> tchervinsky::Delimiter{ ':' };
-        if (!in)
-        {
-          return in;
-        }
         break;
       }
       default:
