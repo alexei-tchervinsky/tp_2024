@@ -20,6 +20,19 @@ std::istream& tchervinsky::operator>>(std::istream& in, tchervinsky::Delimiter&&
   return in;
 }
 
+std::istream& tchervinsky::operator >> (std::istream& in, LongLong&& dest)
+{
+  in >> std::skipws >> dest.value >> std::noskipws
+    >> tchervinsky::Delimiter{ 'l' } >> tchervinsky::Delimiter{ 'l' }
+    >> tchervinsky::Delimiter{ ':' };
+  if (!in)
+  {
+    in.setstate(std::ios::failbit);
+  }
+  return in;
+}
+
+
 std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::Complex&& dest)
 {
   std::istream::sentry sentry(in);
@@ -97,6 +110,7 @@ std::istream& tchervinsky::operator >> (std::istream& in, String&& dest)
 std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::DataStruct& dest)
 {
 
+  using LongLongIO = tchervinsky::LongLong;
   using ComplexIO = tchervinsky::Complex;
   using StringIO = tchervinsky::String;
 
@@ -131,9 +145,7 @@ std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::DataStruc
     {
       case '1':
       {
-        in >> std::skipws >> dest.key1 >> std::noskipws
-           >> tchervinsky::Delimiter{ 'l' } >> tchervinsky::Delimiter{ 'l' }
-           >> tchervinsky::Delimiter{ ':' };
+        in >> LongLongIO{ dest.key1 };
         if (!in)
         {
           return in;

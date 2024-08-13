@@ -21,6 +21,11 @@ namespace tchervinsky
   {
     std::string &str;
   };
+
+  struct LongLong
+  {
+    long long &value;
+  };
   struct DataStruct
   {
     long long key1;
@@ -29,6 +34,7 @@ namespace tchervinsky
   };
 
   std::istream& operator >> (std::istream& in, Delimiter&& dest);
+  std::istream& operator >> (std::istream& in, LongLong&& dest);
   std::istream& operator >> (std::istream& in, Complex&& dest);
   std::istream& operator >> (std::istream& in, String&& dest);
   std::istream& operator >> (std::istream& in, DataStruct& dest);
