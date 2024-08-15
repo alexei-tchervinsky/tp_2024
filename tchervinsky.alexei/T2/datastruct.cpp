@@ -294,7 +294,7 @@ bool tchervinsky::operator < (const tchervinsky::DataStruct& a, const tchervinsk
     double bkey1mod = std::fabs(std::sqrt(std::pow(b.key1.real(), 2) + std::pow(b.key1.imag(), 2)));
     return akey1mod < bkey1mod;
   }
-  if (a.key2 != b.key2)
+  else if (a.key2 != b.key2)
   {
     return a.key2 < b.key2;
   }
