@@ -184,6 +184,7 @@ std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::DataStruc
   using ComplexIO = tchervinsky::Complex;
   using PairIO = tchervinsky::Pair;
   using StringIO = tchervinsky::String;
+  using Keyfields = tchervinsky::KEYFIELDS;
 
   char c{ '\0' };
   in >> std::skipws >> tchervinsky::Delimiter{ '(' } >> std::noskipws;
@@ -196,8 +197,9 @@ std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::DataStruc
   {
     return in;
   }
-  bool keyfields[3]{ false };
-  for (std::size_t i = 0; i < 3; ++i)
+
+  bool keyfields[static_cast<std::size_t>(Keyfields::KEYLEN)]{ false };
+  for (std::size_t i = 0; i < static_cast<std::size_t>(Keyfields::KEYLEN); ++i)
   {
     std::string key;
     in >> key;
@@ -222,7 +224,7 @@ std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::DataStruc
           in.setstate(std::ios::failbit);
           return in;
         }
-        keyfields[0] = true;
+        keyfields[static_cast<std::size_t>(Keyfields::KEY1)] = true;
         break;
       }
       case '2':
@@ -233,7 +235,7 @@ std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::DataStruc
           in.setstate(std::ios::failbit);
           return in;
         }
-        keyfields[1] = true;
+        keyfields[static_cast<std::size_t>(Keyfields::KEY2)] = true;
         break;
       }
       case '3':
@@ -243,7 +245,7 @@ std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::DataStruc
         {
           return in;
         }
-        keyfields[2] = true;
+        keyfields[static_cast<std::size_t>(Keyfields::KEY3)] = true;
         break;
       }
       default:
@@ -258,7 +260,10 @@ std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::DataStruc
   {
     return in;
   }
-  if (!(((keyfields[0] == keyfields[1]) == keyfields[2]) == true))
+  if (!
+    (((keyfields[static_cast<std::size_t>(Keyfields::KEY1)]
+    == keyfields[static_cast<std::size_t>(Keyfields::KEY2)])
+    == keyfields[static_cast<std::size_t>(Keyfields::KEY3)])) == true)
   {
     in.setstate(std::ios::failbit);
     return in;
