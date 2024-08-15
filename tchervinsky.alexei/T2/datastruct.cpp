@@ -288,7 +288,7 @@ std::ostream& tchervinsky::operator << (std::ostream& out, const tchervinsky::Da
 
 bool tchervinsky::operator < (const tchervinsky::DataStruct& a, const tchervinsky::DataStruct& b)
 {
-  if (a.key2 != b.key2)
+  if (a.key1 != b.key1)
   {
     double akey1mod = std::fabs(std::sqrt(std::pow(a.key1.real(), 2) + std::pow(a.key1.imag(), 2)));
     double bkey1mod = std::fabs(std::sqrt(std::pow(b.key1.real(), 2) + std::pow(b.key1.imag(), 2)));
