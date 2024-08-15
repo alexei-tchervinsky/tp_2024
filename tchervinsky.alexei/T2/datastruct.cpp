@@ -19,7 +19,7 @@ std::istream& tchervinsky::operator>>(std::istream& in, tchervinsky::Delimiter&&
   }
   return in;
 }
-
+#if 0
 std::istream& tchervinsky::operator >> (std::istream& in, LongLong&& dest)
 {
   in >> std::skipws >> dest.value >> std::noskipws
@@ -31,7 +31,7 @@ std::istream& tchervinsky::operator >> (std::istream& in, LongLong&& dest)
   }
   return in;
 }
-
+#endif
 
 std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::Complex&& dest)
 {
@@ -86,6 +86,75 @@ std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::Complex&&
   return in;
 }
 
+std::istream& tchervinsky::operator >> (std::istream& in, Pair&& dest)
+{
+// key2 (:N -1:D 5:):
+  std::istream::sentry sentry(in);
+  if (!sentry)
+  {
+    return in;
+  }
+  in >> std::skipws >> tchervinsky::Delimiter{ '(' };
+  if (!in)
+  {
+    return in;
+  }
+  in >> std::noskipws >> tchervinsky::Delimiter{ ':' };
+  if (!in)
+  {
+    return in;
+  }
+  in >> std::noskipws >> tchervinsky::Delimiter{ 'N' };
+  if (!in)
+  {
+    return in;
+  }
+  long long first;
+  in >> std::skipws >> first;
+  if (!in)
+  {
+    in.setstate(std::ios::failbit);
+    return in;
+  }
+  in >> std::noskipws >> tchervinsky::Delimiter{ ':' };
+  if (!in)
+  {
+    return in;
+  }
+  in >> std::noskipws >> tchervinsky::Delimiter{ 'D' };
+  if (!in)
+  {
+    return in;
+  }
+  unsigned long long second;
+  in >> std::skipws >> second;
+  if (!in)
+  {
+    in.setstate(std::ios::failbit);
+    return in;
+  }
+  dest.val.first = first;
+  dest.val.second = second;
+  in >> std::noskipws >> tchervinsky::Delimiter{ ':' };
+  if (!in)
+  {
+    return in;
+  }
+  in >> std::skipws >> tchervinsky::Delimiter{ ')' };
+  if (!in)
+  {
+    return in;
+  }
+   in >> std::noskipws >> tchervinsky::Delimiter{ ':' };
+  if (!in)
+  {
+    return in;
+  }
+  return in;
+}
+
+
+
 std::istream& tchervinsky::operator >> (std::istream& in, String&& dest)
 {
   std::string key3string;
@@ -109,9 +178,11 @@ std::istream& tchervinsky::operator >> (std::istream& in, String&& dest)
 
 std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::DataStruct& dest)
 {
-
+#if 0
   using LongLongIO = tchervinsky::LongLong;
+#endif
   using ComplexIO = tchervinsky::Complex;
+  using PairIO = tchervinsky::Pair;
   using StringIO = tchervinsky::String;
 
   char c{ '\0' };
@@ -145,9 +216,10 @@ std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::DataStruc
     {
       case '1':
       {
-        in >> LongLongIO{ dest.key1 };
+        in >> ComplexIO{ dest.key1 };
         if (!in)
         {
+          in.setstate(std::ios::failbit);
           return in;
         }
         keyfields[0] = true;
@@ -155,7 +227,7 @@ std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::DataStruc
       }
       case '2':
       {
-        in >> ComplexIO{ dest.key2 };
+        in >> PairIO{ dest.key2 };
         if (!in)
         {
           in.setstate(std::ios::failbit);
@@ -203,8 +275,12 @@ std::ostream& tchervinsky::operator << (std::ostream& out, const tchervinsky::Da
   }
   tchervinsky::StreamGuard guard(out);
   out << "(";
-  out << ":key1 " << src.key1 << 'l' << 'l';
-  out << ":key2 " << "#c(" << std::fixed << std::setprecision(1) << src.key2.real() << " " << src.key2.imag() << ')';
+#if 0
+  out << ":key2 " << src.key1 << 'l' << 'l';
+#endif
+  out << ":key1 " << "#c(" << std::fixed << std::setprecision(1) << src.key1.real() << " " << src.key1.imag() << ')';
+//   (:N -1:D 5:)
+  out << ":key2 " << "(:N " << std::setprecision(1) << src.key2.first << ":D " << std::setprecision(1) << src.key2.second << ":)";
   out << ":key3 " << '\"' << src.key3 << '\"';
   out << ":)";
   return out;
@@ -212,15 +288,15 @@ std::ostream& tchervinsky::operator << (std::ostream& out, const tchervinsky::Da
 
 bool tchervinsky::operator < (const tchervinsky::DataStruct& a, const tchervinsky::DataStruct& b)
 {
-  if (a.key1 != b.key1)
+  if (a.key2 != b.key2)
   {
-    return a.key1 < b.key1;
+    double akey1mod = std::fabs(std::sqrt(std::pow(a.key1.real(), 2) + std::pow(a.key1.imag(), 2)));
+    double bkey1mod = std::fabs(std::sqrt(std::pow(b.key1.real(), 2) + std::pow(b.key1.imag(), 2)));
+    return akey1mod < bkey1mod;
   }
-  else if (a.key2 != b.key2)
+  if (a.key2 != b.key2)
   {
-    double akey2mod = std::fabs(std::sqrt(std::pow(a.key2.real(), 2) + std::pow(a.key2.imag(), 2)));
-    double bkey2mod = std::fabs(std::sqrt(std::pow(b.key2.real(), 2) + std::pow(b.key2.imag(), 2)));
-    return akey2mod < bkey2mod;
+    return a.key2 < b.key2;
   }
   else
   {
