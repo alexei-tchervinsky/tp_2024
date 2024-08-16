@@ -54,12 +54,5 @@ namespace tchervinsky
   std::ostream& operator << (std::ostream& out, const DataStruct& dest);
   bool operator < (const DataStruct& a, const DataStruct& b);
 
-  enum class KEYFIELDS
-  {
-    KEY1 = 0,
-    KEY2 = 1,
-    KEY3 = 2,
-    KEYLEN = 3
-  };
 }
 #endif

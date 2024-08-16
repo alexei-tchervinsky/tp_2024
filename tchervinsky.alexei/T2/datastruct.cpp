@@ -184,7 +184,6 @@ std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::DataStruc
   using ComplexIO = tchervinsky::Complex;
   using PairIO = tchervinsky::Pair;
   using StringIO = tchervinsky::String;
-  using Keyfields = tchervinsky::KEYFIELDS;
 
   char c{ '\0' };
   in >> std::skipws >> tchervinsky::Delimiter{ '(' } >> std::noskipws;
@@ -198,8 +197,17 @@ std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::DataStruc
     return in;
   }
 
-  bool keyfields[static_cast<std::size_t>(Keyfields::KEYLEN)]{ false };
-  for (std::size_t i = 0; i < static_cast<std::size_t>(Keyfields::KEYLEN); ++i)
+  const std::size_t KEY_COMPLEX = 0;
+  const std::size_t KEY_PAIR = 1;
+  const std::size_t KEY_STRING = 2;
+  const std::size_t KEY_LEN = 3;
+
+  const char KEY_SYMBOL_COMPLEX = '1';
+  const char KEY_SYMBOL_PAIR = '2';
+  const char KEY_SYMBOL_STRING = '3';
+
+  bool keyfields[KEY_LEN]{ false };
+  for (std::size_t i = 0; i < KEY_LEN; ++i)
   {
     std::string key;
     in >> key;
@@ -216,7 +224,7 @@ std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::DataStruc
     c = key[3];
     switch (c)
     {
-      case '1':
+      case KEY_SYMBOL_COMPLEX:
       {
         in >> ComplexIO{ dest.key1 };
         if (!in)
@@ -224,10 +232,10 @@ std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::DataStruc
           in.setstate(std::ios::failbit);
           return in;
         }
-        keyfields[static_cast<std::size_t>(Keyfields::KEY1)] = true;
+        keyfields[KEY_COMPLEX] = true;
         break;
       }
-      case '2':
+      case KEY_SYMBOL_PAIR:
       {
         in >> PairIO{ dest.key2 };
         if (!in)
@@ -235,17 +243,17 @@ std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::DataStruc
           in.setstate(std::ios::failbit);
           return in;
         }
-        keyfields[static_cast<std::size_t>(Keyfields::KEY2)] = true;
+        keyfields[KEY_PAIR] = true;
         break;
       }
-      case '3':
+      case KEY_SYMBOL_STRING:
       {
         in >> StringIO{ dest.key3 };
         if (!in)
         {
           return in;
         }
-        keyfields[static_cast<std::size_t>(Keyfields::KEY3)] = true;
+        keyfields[KEY_STRING] = true;
         break;
       }
       default:
@@ -261,9 +269,10 @@ std::istream& tchervinsky::operator >> (std::istream& in, tchervinsky::DataStruc
     return in;
   }
   if (!
-    (((keyfields[static_cast<std::size_t>(Keyfields::KEY1)]
-    == keyfields[static_cast<std::size_t>(Keyfields::KEY2)])
-    == keyfields[static_cast<std::size_t>(Keyfields::KEY3)])) == true)
+     (((keyfields[KEY_COMPLEX]
+     == keyfields[KEY_PAIR])
+     == keyfields[KEY_STRING]))
+     == true)
   {
     in.setstate(std::ios::failbit);
     return in;
