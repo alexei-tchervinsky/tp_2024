@@ -1,20 +1,22 @@
-#ifndef GUARD_HPP
-#define GUARD_HPP
+#ifndef FMTGUARD_HPP
+#define FMTGUARD_HPP
 
 #include <iostream>
 
 namespace AliKN {
-    class iofmtguard {
+
+    class FmtGuard {
     public:
-        iofmtguard(std::basic_ios<char>& stream);
-        ~iofmtguard();
+        FmtGuard(std::basic_ios<char>& stream);
+        ~FmtGuard();
 
     private:
-        std::basic_ios<char>& stream_;
+        std::basic_ios<char>& s_;
         char fill_;
         std::streamsize precision_;
         std::basic_ios<char>::fmtflags flags_;
     };
+
 }
 
 #endif
