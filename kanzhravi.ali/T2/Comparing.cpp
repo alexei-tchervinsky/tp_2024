@@ -1,4 +1,4 @@
-#include "Cmp.hpp"
+#include "Comparing.hpp"
 
 namespace AliKN {
 
