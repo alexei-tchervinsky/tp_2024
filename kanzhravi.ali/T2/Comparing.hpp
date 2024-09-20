@@ -1,9 +1,9 @@
-#ifndef CMP_HPP
-#define CMP_HPP
-#include "DStruct.hpp"
+#ifndef COMPARING_HPP
+#define COMPARING_HPP
+#include "DataStruct.hpp"
 namespace AliKN {
 
-    struct Cmp
+    struct Comparing
     {
         bool operator()(const DataItem first, const DataItem second) const;
     };
