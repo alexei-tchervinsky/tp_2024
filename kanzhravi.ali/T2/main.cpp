@@ -1,5 +1,5 @@
-#include "Cmp.hpp"
-#include "DStruct.hpp"
+#include "Comparing.hpp"
+#include "DataStruct.hpp"
 #include <iostream>
 #include <vector>
 #include <iterator>
@@ -20,7 +20,7 @@ int main() {
         }
     }
 
-    std::stable_sort(records.begin(), records.end(), AliKN::Cmp());
+    std::stable_sort(records.begin(), records.end(), AliKN::Comparing());
     std::copy(records.cbegin(), records.cend(), std::ostream_iterator<DataItem>(std::cout, "\n"));
 
     return 0;
