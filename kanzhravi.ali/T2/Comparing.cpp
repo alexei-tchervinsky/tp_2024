@@ -2,7 +2,7 @@
 
 namespace AliKN {
 
-    bool Cmp::operator()(const DataItem first, const DataItem second) const {
+    bool Comparing::operator()(const DataItem first, const DataItem second) const {
         if (first.attr1 != second.attr1) {
             return (first.attr1 < second.attr1);
         }
