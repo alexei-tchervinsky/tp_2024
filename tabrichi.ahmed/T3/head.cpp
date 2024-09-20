@@ -1,6 +1,6 @@
 #include "head.hpp"
 
-double calculateArea(const Polygon& polygon) {
+double calculateArea(const Polygon & polygon) {
     double area = 0.0;
     size_t n = polygon.points.size();
     for (size_t i = 0; i < n; ++i) {

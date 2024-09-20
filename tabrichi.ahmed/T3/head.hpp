@@ -7,7 +7,8 @@
 #include <cmath>
 
 struct Point {
-    int x, y;
+    int x;
+    int y;
 };
 
 struct Polygon {
