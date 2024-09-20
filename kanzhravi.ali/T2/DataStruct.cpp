@@ -1,5 +1,5 @@
-#include "DStruct.hpp"
-#include "FmtGuard.hpp"
+#include "DataStruct.hpp"
+#include "Guard.hpp"
 
 namespace AliKN {
 
@@ -126,7 +126,7 @@ namespace AliKN {
         std::ostream::sentry sentry(outStream);
         if (!sentry) return outStream;
 
-        FmtGuard fmtGuard(outStream);
+        Guard Guard(outStream);
         outStream << "(:attr1 " << output.attr1 << "ull";
         outStream << ":attr2 0b" << toBinary(output.attr2);
         outStream << ":attr3 \"" << output.attr3 << "\":)";
