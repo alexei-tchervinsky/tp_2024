@@ -1,135 +1,168 @@
 #include "DataStruct.hpp"
-#include "Guard.hpp"
+#include "Fmtguard.hpp"
 
-namespace AliKN {
-
-    std::string toBinary(unsigned long long number) {
+namespace AliKn
+{
+    std::string toBinary(unsigned long long number)
+    {
         std::string result = "";
-        unsigned long long temp = number;
+        unsigned long long temp_ = number;
 
-        if (temp == 0) {
+        if (temp_ == 0)
+        {
             result = "0";
         }
-
-        if (temp == 1) {
+        if (temp_ == 1)
+        {
             return "01";
         }
-
-        while (temp != 0) {
-            result = std::to_string(temp % 2) + result;
-            temp /= 2;
+        while (temp_ != 0)
+        {
+            result = std::to_string(temp_ % 2) + result;
+            temp_ = temp_ / 2;
         }
-
         return result;
     }
 
-    unsigned long long binaryToDecimal(unsigned long long binValue) {
-        unsigned long long res = 0;
-        for (unsigned long long i = 1; binValue; binValue /= 10, i *= 2) {
-            res += i * (binValue % 10);
+    unsigned long long BinaryToDecimal(unsigned long long binValue)
+    {
+        unsigned long long result = 0;
+        for (unsigned long long i = 1; binValue; binValue /= 10, i *= 2)
+        {
+            result += i * (binValue % 10);
         }
-        return res;
+        return result;
     }
 
-    std::istream& operator>>(std::istream& inStream, DelimIO&& delimiter) {
+    std::istream& operator>>(std::istream& inStream, DelimiterIO&& delimiter)
+    {
         std::istream::sentry sentry(inStream);
-        if (!sentry) return inStream;
-
-        char temp = '\0';
-        inStream >> temp;
-        if (inStream && (temp != delimiter.del)) {
+        if (!sentry)
+        {
+            return inStream;
+        }
+        char c = '\0';
+        inStream >> c;
+        if (inStream && (c != delimiter.del))
+        {
             inStream.setstate(std::ios::failbit);
         }
         return inStream;
     }
 
-    std::istream& operator>>(std::istream& inStream, LiteralIO&& literal) {
-        std::istream::sentry sentry(inStream);
-        if (!sentry) return inStream;
-
-        inStream >> std::dec >> literal.lit;
-        if (inStream.peek() == 'U') {
-            return inStream >> DelimIO{ 'U' } >> DelimIO{ 'L' } >> DelimIO{ 'L' };
+    std::istream& operator>>(std::istream& in, LITIO&& literal)
+    {
+        std::istream::sentry sentry(in);
+        if (!sentry)
+        {
+            return in;
         }
-        return inStream >> DelimIO{ 'u' } >> DelimIO{ 'l' } >> DelimIO{ 'l' };
+        in >> std::dec >> literal.lit;
+        if (in.peek() == 'U')
+        {
+            return in >> DelimiterIO{ 'U' } >> DelimiterIO{ 'L' } >> DelimiterIO{ 'L' };
+        }
+        else
+        {
+            return in >> DelimiterIO{ 'u' } >> DelimiterIO{ 'l' } >> DelimiterIO{ 'l' };
+        }
     }
 
-    std::istream& operator>>(std::istream& inStream, BinaryIO&& binary) {
-        std::istream::sentry sentry(inStream);
-        if (!sentry) return inStream;
-
-        inStream >> DelimIO{ '0' };
-        if (inStream.peek() == 'B') {
-            inStream >> DelimIO{ 'B' };
+    std::istream& operator>>(std::istream& in, BINIO&& binary)
+    {
+        std::istream::sentry sentry(in);
+        if (!sentry)
+        {
+            return in;
         }
-        else {
-            inStream >> DelimIO{ 'b' };
+        in >> DelimiterIO{ '0' };
+        if (in.peek() == 'B')
+        {
+            in >> DelimiterIO{ 'B' };
         }
-
+        else
+        {
+            in >> DelimiterIO{ 'b' };
+        }
         unsigned long long bin = 0;
-        inStream >> bin;
-        binary.bin = binaryToDecimal(bin);
-        return inStream;
+        in >> bin;
+        binary.bin = BinaryToDecimal(bin);
+        return in;
     }
 
-    std::istream& operator>>(std::istream& inStream, StrIO&& stringData) {
-        std::istream::sentry sentry(inStream);
-        if (!sentry) return inStream;
-
-        return std::getline(inStream >> DelimIO{ '"' }, stringData.str, '"');
-    }
-
-    std::istream& operator>>(std::istream& inStream, LabelIO&& labelData) {
-        std::istream::sentry sentry(inStream);
-        if (!sentry) return inStream;
-
-        std::string temp;
-        if ((inStream >> StrIO{ temp }) && (temp != labelData.label)) {
-            inStream.setstate(std::ios::failbit);
+    std::istream& operator>>(std::istream& in, StringIO&& stringData)
+    {
+        std::istream::sentry sentry(in);
+        if (!sentry)
+        {
+            return in;
         }
-        return inStream;
+        return std::getline(in >> DelimiterIO{ '"' }, stringData.str, '"');
     }
 
-    std::istream& operator>>(std::istream& inStream, DataItem& input) {
-        std::istream::sentry sentry(inStream);
-        if (!sentry) return inStream;
-
-        DataItem data;
-        std::string buffer;
-
-        inStream >> DelimIO{ '(' };
-        for (std::size_t i = 0; i < 3; ++i) {
-            inStream >> DelimIO{ ':' };
-            inStream >> buffer;
-
-            if (buffer == "attr1") {
-                inStream >> LiteralIO{ data.attr1 };
-            }
-            else if (buffer == "attr2") {
-                inStream >> BinaryIO{ data.attr2 };
-            }
-            else {
-                inStream >> StrIO{ data.attr3 };
-            }
+    std::istream& operator>>(std::istream& in, LabelIO&& labelData)
+    {
+        std::istream::sentry sentry(in);
+        if (!sentry)
+        {
+            return in;
         }
-        inStream >> DelimIO{ ':' };
-        inStream >> DelimIO{ ')' };
-
-        if (inStream) {
-            input = data;
+        std::string data = "";
+        if ((in >> StringIO{ data }) && (data != labelData.lab))
+        {
+            in.setstate(std::ios::failbit);
         }
-
-        return inStream;
+        return in;
     }
 
-    std::ostream& operator<<(std::ostream& outStream, const DataItem& output) {
-        std::ostream::sentry sentry(outStream);
-        if (!sentry) return outStream;
+    std::istream& operator>>(std::istream& in, DataItem& theIinput)
+    {
+        std::istream::sentry sentry(in);
+        if (!sentry)
+        {
+            return in;
+        }
+        DataItem input;
+        std::string chars;
 
-        Guard Guard(outStream);
-        outStream << "(:attr1 " << output.attr1 << "ull";
-        outStream << ":attr2 0b" << toBinary(output.attr2);
-        outStream << ":attr3 \"" << output.attr3 << "\":)";
-        return outStream;
+        in >> DelimiterIO{ '(' };
+        for (std::size_t i = 0; i < 3; ++i)
+        {
+            in >> DelimiterIO{ ':' };
+            in >> chars;
+            if (chars == "key1")
+            {
+                in >> LITIO{ input.attr1 };
+            }
+            else if (chars == "key2")
+            {
+                in >> BINIO{ input.attr2 };
+            }
+            else
+            {
+                in >> StringIO{ input.attr3 };
+            }
+        }
+        in >> DelimiterIO{ ':' };
+        in >> DelimiterIO{ ')' };
+        if (in)
+        {
+            theIinput = input;
+        }
+        return in;
+    }
+
+    std::ostream& operator<<(std::ostream& out, const DataItem& output)
+    {
+        std::ostream::sentry sentry(out);
+        if (!sentry)
+        {
+            return out;
+        }
+        Fmtguard fmtguard(out);
+        out << "(:key1 " << output.attr1 << "ull";
+        out << ":key2 0b" << toBinary(output.attr2);
+        out << ":key3 \"" << output.attr3 << "\":)";
+        return out;
     }
 }
