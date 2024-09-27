@@ -3,13 +3,25 @@
 #include <vector>
 #include <algorithm>
 #include <iterator>
+#include <limits>
 
 int main() {
     using namespace Data;
-    std::vector<DataStruct> data{std::istream_iterator<DataStruct>{std::cin}, {}};
+    std::vector<DataStruct> data;
+    DataStruct temp;
 
-    data.erase(std::remove_if(data.begin(), data.end(), [](const DataStruct &d) { return d.key3.empty(); }),
-               data.end());
+    while (true) {
+        if (std::cin >> temp) {
+            if (!temp.key3.empty()) {
+                data.push_back(temp);
+            }
+        } else {
+            if (std::cin.eof()) break;
+
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
+    }
 
     if (!data.empty()) {
         std::sort(data.begin(), data.end());
