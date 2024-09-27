@@ -1,17 +1,14 @@
-#include "Comparator.hpp"
+#ifndef COMPARATOR_HPP
+#define COMPARATOR_HPP
+#include "DataStruct.hpp"
+#include <algorithm>
 
 namespace AliKn
 {
-    bool Comparator::operator()(const DataItem first, const DataItem second) const
+    struct Comparator
     {
-        if (first.attr1 != second.attr1)
-        {
-            return (first.attr1 < second.attr1);
-        }
-        else if (first.attr2 != second.attr2)
-        {
-            return (first.attr2 < second.attr2);
-        }
-        return (first.attr3.length() < second.attr3.length());
-    }
+        bool operator()(const DataItem first, const DataItem second) const;
+    };
 }
+
+#endif
