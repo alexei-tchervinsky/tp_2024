@@ -1,46 +1,50 @@
-#ifndef DATASTRUCT_HPP
-#define DATASTRUCT_HPP
+#ifndef DATA_STRUCT_HPP
+#define DATA_STRUCT_HPP
 
 #include <iostream>
 #include <string>
 
-namespace AliKN {
-
-    struct DataItem {
+namespace AliKn
+{
+    struct DataItem
+    {
         unsigned long long attr1;
         unsigned long long attr2;
         std::string attr3;
     };
 
-    struct DelimIO {
+    struct DelimiterIO
+    {
         char del;
     };
 
-    struct LiteralIO {
+    struct LITIO
+    {
         unsigned long long& lit;
     };
 
-    struct BinaryIO {
+    struct BINIO
+    {
         unsigned long long& bin;
     };
 
-    struct StrIO {
+    struct StringIO
+    {
         std::string& str;
     };
 
-    struct LabelIO {
-        std::string label;
+    struct LabelIO
+    {
+        std::string lab;
     };
 
-    std::istream& operator>>(std::istream& inStream, DelimIO&& delimiter);
-    std::istream& operator>>(std::istream& inStream, LiteralIO&& literal);
-    std::istream& operator>>(std::istream& inStream, BinaryIO&& binary);
-    std::istream& operator>>(std::istream& inStream, StrIO&& stringData);
+    std::istream& operator>>(std::istream& inStream, DelimiterIO&& delimiter);
+    std::istream& operator>>(std::istream& inStream, LITIO&& literal);
+    std::istream& operator>>(std::istream& inStream, BINIO&& binary);
+    std::istream& operator>>(std::istream& inStream, StringIO&& stringData);
     std::istream& operator>>(std::istream& inStream, LabelIO&& labelData);
     std::istream& operator>>(std::istream& inStream, DataItem& input);
     std::ostream& operator<<(std::ostream& outStream, const DataItem& output);
     std::string toBinary(unsigned long long number);
-
 }
-
 #endif
