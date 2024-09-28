@@ -43,7 +43,7 @@ int main(int argc, char* argv[])
         commands["RIGHTSHAPES"] = std::bind(AliKn::Rightshapes, _1, _2);
     }
 
-    auto outInvalid = std::bind(displayMessage, std::placeholders::_1, "<INVALID COMMAND>\n");
+    auto outInvalid = std::bind(outMessage, std::placeholders::_1, "<INVALID COMMAND>\n");
     std::string parameter;
     while (std::cin >> parameter)
     {
