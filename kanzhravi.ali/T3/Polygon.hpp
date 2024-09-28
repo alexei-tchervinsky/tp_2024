@@ -20,8 +20,8 @@ namespace AliKn
         char del;
     };
 
-    std::istream& operator>>(std::istream& input, IOSeparator&& ioSep);
-    std::istream& operator>>(std::istream& input, Point& coord);
-    std::istream& operator>>(std::istream& input, Polygon& shape);
+    std::istream& operator>>(std::istream& in, IOSeparator&& dest);
+    std::istream& operator>>(std::istream& in, Point& dest);
+    std::istream& operator>>(std::istream& in, Polygon& dest);
 }
-#endif#pragma once
+#endif
