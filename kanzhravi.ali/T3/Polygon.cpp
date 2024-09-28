@@ -51,8 +51,6 @@ namespace AliKn
         return input;
     }
 
-   
-
     std::istream& operator>>(std::istream& input, IOSeparator&& ioSep)
     {
 
