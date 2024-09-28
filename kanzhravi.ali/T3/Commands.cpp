@@ -158,7 +158,14 @@ void AliKn::Max(const std::vector<Polygon>& polygons, std::ostream& out, std::is
     auto outInvalid = std::bind(displayMessage, std::placeholders::_1, "<INVALID COMMAND>\n");
     std::string parameter;
     in >> parameter;
-
+    try
+        {
+            maxes.at(parameter)(polygons,out);
+        }
+        catch (const std:: out_of_range& ex)
+        {
+            outInvalid(out);
+        }
 }
 
 void AliKn::maxArea(const std::vector<Polygon>& polygons, std::ostream& out)
