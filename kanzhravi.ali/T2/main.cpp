@@ -9,7 +9,7 @@
 
 int main()
 {
-    using TahMed::DataItem;
+    using AliKn::DataItem;
     std::vector<DataItem> data;
     while (!std::cin.eof())
     {
@@ -22,7 +22,7 @@ int main()
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         }
     }
-    std::stable_sort(data.begin(), data.end(), TahMed::Comparator());
+    std::stable_sort(data.begin(), data.end(), AliKn::Comparator());
     std::copy(data.cbegin(), data.cend(), std::ostream_iterator<DataItem>(std::cout, "\n"));
     return 0;
 }
