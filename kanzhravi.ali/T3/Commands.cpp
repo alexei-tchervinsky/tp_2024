@@ -11,10 +11,10 @@
 void AliKn::Area(const std::vector<Polygon>& polygons, std::ostream& out, std::istream& in)
 {
     std::map<std::string, std::function<void(const std::vector<Polygon>& polygon, std::ostream& out)>> areas;
-    areas["EVEN"] = EvenArea;
-    areas["ODD"] = OddArea;
-    areas["MEAN"] = MeanArea;
-    auto outInvalid = std::bind(displayMessage, std::placeholders::_1, "<INVALID COMMAND>\n");
+    areas["EVEN"] = AreaEven;
+    areas["ODD"] = AreaOdd;
+    areas["MEAN"] = AreaMean;
+    auto outInvalid = std::bind(outMessage, std::placeholders::_1, "<INVALID COMMAND>\n");
     std::string parameter;
     in >> parameter;
     try
@@ -34,7 +34,7 @@ void AliKn::Area(const std::vector<Polygon>& polygons, std::ostream& out, std::i
     }
 }
 
-void AliKn::EvenArea(const std::vector<Polygon>& polygons, std::ostream& out)
+void AliKn::AreaEven(const std::vector<Polygon>& polygons, std::ostream& out)
 {
     std::vector<Polygon> EvenPolygons_vec;
     std::copy_if(
@@ -49,7 +49,7 @@ void AliKn::EvenArea(const std::vector<Polygon>& polygons, std::ostream& out)
     out << std::setprecision(1) << std::fixed << sum << '\n';
 }
 
-void AliKn::OddArea(const std::vector<Polygon>& polygons, std::ostream& out)
+void AliKn::AreaOdd(const std::vector<Polygon>& polygons, std::ostream& out)
 {
     std::vector<Polygon> OddPolygons_vec;
     std::copy_if(
@@ -64,7 +64,7 @@ void AliKn::OddArea(const std::vector<Polygon>& polygons, std::ostream& out)
     out << std::setprecision(1) << std::fixed << sum << '\n';
 }
 
-void AliKn::MeanArea(const std::vector<Polygon>& polygons, std::ostream& out)
+void AliKn::AreaMean(const std::vector<Polygon>& polygons, std::ostream& out)
 {
     if (polygons.empty())
     {
@@ -155,17 +155,17 @@ void AliKn::Max(const std::vector<Polygon>& polygons, std::ostream& out, std::is
     std::map<std::string, std::function<void(const std::vector<Polygon>& polygons, std::ostream& out)>> maxes;
     maxes["AREA"] = maxArea;
     maxes["VERTEXES"] = maxVertexes;
-    auto outInvalid = std::bind(displayMessage, std::placeholders::_1, "<INVALID COMMAND>\n");
+    auto outInvalid = std::bind(outMessage, std::placeholders::_1, "<INVALID COMMAND>\n");
     std::string parameter;
     in >> parameter;
     try
-        {
-            maxes.at(parameter)(polygons,out);
-        }
-        catch (const std:: out_of_range& ex)
-        {
-            outInvalid(out);
-        }
+    {
+        maxes.at(parameter)(polygons, out);
+    }
+    catch (const std::out_of_range& ex)
+    {
+        outInvalid(out);
+    }
 }
 
 void AliKn::maxArea(const std::vector<Polygon>& polygons, std::ostream& out)
@@ -209,9 +209,9 @@ void AliKn::maxVertexes(const std::vector<Polygon>& polygons, std::ostream& out)
 void AliKn::Min(const std::vector<Polygon>& polygons, std::ostream& out, std::istream& in)
 {
     std::map<std::string, std::function<void(const std::vector<Polygon>& polygons, std::ostream& out)>> mines;
-    mines["AREA"] = AreaMin;
-    mines["VERTEXES"] = MinVertexes;
-    auto outInvalid = std::bind(displayMessage, std::placeholders::_1, "<INVALID COMMAND>\n");
+    mines["AREA"] = minArea;
+    mines["VERTEXES"] = minVertexes;
+    auto outInvalid = std::bind(outMessage, std::placeholders::_1, "<INVALID COMMAND>\n");
     std::string parameter;
     in >> parameter;
     try
@@ -224,7 +224,7 @@ void AliKn::Min(const std::vector<Polygon>& polygons, std::ostream& out, std::is
     }
 }
 
-void AliKn::AreaMin(const std::vector<Polygon>& polygons, std::ostream& out)
+void AliKn::minArea(const std::vector<Polygon>& polygons, std::ostream& out)
 {
     std::vector<double> areasOfPolygons_vec;
     std::transform(
@@ -243,7 +243,7 @@ void AliKn::AreaMin(const std::vector<Polygon>& polygons, std::ostream& out)
     out << std::setprecision(1) << std::fixed << areasOfPolygons_vec.front() << '\n';
 }
 
-void AliKn::MinVertexes(const std::vector<Polygon>& polygons, std::ostream& out)
+void AliKn::minVertexes(const std::vector<Polygon>& polygons, std::ostream& out)
 {
     std::vector<std::size_t> vertexesOfPolygons_vec;
     std::transform(
@@ -267,7 +267,7 @@ void AliKn::Count(const std::vector<Polygon>& polygons, std::ostream& out, std::
     std::map<std::string, std::function<void(const std::vector<Polygon>& polygons, std::ostream& out)>> counts;
     counts["EVEN"] = CountEven;
     counts["ODD"] = CountOdd;
-    auto outInvalid = std::bind(displayMessage, std::placeholders::_1, "<INVALID COMMAND>\n");
+    auto outInvalid = std::bind(outMessage, std::placeholders::_1, "<INVALID COMMAND>\n");
     std::string parameter;
     in >> parameter;
     try
@@ -349,7 +349,7 @@ void AliKn::Perms(const std::vector<Polygon>& polygons, std::ostream& out, std::
     Polygon givenPolygon;
     in >> givenPolygon;
     std::size_t givenPolygonVertexes = givenPolygon.points.size();
-    auto outInvalid = std::bind(displayMessage, std::placeholders::_1, "<INVALID COMMAND>\n");
+    auto outInvalid = std::bind(outMessage, std::placeholders::_1, "<INVALID COMMAND>\n");
     std::vector<Polygon> nVertexes_vec;
     std::copy_if(
         polygons.begin(),
@@ -431,7 +431,7 @@ double AliKn::cosFromVects(const AliKn::Point& firstPoint, const AliKn::Point& s
     return topExpr / (botExprFirst * botExprSecond);
 }
 
-void AliKn::displayMessage(std::ostream& out, const std::string& message)
+void AliKn::outMessage(std::ostream& out, const std::string& message)
 {
     out << message;
 }
