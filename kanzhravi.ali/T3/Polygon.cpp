@@ -3,68 +3,67 @@
 
 namespace AliKn
 {
-    std::istream& operator>>(std::istream& input, Polygon& shape)
+    std::istream& operator>>(std::istream& in, IOSeparator&& dummy)
     {
-        std::istream::sentry sentry(input);
+        std::istream::sentry sentry(in);
         if (!sentry)
         {
-            return input;
+            return in;
         }
-        Polygon tempo;
-        std::size_t numVertexes;
-        if (!(input >> numVertexes))
+        char c = '\0';
+        in >> c;
+        if (in && (c != dummy.del))
         {
-            input.setstate(std::ios::failbit);
+            in.setstate(std::ios::failbit);
+        }
+        return in;
+    }
+
+    std::istream& operator>>(std::istream& in, Point& dummy)
+    {
+        std::istream::sentry sentry(in);
+        if (!sentry)
+        {
+            return in;
         }
         Point point;
-        for (std::size_t i = 0; i < numVertexes; ++i)
+        in >> IOSeparator{ '(' };
+        in >> point.x;
+        in >> IOSeparator{ ';' };
+        in >> point.y;
+        in >> IOSeparator{ ')' };
+        dummy = point;
+        return in;
+    }
+
+    std::istream& operator>>(std::istream& in, Polygon& dummy)
+    {
+        std::istream::sentry sentry(in);
+        if (!sentry)
         {
-            input >> point;
-            if (input)
+            return in;
+        }
+        Polygon polygon;
+        std::size_t vertexes;
+        if (!(in >> vertexes))
+        {
+            in.setstate(std::ios::failbit);
+        }
+        Point point;
+        for (std::size_t i = 0; i < vertexes; ++i)
+        {
+            in >> point;
+            if (in)
             {
-                tempo.points.push_back(point);
+                polygon.points.push_back(point);
             }
         }
 
-        if (numVertexes != tempo.points.size() || tempo.points.size() < 3)
+        if (vertexes != polygon.points.size() || polygon.points.size() < 3)
         {
-            input.setstate(std::ios::failbit);
+            in.setstate(std::ios::failbit);
         }
-        shape = tempo;
-        return input;
-    }
-
-    std::istream& operator>>(std::istream& input, Point& coord)
-    {
-        std::istream::sentry sentry(input);
-        if (!sentry)
-        {
-            return input;
-        }
-        Point temp;
-        input >> IOSeparator{ '(' };
-        input >> temp.x;
-        input >> IOSeparator{ ';' };
-        input >> temp.y;
-        input >> IOSeparator{ ')' };
-        coord = temp;
-        return input;
-    }
-
-    std::istream& operator>>(std::istream& input, IOSeparator&& ioSep)
-    {
-
-        std::istream::sentry sentry(input);
-        if (!sentry)
-        {
-            return input;
-        }
-        char c = '\0';
-        input >> c;
-        if (input && (c != ioSep.del))
-        {
-            input.setstate(std::ios::failbit);
-        }
-        return input;
+        dummy = polygon;
+        return in;
     }
 }
