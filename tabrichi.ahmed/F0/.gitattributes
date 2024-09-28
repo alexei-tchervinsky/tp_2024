@@ -1,0 +1,8 @@
+# Handle all files with text
+* text=auto
+
+# Force LF line endings for specific file types
+*.cpp text eol=lf
+*.hpp text eol=lf
+*.txt text eol=lf
+*.sh text eol=lf
