@@ -1,8 +1,10 @@
-#ifndef DATASTRUCT_HPP
-#define DATASTRUCT_HPP
+#ifndef DATA_STRUCT_HPP
+#define DATA_STRUCT_HPP
+
 #include <iostream>
 #include <string>
-namespace TAhm
+
+namespace TahMed
 {
     struct DataItem
     {
@@ -10,26 +12,32 @@ namespace TAhm
         unsigned long long key2;
         std::string key3;
     };
+
     struct DelimiterIO
     {
         char del;
     };
+
     struct LITIO
     {
         unsigned long long& lit;
     };
+
     struct BINIO
     {
         unsigned long long& bin;
     };
+
     struct StringIO
     {
         std::string& str;
     };
+
     struct LabelIO
     {
         std::string lab;
     };
+
     std::istream& operator>>(std::istream& inStream, DelimiterIO&& delimiter);
     std::istream& operator>>(std::istream& inStream, LITIO&& literal);
     std::istream& operator>>(std::istream& inStream, BINIO&& binary);

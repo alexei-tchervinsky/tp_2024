@@ -1,11 +1,13 @@
 #include "DataStruct.hpp"
-#include "Fmt.hpp"
-namespace TAhm
+#include "Fmtguard.hpp"
+
+namespace TahMed
 {
     std::string toBinary(unsigned long long number)
     {
         std::string result = "";
         unsigned long long temp_ = number;
+
         if (temp_ == 0)
         {
             result = "0";
@@ -21,6 +23,7 @@ namespace TAhm
         }
         return result;
     }
+
     unsigned long long BinaryToDecimal(unsigned long long binValue)
     {
         unsigned long long result = 0;
@@ -30,6 +33,7 @@ namespace TAhm
         }
         return result;
     }
+
     std::istream& operator>>(std::istream& inStream, DelimiterIO&& delimiter)
     {
         std::istream::sentry sentry(inStream);
@@ -45,6 +49,7 @@ namespace TAhm
         }
         return inStream;
     }
+
     std::istream& operator>>(std::istream& in, LITIO&& literal)
     {
         std::istream::sentry sentry(in);
@@ -62,6 +67,7 @@ namespace TAhm
             return in >> DelimiterIO{ 'u' } >> DelimiterIO{ 'l' } >> DelimiterIO{ 'l' };
         }
     }
+
     std::istream& operator>>(std::istream& in, BINIO&& binary)
     {
         std::istream::sentry sentry(in);
@@ -83,6 +89,7 @@ namespace TAhm
         binary.bin = BinaryToDecimal(bin);
         return in;
     }
+
     std::istream& operator>>(std::istream& in, StringIO&& stringData)
     {
         std::istream::sentry sentry(in);
@@ -92,6 +99,7 @@ namespace TAhm
         }
         return std::getline(in >> DelimiterIO{ '"' }, stringData.str, '"');
     }
+
     std::istream& operator>>(std::istream& in, LabelIO&& labelData)
     {
         std::istream::sentry sentry(in);
@@ -106,6 +114,7 @@ namespace TAhm
         }
         return in;
     }
+
     std::istream& operator>>(std::istream& in, DataItem& theIinput)
     {
         std::istream::sentry sentry(in);
@@ -115,6 +124,7 @@ namespace TAhm
         }
         DataItem input;
         std::string chars;
+
         in >> DelimiterIO{ '(' };
         for (std::size_t i = 0; i < 3; ++i)
         {
@@ -141,6 +151,7 @@ namespace TAhm
         }
         return in;
     }
+
     std::ostream& operator<<(std::ostream& out, const DataItem& output)
     {
         std::ostream::sentry sentry(out);
@@ -148,7 +159,7 @@ namespace TAhm
         {
             return out;
         }
-        Fmt fmt(out);
+        Fmtguard fmtguard(out);
         out << "(:key1 " << output.key1 << "ull";
         out << ":key2 0b" << toBinary(output.key2);
         out << ":key3 \"" << output.key3 << "\":)";

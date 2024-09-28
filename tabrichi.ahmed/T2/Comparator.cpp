@@ -1,5 +1,6 @@
 #include "Comparator.hpp"
-namespace TAhm
+
+namespace TahMed
 {
     bool Comparator::operator()(const DataItem first, const DataItem second) const
     {
